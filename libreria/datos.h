@@ -82,8 +82,5 @@ struct DATOS
 
 datos* LeerArchivo(string archivo_pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
 
-datos* LeerArchivo(string pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
-
 int DevolverFecha(datos var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
-int DevolverFecha(datos var);
