@@ -1,10 +1,13 @@
 #include "iri.cpp"
+#include "funciones.cpp"
 #include <iostream>
 
-int main() {
+int main()
+{
 
-    std::cout << "Hello World TP_Final, esto es una prueba";
+	LeerArchivo("IRI_Pacientes.csv");
+	//Mostrar();
 
 
-    return EXIT_SUCCESS;
+		return 0;
 }

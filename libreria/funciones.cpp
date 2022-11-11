@@ -1,5 +1,5 @@
 #include "datos.h"
-
+#include <iostream>
 using namespace std;
 
 datos* LeerArchivo(string nombre)  //leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
@@ -37,7 +37,7 @@ datos* LeerArchivo(string nombre)  //leemos todos los archivos y guardamos todos
 
 
 
-void Agregar(datos*& Lista_pacientes, datos datos_p, int* tam)
+void Agregar(datos*& Lista_pacientes, datos Datos_p, int* tam)
 {
 	*tam = *tam + 1;
 	int i = 0;
@@ -49,7 +49,7 @@ void Agregar(datos*& Lista_pacientes, datos datos_p, int* tam)
 		i++;
 	}
 
-	Lista_aux[i] = datos_p;
+	Lista_aux[i] = Datos_p;
 	delete[] Lista_pacientes;
 	Lista_pacientes = Lista_aux;
 
