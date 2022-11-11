@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -14,23 +15,23 @@ enum Sexo { femenino, masculino }typedef sexo;
 enum diagnostico { neurologia, kinesiologia, cardiologia, ginecologia, odontologia, dermatologia, pediatria, traumatologia, hemologia, fonoaudelogia, clinica }typedef Diagnostico;
 
 
-struct FEHCA {
-	tm tm_min, tm_max;
-}typedef Fecha;
+//struct FEHCA {
+//	tm tm_min, tm_max;
+//}typedef Fecha;
 
 struct CONTACTO //tiene que haber un archivo con todos los contacto
 {
-	string nombre, apellido, mail direccion, tel, cel, provincia, pais;
+	string nombre, apellido, mail ,direccion, tel, cel, provincia, pais;
 	int ID, edad, dni;
 
 }typedef Contacto;
 
 struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consultas
 {
-	Fecha fecha_uconsulta;
+	tm* fecha_uconsulta;
 	int dni_medico, dni_paciente;
-	int id_medico
-		time_t next_consul;
+	int id_medico;
+	tm* next_consul;
 	bool reprogramacion;
 	bool concurrio; //true si atendio el turno, false sino 
 	Cobertura cobertura;
@@ -44,8 +45,8 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 	int dni_paciente;
 	sexo Sexo;
 	int id_os;
-	time_t natalicio;
-	time_t fechaingreso;
+	tm* natalicio;
+	tm* fechaingreso;
 	Cobertura cobertura;
 	Estado_paciente estado_paciente;
 	Diagnostico diagnostico_p;
@@ -85,8 +86,10 @@ struct DATOS
 
 
 
-void LeerArchivo(string pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
+datos* LeerArchivo(string archivo_pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
 
-void Agregar(datos*& Lista_pacientes, datos datos_p, int* tam);
+void Agregar(datos*& Lista_pacientes, datos Datos_p, int* tam);
 
-Fecha DevolverFecha(Fecha variable);
+int DevolverFecha(datos var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+
+//void Mostrar(datos*& Lista_pacientes);
