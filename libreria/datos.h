@@ -45,6 +45,7 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 	Diagnostico diagnostico_p;
 	estado_historial historial;
 	string estado_paciente;
+	bool archivado=false;
 
 }typedef Paciente;
 
@@ -82,5 +83,7 @@ struct DATOS
 
 datos* LeerArchivo(string archivo_pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
 
-int DevolverFecha(datos var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+int DevolverFecha(U_consulta var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
+
+void archivado(datos*& dato);

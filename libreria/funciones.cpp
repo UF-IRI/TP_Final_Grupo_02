@@ -56,7 +56,7 @@ void Agregar(datos*& Lista_pacientes, datos Datos_p, int* tam)
 	return;
 }
 
-int DevolverFecha(datos var)
+int DevolverFecha(U_consulta var)
 {
 
 	int anios = 0;
@@ -73,7 +73,7 @@ int DevolverFecha(datos var)
 	int anio = fecha_actual->tm_year + 1900;
 
 	long int dias1 = (anio * 365) + (mes * 30) + dia;
-	long int dias2 = ((var.ultima_consulta.fecha_uconsulta->tm_year) * 365) + ((var.ultima_consulta.fecha_uconsulta->tm_mon) * 30) + var.ultima_consulta.fecha_uconsulta->tm_mday;
+	long int dias2 = ((var.fecha_uconsulta->tm_year) * 365) + ((var.fecha_uconsulta->tm_mon) * 30) + var.fecha_uconsulta->tm_mday;
 	dias = dias2 - dias1;
 
 	anios = dias / 364;
@@ -81,6 +81,24 @@ int DevolverFecha(datos var)
 	return anios;
 }
 
+void archivado(datos*& dato)
+{
+	int diferencia=DevolverFecha(dato->ultima_consulta);
+	int i = 0;
+	do {
+
+		diferencia = DevolverFecha(dato[i].ultima_consulta);
+		if (diferencia > 10 && dato[i].ultima_consulta.concurrio == false)
+			dato->paciente.archivado == true;
+		else if (diferencia < 10 && dato[i].ultima_consulta.concurrio == false && dato[i].ultima_consulta.reprogramacion == false)
+		{
+			if( dato[i].paciente.estado_paciente != "n/c")
+			dato[i].paciente.archivado == true;
+
+		}
+		i++;
+	} while (i <= sizeof(dato));
+}
 
 
 //void Mostrar(datos*& Lista_pacientes)
