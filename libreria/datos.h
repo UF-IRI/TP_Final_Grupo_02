@@ -85,5 +85,6 @@ datos* LeerArchivo(string archivo_pacientes);//leemos todos los archivos y guard
 
 int DevolverFecha(U_consulta var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
+void Escribir_Archivados(datos*& datasos);
 
-void archivado(datos*& dato);
+void archivado(datos* dato);

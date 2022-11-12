@@ -88,8 +88,11 @@ void archivado(datos*& dato)
 	do {
 
 		diferencia = DevolverFecha(dato[i].ultima_consulta);
-		if (diferencia > 10 && dato[i].ultima_consulta.concurrio == false)
-			dato->paciente.archivado == true;
+		if (diferencia > 10 && dato[i].ultima_consulta.concurrio == false) {
+			dato[i].paciente.archivado == true;
+			if (dato[i].ultima_consulta.dni_medico==dato[i].paciente.dni)
+			Escribir_Archivados(dato[i])
+		}
 		else if (diferencia < 10 && dato[i].ultima_consulta.concurrio == false && dato[i].ultima_consulta.reprogramacion == false)
 		{
 			if( dato[i].paciente.estado_paciente != "n/c")
@@ -99,6 +102,23 @@ void archivado(datos*& dato)
 		i++;
 	} while (i <= sizeof(dato));
 }
+
+void Escribir_Archivados(datos* datasos)
+{
+	char coma = ',';
+	fstream archivado;
+	archivado.open("Pacientes_Archivados.csv", ios::out);
+	if (!archivado.is_open())
+		return;
+	else {
+		archivado << ""
+	}
+
+
+	
+
+}
+
 
 
 //void Mostrar(datos*& Lista_pacientes)
