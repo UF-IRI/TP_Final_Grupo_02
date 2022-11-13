@@ -21,10 +21,10 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	while (pacientes)
 	{
 		//------------------leemos el archivo--------------------
-		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> aux.natalicio->tm_mday>> aux.natalicio->tm_mon>> aux.natalicio-> tm_year>>coma >> aux.estado_paciente>>coma >> aux.id_os;
+		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> aux.natalicio >>coma >> aux.estado_paciente>>coma >> aux.id_os;
 
 		//----------------Agregamos a la lista ----------------------
-		Agregar_Pac(Lista_pacientes, aux, &tamact_p);
+		Agregar(Lista_pacientes, aux, &tamact_p);
 	}
 	pacientes.close();
 
@@ -222,32 +222,21 @@ void Archivar(Paciente*& Lista_pacientes)
 	int diferencia;
 	int i = 0;
 	do {
-
 		diferencia = DevolverFecha(Lista_pacientes[i]);
 		if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
 		{
 			Lista_pacientes[i].archivado = true;
 			if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
 				Escribir_Archivados(Lista_pacientes[i]);
-			diferencia = DevolverFecha(Lista_pacientes[i]);
-			if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
-			{
-				Lista_pacientes[i].archivado = true;
-				if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
-					Escribir_Archivados(Lista_pacientes[i]);
-			}
-			else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == false)
-			{
-				if (Lista_pacientes[i].estado_paciente != "n/c")
-					Lista_pacientes[i].archivado = true;
-				//faltaria agregar en este caso tmb al archivo archivados?
-				if (Lista_pacientes[i].estado_paciente != "n/c")
-					Lista_pacientes[i].archivado = true;
-				//faltaria agregar en este caso tmb al archivo archivados?
-			}
 		}
-			i++;
-	}while (i <= sizeof(Lista_pacientes));
+		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == false)
+		{
+			if (Lista_pacientes[i].estado_paciente != "n/c")
+				Lista_pacientes[i].archivado = true;
+			//faltaria agregar en este caso tmb al archivo archivados?
+		}
+		i++;
+	} while (i <= sizeof(Lista_pacientes));
 }
 
 
@@ -263,17 +252,17 @@ void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas 
 	else
 	{
 		archivados << "n_historialclinico,Nombre, Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
-		archivados << paciente.historial.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio << coma << paciente.fechaingreso << coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial.diagnostico << endl;
+		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio << coma << paciente.fechaingreso << coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad<< endl;
 	}
 
 }
 
-void Imprimir_Lista(Paciente*& lista)
+void Imprimir_Lista(Paciente* lista)
 {
 	int i = 0;
 	while (i <= sizeof(lista))
 	{
-		cout << "Dni: " << lista[i].dni << "Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << "Sexo: " << lista[i].sexo << "Natalicio: " << lista[i].natalicio->tm_mday << "-" << lista[i].natalicio->tm_mon << "-" << lista[i].natalicio->tm_year << "Estado: " << lista[i].estado_paciente << "Cobertura: " << lista[i].id_os << endl;
+		cout << "Dni: " << lista[i].dni << "Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << "Sexo: " << lista[i].sexo << "Natalicio: " << lista[i].natalicio << "Estado: " << lista[i].estado_paciente << "Cobertura: " << lista[i].id_os << endl;
 		i++;
 	}
 }
@@ -310,7 +299,6 @@ void Cambio_Cobertura(Paciente paciente, int opcion)
 	 default: 
 		 cout << " invaind input" << endl;
 		 break;
-
 	}
 
 }
@@ -335,16 +323,15 @@ void Secretaria(Paciente*& lista, int opcion)
 	}
 }
 
-void Reprogramar_consulta(Paciente& paciente)
-{
-	//Aca se llamaria imprimir
-	//se debe colocar la fecha de la proxima consulta
-	
-}
+//void Reprogramar_consulta(Paciente& paciente)
+//{
+//	//Aca se llamaria imprimir
+//	//se debe colocar la fecha de la proxima consulta
+//	
+//}
 
 void Fecha_random(Paciente*& paciente)
 {
-
 	time_t rawtime;
 	struct tm* timeinfo;
 	time(&rawtime);

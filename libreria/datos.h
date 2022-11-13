@@ -28,7 +28,6 @@ struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consu
 	bool reprogramacion;
 	bool concurrio; //true si atendio el turno, false sino 
 	Cobertura cobertura;
-
 }typedef U_consulta;
 
 struct HISTORIAL_CLINICO
@@ -49,6 +48,13 @@ typedef struct CONSULTA {
 
 }Consulta;
 
+struct HISTORIAL_CLINICO
+{
+	string especialidad;
+	int n_historialclinico;// numeropiso, numerocama; //numero piso y cama van a ser null salvo que internacion sea true
+}typedef historial_clinico;
+
+
 struct PACIENTE //tiene que haber un archivo con todos los pacientes 
 {
 	string nombre;
@@ -60,14 +66,9 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 	int id_os;
 	historial_clinico historial_clinico;
 	string estado_paciente; //internado,paciente,vivo
-	int id_os;
-	tm* natalicio;
-	tm* fechaingreso;
-	Cobertura cobertura;
+	string cobertura;
 	Diagnostico diagnostico_p;
-	historial_clinico historial;
 	U_consulta datos_uconsul;
-	string estado_paciente;
 	bool archivado=false;
 	bool retorna = false;
 
@@ -78,7 +79,7 @@ struct MEDICO
 	string nombre, apellido;
 	string matricula;
 	string telefono;
-	Diagnostico especialidad;
+	string especialidad;
 	bool activo;
 
 }typedef Medico;
@@ -86,7 +87,7 @@ struct MEDICO
 typedef struct OBRA_SOCIAL
 {
 	int id_obrasocial;
-	cobertura obrasocial;
+	string obrasocial;
 }Obra_social;
 
 struct DATOS
@@ -97,12 +98,6 @@ struct DATOS
 	Medico medico;
 }typedef datos;
 
-struct HISTORIAL_CLINICO
-{
-	string especialidad;
-	int n_historialclinico, numeropiso, numerocama; //numero piso y cama van a ser null salvo que internacion sea true
-	Estado_historial estado_historial;
-}typedef historial_clinico;
 
 
 void LeerArchivo(Paciente*& Lista_pacientes, int& tamact_p, Obra_social*& lista_obras, int& tamactual_O, Medico*& lista_medicos, int& tamactual_Med, Contacto*& lista_contactos, int& tamactual_contactos, Consulta*& lista_consultas, int& tamactual_consultas);  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
