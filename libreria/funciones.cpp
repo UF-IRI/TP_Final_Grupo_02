@@ -99,7 +99,6 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		Agregar_Consultas(lista_consultas, aux_consulta, tamactual_consultas);
 	}
 }
-
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
 	*tam = *tam + 1;
@@ -118,7 +117,6 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 
 	return;
 }
-
 void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
 {
 	tam ++;
@@ -137,7 +135,6 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
 
 	return;
 }
-
 void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam)
 {
 	tam++;
@@ -192,7 +189,6 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam)
 
 	return;
 }
-
 int DevolverFecha(Paciente var)
 {
 	int anios = 0;
@@ -216,7 +212,6 @@ int DevolverFecha(Paciente var)
 
 	return anios;
 }
-
 void Archivar(Paciente*& Lista_pacientes)
 {
 	int diferencia;
@@ -238,8 +233,6 @@ void Archivar(Paciente*& Lista_pacientes)
 		i++;
 	} while (i <= sizeof(Lista_pacientes));
 }
-
-
 void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas de los pacientes 
 {
 	char coma = ',';
@@ -256,7 +249,6 @@ void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas 
 	}
 
 }
-
 void Imprimir_Lista(Paciente* lista)
 {
 	int i = 0;
@@ -266,7 +258,6 @@ void Imprimir_Lista(Paciente* lista)
 		i++;
 	}
 }
-
 void Cambio_Cobertura(Paciente paciente, int opcion)
 {
 	switch (opcion)
@@ -302,8 +293,6 @@ void Cambio_Cobertura(Paciente paciente, int opcion)
 	}
 
 }
-
-
 void Secretaria(Paciente*& lista, int opcion)
 {
 	for (int i = 0; i < sizeof(*lista); i++)
@@ -322,14 +311,6 @@ void Secretaria(Paciente*& lista, int opcion)
 		}
 	}
 }
-
-//void Reprogramar_consulta(Paciente& paciente)
-//{
-//	//Aca se llamaria imprimir
-//	//se debe colocar la fecha de la proxima consulta
-//	
-//}
-
 void Fecha_random(Paciente*& paciente)
 {
 	time_t rawtime;
@@ -342,5 +323,12 @@ void Fecha_random(Paciente*& paciente)
 	paciente->datos_uconsul.next_consul->tm_mon = rand() % (12 - fecha_actual->tm_mon) + fecha_actual->tm_mon;
 	paciente->datos_uconsul.next_consul->tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
 
+}
+
+void Reprogramar_consulta(Paciente& paciente)
+{
+	//Aca se llamaria imprimir
+	//se debe colocar la fecha de la proxima consulta
+	
 }
 

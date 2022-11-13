@@ -5,9 +5,5 @@
 int main()
 {
 
-	LeerArchivo("IRI_Pacientes.csv");
-	//Mostrar();
-
-
 		return 0;
 }
