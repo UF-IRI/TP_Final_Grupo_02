@@ -43,7 +43,8 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 	tm* fechaingreso;
 	Cobertura cobertura;
 	Diagnostico diagnostico_p;
-	estado_historial historial;
+	/*estado_historial historial;*/
+	historial_clinico historial;
 	string estado_paciente;
 	bool archivado=false;
 

@@ -91,7 +91,7 @@ void archivado(datos*& dato)
 		if (diferencia > 10 && dato[i].ultima_consulta.concurrio == false) {
 			dato[i].paciente.archivado == true;
 			if (dato[i].ultima_consulta.dni_medico==dato[i].paciente.dni)
-			Escribir_Archivados(dato[i])
+			Escribir_Archivados(dato[i].paciente.historial.)//pq no toma historial??
 		}
 		else if (diferencia < 10 && dato[i].ultima_consulta.concurrio == false && dato[i].ultima_consulta.reprogramacion == false)
 		{
