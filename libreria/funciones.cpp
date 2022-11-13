@@ -6,13 +6,6 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 { 
 	string header;
 	Paciente aux;
-Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
-{
-	int tamact = 0;
-	Paciente* Lista_pacientes = new Paciente[tamact];
-	string header[6];
-	Paciente aux;
-
 	fstream pacientes;
 	pacientes.open("IRI_Pacientes.csv", ios::in);
 
@@ -21,8 +14,6 @@ Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos tod
 		cout << "no se pudo abrir el archivo de pacientes" << endl;
 		return;
 	}
-	if (!(pacientes.is_open()))
-		return nullptr;
 
 	char coma;
 	pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header[5] >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
@@ -33,7 +24,7 @@ Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos tod
 		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> aux.natalicio->tm_mday>> aux.natalicio->tm_mon>> aux.natalicio-> tm_year>>coma >> aux.estado_paciente>>coma >> aux.id_os;
 
 		//----------------Agregamos a la lista ----------------------
-		Agregar_Pac(Lista_pacientes, aux, &tamact);
+		Agregar_Pac(Lista_pacientes, aux, &tamact_p);
 	}
 	pacientes.close();
 
@@ -49,7 +40,7 @@ Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos tod
 	Arch_obras >> header >> coma >> header;
 	while (Arch_obras)
 	{
-		Arch_obras >> aux_o.obrasocial >> coma >> aux_o.id_obrasocial;
+		Arch_obras >> aux_o.id_obrasocial >> coma >> aux_o.obrasocial;
 
 		Agregar_obras(lista_obras, aux_o, tamactual_O);
 	}
@@ -88,18 +79,12 @@ Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos tod
 		Arch_Contactos >> aux_contacto.dni >> coma >> aux_contacto.tel >> coma >> aux_contacto.cel >> coma >> aux_contacto.direccion >> coma >> aux_contacto.mail;
 
 		Agregar_Contactos(lista_contactos, aux_contacto, tamactual_contactos);
-		pacientes >> aux.dni >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.sexo >> coma >> aux.natalicio >> coma >> aux.estado_paciente;//>> coma >> aux.id_os;
-		pacientes >> aux.dni >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.sexo >> coma >> aux.natalicio->tm_mday >> coma >> aux.natalicio->tm_mon>> coma >> aux.natalicio->tm_year>>coma >> aux.estado_paciente;//>> coma >> aux.id_os;
-
-		
-		//----------------Agregamos a la lista ----------------------
-		Agregar(Lista_pacientes, aux, &tamact);
 	}
 	Arch_Contactos.close();
 
 	fstream Arch_Consultas;
-	Arch_Consultas.opne("IRI_Constultas.csv", ios::in);
-	if (!Arch_Consultas.is_open)
+	Arch_Consultas.open("IRI_Constultas.csv", ios::in);
+	if (!Arch_Consultas.is_open())
 	{
 		cout << "No se pudo abrir el archivo de consultas" << endl;
 		return;
@@ -111,12 +96,9 @@ Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos tod
 	{
 		Arch_Consultas >> aux_consulta.dni >> coma >> aux_consulta.fecha_solicitado >> coma >> aux_consulta.fecha_turno >> coma >> aux_consulta.presento >> coma >> aux_consulta.matricula_med;
 
-		Agregar_Consultas(lista_consultas,aux_consulta, tamactual_consultas)
+		Agregar_Consultas(lista_consultas, aux_consulta, tamactual_consultas);
 	}
 }
-
-
-void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
@@ -157,8 +139,11 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
 }
 
 void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam)
-int DevolverFecha(Paciente var)
 {
+	tam++;
+	int i = 0;
+	Medico* Lista_aux = new Medico[tam];
+
 	while (i < tam && tam != 0)
 	{
 		Lista_aux[i] = lista_meds[i];
@@ -232,48 +217,40 @@ int DevolverFecha(Paciente var)
 	return anios;
 }
 
-void archivado(Paciente*& Lista_pacientes)
-
 void Archivar(Paciente*& Lista_pacientes)
 {
 	int diferencia;
 	int i = 0;
 	do {
 
-		diferencia = DevolverFecha(dato[i].ultima_consulta);
-		if (diferencia > 10 && dato[i].ultima_consulta.concurrio == false) {
-			dato[i].archivado == true;
-			if (dato[i].ultima_consulta.dni_medico==dato[i].dni)
-			Escribir_Archivados(dato[i].paciente.historial.)//pq no toma historial??
 		diferencia = DevolverFecha(Lista_pacientes[i]);
 		if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
 		{
 			Lista_pacientes[i].archivado = true;
 			if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
 				Escribir_Archivados(Lista_pacientes[i]);
-		diferencia = DevolverFecha(Lista_pacientes[i]);
-		if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
-		{
-			Lista_pacientes[i].archivado = true;
-			if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
-				Escribir_Archivados(Lista_pacientes[i]);
-		}
-		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == false)
-		{
-			if( Lista_pacientes[i].estado_paciente != "n/c")
+			diferencia = DevolverFecha(Lista_pacientes[i]);
+			if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
+			{
 				Lista_pacientes[i].archivado = true;
-			//faltaria agregar en este caso tmb al archivo archivados?
-			if (Lista_pacientes[i].estado_paciente != "n/c")
-				Lista_pacientes[i].archivado = true;
-			//faltaria agregar en este caso tmb al archivo archivados?
+				if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
+					Escribir_Archivados(Lista_pacientes[i]);
+			}
+			else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == false)
+			{
+				if (Lista_pacientes[i].estado_paciente != "n/c")
+					Lista_pacientes[i].archivado = true;
+				//faltaria agregar en este caso tmb al archivo archivados?
+				if (Lista_pacientes[i].estado_paciente != "n/c")
+					Lista_pacientes[i].archivado = true;
+				//faltaria agregar en este caso tmb al archivo archivados?
+			}
 		}
-		i++;
-	} while (i <= sizeof(Lista_pacientes));
+			i++;
+	}while (i <= sizeof(Lista_pacientes));
 }
 
 
-
-void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas de los pacientes 
 void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas de los pacientes 
 {
 	char coma = ',';
@@ -282,12 +259,6 @@ void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas 
 
 	if (!archivados.is_open())
 		return;
-
-	else 
-	{
-		archivados << "n_historialclinico,Nombre, Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
-		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio << coma << paciente.fechaingreso << coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.diagnostico<<endl;
-	}
 
 	else
 	{
@@ -307,38 +278,41 @@ void Imprimir_Lista(Paciente*& lista)
 	}
 }
 
-
 void Cambio_Cobertura(Paciente paciente, int opcion)
 {
 	switch (opcion)
 	{
-	case 1:
+	 case 1:
 		paciente.cobertura = OSDE;
 		paciente.id_os = 1;
 		break;
-	case 2:
+	 case 2:
 		paciente.cobertura = MEDICUS;
 		paciente.id_os = 2;
 		break;
-	case 3:
+	 case 3:
 		paciente.cobertura = IOSFA;
 		paciente.id_os = 3;
 		break;
-	case 4:
+	 case 4:
 		paciente.cobertura = ITALIANO;
 		paciente.id_os = 4;
 		break;
-	case 5:
+	 case 5:
 		paciente.cobertura = ALEMAN;
 		paciente.id_os = 5;
 		break;
-	case 6:
+	 case 6:
 		paciente.cobertura = ESPANYOL;
 		paciente.id_os = 6;
-
-	default:
 		break;
+
+	 default: 
+		 cout << " invaind input" << endl;
+		 break;
+
 	}
+
 }
 
 
