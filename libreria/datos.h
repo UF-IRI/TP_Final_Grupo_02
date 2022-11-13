@@ -32,6 +32,16 @@ struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consu
 
 }typedef U_consulta;
 
+typedef struct CONSULTA {
+	
+	int dni;
+	tm* fecha_solicitado;
+	tm* fecha_turno;
+	bool presento;
+	string matricula_med;
+
+}Consulta;
+
 struct PACIENTE //tiene que haber un archivo con todos los pacientes 
 {
 	string nombre;
@@ -43,7 +53,6 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 	tm* fechaingreso;
 	Cobertura cobertura;
 	Diagnostico diagnostico_p;
-	/*estado_historial historial;*/
 	historial_clinico historial;
 	string estado_paciente;
 	bool archivado=false;
@@ -53,17 +62,18 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 struct MEDICO
 {
 	string nombre, apellido;
-	int id;
-	int dni_medico;
+	string matricula;
+	string telefono;
 	Diagnostico especialidad;
+	bool activo;
 
 }typedef Medico;
 
-struct OBRA_SOCIAL
+typedef struct OBRA_SOCIAL
 {
 	int id_obrasocial;
 	cobertura obrasocial;
-};
+}Obra_social;
 
 struct HISTORIAL_CLINICO
 {
@@ -72,20 +82,21 @@ struct HISTORIAL_CLINICO
 	Estado_historial estado_historial;
 }typedef historial_clinico;
 
-struct DATOS
-{
-	Paciente paciente;
-	Contacto contacto;
-	U_consulta ultima_consulta;
-	Medico medico;
-}typedef datos;
-
-
 
 datos* LeerArchivo(string archivo_pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
 
 int DevolverFecha(U_consulta var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
-void Escribir_Archivados(datos*& datasos);
+void Escribir_Archivados(Paciente*& datasos);
 
-void archivado(datos* dato);
+void archivado(Paciente* dato);
+
+void Agregar_Pac(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
+
+void Agregar_obras(Obra_social*& lista_obras,Obra_social agregado, int& tam);
+
+void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam);
+
+void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam);
+
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam);
