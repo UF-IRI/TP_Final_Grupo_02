@@ -3,23 +3,20 @@
 using namespace std;
 
 void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_obras, int &tamactual_O, Medico*& lista_medicos, int& tamactual_Med, Contacto*& lista_contactos, int& tamactual_contactos, Consulta*& lista_consultas,int& tamactual_consultas)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
-Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
 { 
 	string header;
-	Paciente aux;
-	int tamact = 0;
-	Paciente* Lista_pacientes = new Paciente[tamact];
-	string header[6];
 	Paciente aux;
 
 	fstream pacientes;
 	pacientes.open("IRI_Pacientes.csv", ios::in);
 
 	if (!(pacientes.is_open()))
-	return nullptr;
-
+	{
+		cout << "no se pudo abrir el archivo de pacientes" << endl;
+		return;
+	}
 	char coma;
-	pacientes >> header[0] >> coma >> header[1] >> coma >> header[2] >> coma >> header[3] >> coma >> header[4] >> coma >> header[5] >> coma >> header[6];//simepre vamos a saber la cantidad de variables es decir N
+	pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header[5] >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
 
 	while (pacientes)
 	{
@@ -98,7 +95,8 @@ Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos tod
 		return;
 	}
 	Consulta aux_consulta;
-	//dni_pac,fecha_solicitado,fecha_turno,presento,matricula_med
+	
+	Arch_Consultas >> header >> coma >> header >> coma >> header >> coma >> header >> header >> coma >> header;
 	while (Arch_Consultas)
 	{
 		Arch_Consultas >> aux_consulta.dni >> coma >> aux_consulta.fecha_solicitado >> coma >> aux_consulta.fecha_turno >> coma >> aux_consulta.presento >> coma >> aux_consulta.matricula_med;
@@ -108,9 +106,6 @@ Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos tod
 }
 
 
-
-
-void Agregar_Pac(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
 	*tam = *tam + 1;
@@ -204,7 +199,6 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam)
 	return;
 }
 
-int DevolverFecha(U_consulta var)
 int DevolverFecha(Paciente var)
 {
 	int anios = 0;
@@ -229,7 +223,6 @@ int DevolverFecha(Paciente var)
 	return anios;
 }
 
-void archivado(Paciente*& dato)
 void archivado(Paciente*& Lista_pacientes)
 {
 	int diferencia;

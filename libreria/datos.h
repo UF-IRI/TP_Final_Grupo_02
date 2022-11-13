@@ -95,6 +95,7 @@ struct DATOS
 	U_consulta ultima_consulta;
 	Medico medico;
 }typedef datos;
+
 struct HISTORIAL_CLINICO
 {
 	string especialidad;
@@ -103,13 +104,7 @@ struct HISTORIAL_CLINICO
 }typedef historial_clinico;
 
 
-datos* LeerArchivo(string archivo_pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
-
-int DevolverFecha(U_consulta var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
-
-void Escribir_Archivados(Paciente*& datasos);
-
-void archivado(Paciente* dato);
+void LeerArchivo(Paciente*& Lista_pacientes, int& tamact_p, Obra_social*& lista_obras, int& tamactual_O, Medico*& lista_medicos, int& tamactual_Med, Contacto*& lista_contactos, int& tamactual_contactos, Consulta*& lista_consultas, int& tamactual_consultas)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 
 void Agregar_Pac(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
 
@@ -119,9 +114,9 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam);
 
 void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam);
 
-Paciente* LeerArchivo(string nombre);//leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
-void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam);
+
+
 int DevolverFecha(Paciente var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 void Escribir_Archivados(Paciente paciente);//se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
 void archivado(Paciente*& Lista_pacientes);//cambia el estado archivado para los que corresponda
-void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam);
