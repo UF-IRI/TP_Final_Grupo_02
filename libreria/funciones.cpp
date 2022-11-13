@@ -3,13 +3,19 @@
 using namespace std;
 
 void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_obras, int &tamactual_O, Medico*& lista_medicos, int& tamactual_Med, Contacto*& lista_contactos, int& tamactual_contactos, Consulta*& lista_consultas,int& tamactual_consultas)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Paciente* LeerArchivo(string nombre) //leemos todos los archivos y guardamos todos los datos en una lista de tipo DATOS
 { 
 	string header;
 	Paciente aux;
+	int tamact = 0;
+	Paciente* Lista_pacientes = new Paciente[tamact];
+	string header[6];
+	Paciente aux;
+
 	fstream pacientes;
 	pacientes.open("IRI_Pacientes.csv", ios::in);
 
-	if (!(pacientes.is_open()));
+	if (!(pacientes.is_open()))
 	return nullptr;
 
 	char coma;
@@ -76,6 +82,11 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		Arch_Contactos >> aux_contacto.dni >> coma >> aux_contacto.tel >> coma >> aux_contacto.cel >> coma >> aux_contacto.direccion >> coma >> aux_contacto.mail;
 
 		Agregar_Contactos(lista_contactos, aux_contacto, tamactual_contactos);
+		pacientes >> aux.dni >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.sexo >> coma >> aux.natalicio >> coma >> aux.estado_paciente;//>> coma >> aux.id_os;
+
+		
+		//----------------Agregamos a la lista ----------------------
+		Agregar(Lista_pacientes, aux, &tamact);
 	}
 	Arch_Contactos.close();
 
@@ -100,6 +111,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 
 
 void Agregar_Pac(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
+void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
 	*tam = *tam + 1;
 	int i = 0;
@@ -193,8 +205,8 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam)
 }
 
 int DevolverFecha(U_consulta var)
+int DevolverFecha(Paciente var)
 {
-
 	int anios = 0;
 
 	time_t rawtime;
@@ -209,7 +221,7 @@ int DevolverFecha(U_consulta var)
 	int anio = fecha_actual->tm_year + 1900;
 
 	long int dias1 = (anio * 365) + (mes * 30) + dia;
-	long int dias2 = ((var.fecha_uconsulta->tm_year) * 365) + ((var.fecha_uconsulta->tm_mon) * 30) + var.fecha_uconsulta->tm_mday;
+	long int dias2 = ((var.datos_uconsul.fecha_uconsulta->tm_year) * 365) + ((var.datos_uconsul.fecha_uconsulta->tm_mon) * 30) + var.datos_uconsul.fecha_uconsulta->tm_mday;
 	dias = dias2 - dias1;
 
 	anios = dias / 364;
@@ -218,8 +230,9 @@ int DevolverFecha(U_consulta var)
 }
 
 void archivado(Paciente*& dato)
+void archivado(Paciente*& Lista_pacientes)
 {
-	int diferencia=DevolverFecha(dato->ultima_consulta);
+	int diferencia;
 	int i = 0;
 	do {
 
@@ -228,43 +241,39 @@ void archivado(Paciente*& dato)
 			dato[i].archivado == true;
 			if (dato[i].ultima_consulta.dni_medico==dato[i].dni)
 			Escribir_Archivados(dato[i].paciente.historial.)//pq no toma historial??
-		}
-		else if (diferencia < 10 && dato[i].ultima_consulta.concurrio == false && dato[i].ultima_consulta.reprogramacion == false)
+		diferencia = DevolverFecha(Lista_pacientes[i]);
+		if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
 		{
-			if( dato[i].paciente.estado_paciente != "n/c")
-			dato[i].paciente.archivado == true;
-
+			Lista_pacientes[i].archivado = true;
+			if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
+				Escribir_Archivados(Lista_pacientes[i]);
+		}
+		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == false)
+		{
+			if( Lista_pacientes[i].estado_paciente != "n/c")
+				Lista_pacientes[i].archivado = true;
+			//faltaria agregar en este caso tmb al archivo archivados?
 		}
 		i++;
-	} while (i <= sizeof(dato));
+	} while (i <= sizeof(Lista_pacientes));
 }
 
-void Escribir_Archivados(datos* datasos)
+
+
+void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas de los pacientes 
 {
 	char coma = ',';
-	fstream archivado;
-	archivado.open("Pacientes_Archivados.csv", ios::out);
-	if (!archivado.is_open())
+	fstream archivados;
+	archivados.open("Pacientes_Archivados.csv", ios::out); //escribe en un nuevo archivo llamado archivados 
+
+	if (!archivados.is_open())
 		return;
-	else {
-		archivado << ""
-	}
 
-
-	
-
-}
-
-
-
-void Mostrar(datos*& Lista_pacientes)
-{
-	int i = 0;
-	while (i < 10)
+	else 
 	{
-
-		cout << Lista_pacientes[i].contacto << endl<< Lista_pacientes[i].;
-		i++;
+		archivados << "n_historialclinico,Nombre, Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
+		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio << coma << paciente.fechaingreso << coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.diagnostico<<endl;
 	}
+
 }
 
