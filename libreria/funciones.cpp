@@ -244,7 +244,7 @@ void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas 
 
 	else
 	{
-		archivados << "n_historialclinico,Nombre, Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
+		archivados << "n_historialclinico,Nombre,Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
 		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio << coma << paciente.fechaingreso << coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad<< endl;
 	}
 
@@ -293,7 +293,7 @@ void Cambio_Cobertura(Paciente paciente, int opcion)
 	}
 
 }
-void Secretaria(Paciente*& lista, int opcion)
+void Secretaria(Paciente*& lista, int opcion)//habria que mandarle unicamente la lista de los pacientes posibles de volver, habria que quitar de la lista original los fallecidos y los que hace mas de 10 años no van
 {
 	for (int i = 0; i < sizeof(*lista); i++)
 	{
@@ -324,7 +324,6 @@ void Fecha_random(Paciente*& paciente)
 	paciente->datos_uconsul.next_consul->tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
 
 }
-
 void Reprogramar_consulta(Paciente& paciente)
 {
 	//Aca se llamaria imprimir

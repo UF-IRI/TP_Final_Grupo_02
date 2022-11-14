@@ -1,9 +1,45 @@
-#include "iri.cpp"
 #include "funciones.cpp"
 #include <iostream>
 
+using namespace std;
+
 int main()
 {
+	int opcion;
+	int* tamact_p = new int;
+	int* tamactual_O = new int;
+	int* tamactual_Med = new int;
+	int* tamactual_contactos = new int;
+	int* tamactual_consultas = new int;
 
-		return 0;
+	//tamact_p = 0;
+	//tamactual_O = 0;
+	//tamactual_Med = 0;
+	//tamactual_contactos = 0;
+	//tamactual_consultas = 0;
+
+	Paciente* Lista_pacientes = new Paciente[*tamact_p];
+	Obra_social* Lista_obras = new Obra_social[*tamactual_O];
+	Medico* Lista_medicos = new Medico[*tamactual_Med];
+	Contacto* Lista_contactos = new Contacto[*tamactual_contactos];
+	Consulta* Lista_consultas = new Consulta[*tamactual_consultas];
+
+
+	 LeerArchivo(Lista_pacientes,*tamact_p,Lista_obras,*tamactual_O,Lista_medicos,*tamactual_Med,Lista_contactos,*tamactual_contactos, Lista_consultas,*tamactual_consultas); //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+	 //adentro esta la funcion agregar, fijarse si funciona
+
+	 //pruebo si esta leyendo y agregando bien a la lista con la funcion imprimir lista de pacientes. Si funciona deberimaos hacer lo mismo pero para el resto de las listas
+	 Imprimir_Lista(Lista_pacientes);
+
+	 Archivar(Lista_pacientes); //adentro esta la funcion de devolver fecha y escrbir archivados(fijarse si se crea y se escribe el archivo), fijarse si funcionan
+
+	
+	
+	 cout << "Contactando..." << endl; //podriamos meterlo en un bucle y que vaya contactando paciente por paciente 
+	 cout << "Si desea reprogramar un turno ingrese un 1, de otra forma ingrese cualquier numero: ";
+	 cin >> opcion;
+	 Secretaria(Lista_pacientes, opcion); //tiene adentro cambio_cobertura y reprogramar consulta(tiene adentro fecha random)
+	
+
+	return 0;
 }
