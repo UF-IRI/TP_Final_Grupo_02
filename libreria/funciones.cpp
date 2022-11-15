@@ -27,7 +27,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		Agregar(Lista_pacientes, aux, &tamact_p);
 	}
 	pacientes.close();
-
+	
 	fstream Arch_obras;
 	Arch_obras.open("IRI_ObraSocial.csv", ios::in);
 	if (!Arch_obras.is_open())
@@ -41,11 +41,11 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	while (Arch_obras)
 	{
 		Arch_obras >> aux_o.id_obrasocial >> coma >> aux_o.obrasocial;
-
+	
 		Agregar_obras(lista_obras, aux_o, tamactual_O);
 	}
 	Arch_obras.close();
-
+	
 	fstream Arch_Medicos;
 	Arch_Medicos.open("IRI_Medicos.csv", ios::in);
 	if (!Arch_Medicos.is_open())
@@ -53,17 +53,17 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		cout << "no se abrio el archivo de Medicos" << endl;
 		return;
 	}
-
+	
 	Medico aux_m;
 	Arch_Medicos >> header >> coma >> header>>coma>>header>>coma>>header>>coma>>header>>coma>>header;
 	while (Arch_Medicos)
 	{
 		Arch_Medicos >> aux_m.matricula >> coma >> aux_m.nombre >> coma >> aux_m.apellido >> coma >> aux_m.telefono >> coma >> aux_m.especialidad >> coma >> aux_m.activo;
-
+	
 		Agregar_Medicos(lista_medicos, aux_m, tamactual_Med);
 	}
 	Arch_Medicos.close();
-
+	
 	fstream Arch_Contactos;
 	Arch_Contactos.open("IRI_Contactos.csv", ios::in);
 	if (!Arch_Contactos.is_open())
@@ -77,11 +77,11 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	while (Arch_Contactos)
 	{
 		Arch_Contactos >> aux_contacto.dni >> coma >> aux_contacto.tel >> coma >> aux_contacto.cel >> coma >> aux_contacto.direccion >> coma >> aux_contacto.mail;
-
+	
 		Agregar_Contactos(lista_contactos, aux_contacto, tamactual_contactos);
 	}
 	Arch_Contactos.close();
-
+	
 	fstream Arch_Consultas;
 	Arch_Consultas.open("IRI_Constultas.csv", ios::in);
 	if (!Arch_Consultas.is_open())
@@ -95,25 +95,34 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	while (Arch_Consultas)
 	{
 		Arch_Consultas >> aux_consulta.dni >> coma >> aux_consulta.fecha_solicitado >> coma >> aux_consulta.fecha_turno >> coma >> aux_consulta.presento >> coma >> aux_consulta.matricula_med;
-
+	
 		Agregar_Consultas(lista_consultas, aux_consulta, tamactual_consultas);
 	}
 }
-void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
-{
-	*tam = *tam + 1;
-	int i = 0;
-	Paciente* Lista_aux = new Paciente[*tam];
 
-	while (i < *tam && *tam != 0)
+//void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int& tam)
+//{
+//	tam++;
+//
+//	Lista_pacientes[tam] = Datos_p;
+//}
+void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int& tam)
+{
+	tam ++;
+	int i = 0;
+	Paciente* Lista_aux = new Paciente[tam];
+
+	while (i < tam && tam != 0)
 	{
 		Lista_aux[i] = Lista_pacientes[i];
 		i++;
 	}
 
 	Lista_aux[i] = Datos_p;
+
 	delete[] Lista_pacientes;
 	Lista_pacientes = Lista_aux;
+	delete[]Lista_aux;
 
 	return;
 }
@@ -132,6 +141,7 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
 	Lista_aux[i] = agregado;
 	delete[] lista_obra;
 	lista_obra = Lista_aux;
+	delete[]Lista_aux;
 
 	return;
 }
@@ -150,6 +160,7 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam)
 	Lista_aux[i] = agregado;
 	delete[] lista_meds;
 	lista_meds = Lista_aux;
+	delete[]Lista_aux;
 
 	return;
 }
@@ -168,6 +179,7 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam)
 	Lista_aux[i] = agregado;
 	delete[] Lista_contactos;
 	Lista_contactos = Lista_aux;
+	delete[]Lista_aux;
 
 	return;
 }
@@ -186,6 +198,7 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam)
 	Lista_aux[i] = agregado;
 	delete[] Lista_consultas;
 	Lista_consultas = Lista_aux;
+	delete[]Lista_aux;
 
 	return;
 }
@@ -301,13 +314,13 @@ void Secretaria(Paciente*& lista, int opcion)//habria que mandarle unicamente la
 		{
 			Reprogramar_consulta(lista[i]);
 			Cambio_Cobertura(lista[i], opcion);
-			lista[i].retorna == true;
+			lista[i].retorna = true;
 		}
 		else
 		{
 			Escribir_Archivados(lista[i]);
-			lista[i].datos_uconsul.reprogramacion == false;
-			lista[i].retorna == false;
+			lista[i].datos_uconsul.reprogramacion = false;
+			lista[i].retorna = false;
 		}
 	}
 }
