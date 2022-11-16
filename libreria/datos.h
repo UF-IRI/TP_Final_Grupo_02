@@ -105,6 +105,7 @@ void Fecha_random(Paciente*& paciente);
 void Imprimir_Lista(Paciente* lista);
 void Secretaria(Paciente*& lista,int opcion);
 void Cambio_Cobertura(Paciente paciente, int opcion);
-void Reprogramar_consulta(Paciente& paciente);
+void Reprogramar_consulta(Paciente*& paciente);
+
 
 

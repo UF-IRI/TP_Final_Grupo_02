@@ -99,18 +99,14 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		Agregar_Consultas(lista_consultas, aux_consulta, tamactual_consultas);
 	}
 }
-
-//void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int& tam)
-//{
-//	tam++;
-//
-//	Lista_pacientes[tam] = Datos_p;
-//}
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int& tam)
 {
 	tam ++;
 	int i = 0;
 	Paciente* Lista_aux = new Paciente[tam];
+
+	if (Lista_pacientes == NULL)
+		return;
 
 	while (i < tam && tam != 0)
 	{
@@ -132,6 +128,9 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
 	int i = 0;
 	Obra_social* Lista_aux = new Obra_social[tam];
 
+	if (lista_obra == NULL)
+		return;
+
 	while (i < tam && tam != 0)
 	{
 		Lista_aux[i] = lista_obra[i];
@@ -150,6 +149,9 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam)
 	tam++;
 	int i = 0;
 	Medico* Lista_aux = new Medico[tam];
+
+	if (lista_meds == NULL)
+		return; 
 
 	while (i < tam && tam != 0)
 	{
@@ -170,6 +172,9 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam)
 	int i = 0;
 	Contacto* Lista_aux = new Contacto[tam];
 
+	if (Lista_contactos == NULL)
+		return;
+
 	while (i < tam && tam != 0)
 	{
 		Lista_aux[i] = Lista_contactos[i];
@@ -188,6 +193,9 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam)
 	tam++;
 	int i = 0;
 	Consulta* Lista_aux = new Consulta[tam];
+
+	if (Lista_consultas == NULL)
+		return;
 
 	while (i < tam && tam != 0)
 	{
@@ -312,7 +320,7 @@ void Secretaria(Paciente*& lista, int opcion)//habria que mandarle unicamente la
 	{
 		if (lista[i].datos_uconsul.reprogramacion == 1)
 		{
-			Reprogramar_consulta(lista[i]);
+			//Reprogramar_consulta(lista[i]);
 			Cambio_Cobertura(lista[i], opcion);
 			lista[i].retorna = true;
 		}
@@ -337,10 +345,12 @@ void Fecha_random(Paciente*& paciente)
 	paciente->datos_uconsul.next_consul->tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
 
 }
-void Reprogramar_consulta(Paciente& paciente)
+void Reprogramar_consulta(Paciente*& paciente)
 {
-	//Aca se llamaria imprimir
-	//se debe colocar la fecha de la proxima consulta
+	//Como el paciente quiere retornar, se le asigna una cunsulta.
+	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
+
+
 	
 }
 
