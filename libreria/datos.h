@@ -71,7 +71,7 @@ struct MEDICO
 	string matricula;
 	string telefono;
 	string especialidad;
-	bool activo;
+	bool activo=false;
 
 }typedef Medico;
 

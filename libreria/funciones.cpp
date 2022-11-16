@@ -117,7 +117,7 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int& tam)
 		Lista_aux[i] = Lista_pacientes[i];
 		i++;
 	}
-
+	i--;
 	Lista_aux[i] = Datos_p;
 
 	delete[] Lista_pacientes;
@@ -137,7 +137,7 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
 		Lista_aux[i] = lista_obra[i];
 		i++;
 	}
-
+	i--;
 	Lista_aux[i] = agregado;
 	delete[] lista_obra;
 	lista_obra = Lista_aux;
@@ -156,7 +156,7 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam)
 		Lista_aux[i] = lista_meds[i];
 		i++;
 	}
-
+	i--;
 	Lista_aux[i] = agregado;
 	delete[] lista_meds;
 	lista_meds = Lista_aux;
@@ -175,7 +175,7 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam)
 		Lista_aux[i] = Lista_contactos[i];
 		i++;
 	}
-
+	i--;
 	Lista_aux[i] = agregado;
 	delete[] Lista_contactos;
 	Lista_contactos = Lista_aux;
@@ -194,7 +194,7 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam)
 		Lista_aux[i] = Lista_consultas[i];
 		i++;
 	}
-
+	i--;
 	Lista_aux[i] = agregado;
 	delete[] Lista_consultas;
 	Lista_consultas = Lista_aux;
