@@ -137,7 +137,7 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 	if (Lista_pacientes == NULL)
 		return;
 
-	while (i < *tam-1 && *tam-1 != 0)
+	while (i < *tam-1)
 	{
 		Lista_aux[i] = Lista_pacientes[i];
 		i++;
