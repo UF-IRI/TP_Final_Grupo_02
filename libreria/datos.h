@@ -50,10 +50,10 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 {
 	string nombre;
 	string apellido;
-	int dni = -1;
-	char sexo = 'n';
-	time_t natalicio = time(0);
-	time_t fechaingreso= time(0);
+	int dni ;
+	char sexo;
+	time_t natalicio;
+	time_t fechaingreso;
 	int id_os;
 	historial_clinico historial_clinico;
 	string estado_paciente; //internado,paciente,vivo
@@ -89,7 +89,7 @@ typedef struct OBRA_SOCIAL
 //	Medico medico;
 //}typedef datos;
 
-void LeerArchivo(string archivo1, string archivo2, string archivo3, string archivo4, string archivo5);  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Paciente* LeerArchivo(string archivo1);  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 void Escribir_Archivados(Paciente paciente);//se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
 void Archivar(Paciente*& Lista_pacientes);//cambia el estado archivado para los que corresponda
 

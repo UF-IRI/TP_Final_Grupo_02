@@ -26,14 +26,16 @@ int main()
 	//Contacto* Lista_contactos = new Contacto[tamactual_contactos];
 	//Consulta* Lista_consultas = new Consulta[tamactual_consultas];
 
-
-	// LeerArchivo(Lista_pacientes,tamact_p,Lista_obras,tamactual_O,Lista_medicos,tamactual_Med,Lista_contactos,tamactual_contactos, Lista_consultas,tamactual_consultas); //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+	Paciente* Lista;
+	Lista=LeerArchivo(BASE_PATH+"../data_files/input/IRI_Pacientes.csv"); //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+	
 	// //adentro esta la funcion agregar, fijarse si funciona
 
 	// //pruebo si esta leyendo y agregando bien a la lista con la funcion imprimir lista de pacientes. Si funciona deberimaos hacer lo mismo pero para el resto de las listas
-	// Imprimir_Lista(Lista_pacientes);
+	Imprimir_Lista(Lista);
 
 	// Archivar(Lista_pacientes); //adentro esta la funcion de devolver fecha y escrbir archivados(fijarse si se crea y se escribe el archivo), fijarse si funcionan
+
 
 	//
 	//

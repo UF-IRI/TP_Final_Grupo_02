@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-void LeerArchivo(string archivo1,string archivo2, string archivo3, string archivo4, string archivo5)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 { 
 	Paciente* Lista_pacientes = new Paciente[0];
 	string header;
@@ -14,7 +14,7 @@ void LeerArchivo(string archivo1,string archivo2, string archivo3, string archiv
 	if (!(pacientes.is_open()))
 	{
 		cout << "no se pudo abrir el archivo de pacientes" << endl;
-		return;
+		return nullptr;
 	}
 
 	char coma;
