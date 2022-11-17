@@ -12,14 +12,14 @@ enum cobertura { OSDE = 1, MEDICUS, IOSFA, ITALIANO, ALEMAN, ESPANYOL }typedef C
 //enum estado_historial { vigente = 0, archivado } typedef Estado_historial;
 enum diagnostico { neurologia, kinesiologia, cardiologia, ginecologia, odontologia, dermatologia, pediatria, traumatologia, hemologia, fonoaudelogia, clinica }typedef Diagnostico;
 
-struct CONTACTO //tiene que haber un archivo con todos los contacto
+typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 {
 	string nombre, apellido, mail, direccion, tel, cel, provincia, pais;
 	int ID, edad, dni;
 
-}typedef Contacto;
+} Contacto;
 
-struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consultas
+typedef struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consultas
 {
 	tm* fecha_uconsulta;
 	int dni_medico, dni_paciente;
@@ -27,10 +27,10 @@ struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consu
 	bool reprogramacion;
 	bool concurrio; //true si atendio el turno, false sino 
 	Cobertura cobertura;
-}typedef U_consulta;
+} U_consulta;
 
-typedef struct CONSULTA {
-	
+typedef struct CONSULTA
+{
 	int dni;
 	time_t fecha_solicitado;
 	time_t fecha_turno;
@@ -39,14 +39,14 @@ typedef struct CONSULTA {
 
 }Consulta;
 
-struct HISTORIAL_CLINICO
+ typedef struct HISTORIAL_CLINICO
 {
 	string especialidad;
 	int n_historialclinico;//numeropiso, numerocama; //numero piso y cama van a ser null salvo que internacion sea true
 
-}typedef historial_clinico;
+} historial_clinico;
 
-struct PACIENTE //tiene que haber un archivo con todos los pacientes 
+typedef struct  PACIENTE//tiene que haber un archivo con todos los pacientes 
 {
 	string nombre;
 	string apellido;
@@ -63,9 +63,9 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 	bool archivado=false;
 	bool retorna = false;
 
-}typedef Paciente;
+} Paciente;
 
-struct MEDICO
+typedef struct MEDICO
 {
 	string nombre, apellido;
 	string matricula;
@@ -73,7 +73,7 @@ struct MEDICO
 	string especialidad;
 	bool activo=false;
 
-}typedef Medico;
+} Medico;
 
 typedef struct OBRA_SOCIAL
 {
