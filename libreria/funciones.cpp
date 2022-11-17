@@ -51,9 +51,13 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		aux.nombre = nombre;
 		aux.apellido = apellido;
 		aux.sexo = sexo;
+
 		stringstream aux_fechas(dia);
 		aux_fechas>>aux.fechaingreso.tm_mday;
-
+		stringstream aux_fechas1(mes);
+		aux_fechas1 >> aux.fechaingreso.tm_mon;
+		stringstream aux_fechas2(anio);
+		aux_fechas2 >> aux.fechaingreso.tm_year;
 
 		aux.estado_paciente = estado;
 		aux.id_os = id;
