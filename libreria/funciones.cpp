@@ -54,6 +54,7 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 
 		//----------------Agregamos a la lista ----------------------
 		Agregar(Lista_pacientes, aux, &tamact_p);
+		resize(Lista_pacientes, &tamact_p, 1);
 	}
 	pacientes.close();
 	
@@ -151,6 +152,28 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 
 	return;
 }
+
+
+void resize(Paciente*& lista_alu, int* tamactual, int cantidad_aumentar) 
+{
+	*tamactual = *tamactual + cantidad_aumentar;
+	int i = 0;
+	Paciente* aux = new Paciente[*tamactual];
+	while (i < *tamactual - cantidad_aumentar) 
+	{
+		aux[i] = lista_alu[i];
+		i++;
+	}
+	delete[] lista_alu;
+	lista_alu = aux;
+
+	return;
+}
+
+
+
+
+
 void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int* tam)
 {
 	*tam=*tam+1;

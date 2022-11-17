@@ -100,5 +100,5 @@ void Secretaria(Paciente*& lista,int opcion);
 void Cambio_Cobertura(Paciente paciente, int opcion);
 void Reprogramar_consulta(Paciente*& paciente);
 
-
+void resize(Paciente*& lista_alu, int* tamactual, int cantidad_aumentar);
 
