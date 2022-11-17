@@ -16,7 +16,7 @@ namespace PacientTest::tests {
 		Agregar(lista_aux, aux, &tamanio);
 
 		EXPECT_EQ(lista_aux[0].dni, aux.dni);
-		//EXPECT_EQ(tamanio, 1);
+		EXPECT_EQ(tamanio, 1);
 	}
 	//TEST(Casos_Base, Test_Caso1) {
 	//	Paciente paciente;

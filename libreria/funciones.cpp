@@ -8,7 +8,7 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 { 
 	Paciente* Lista_pacientes = new Paciente[0];
 	string headers;
-	char delimitador = ',';
+	char delimitador = ' ';
 	char delimitador_fecha= '/';
 	Paciente aux;
 	fstream pacientes;
@@ -23,28 +23,33 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		return nullptr;
 	}
 
-	char coma;
 	getline(pacientes, headers);
 	//pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
-
+	string coma, dni, nombre, apellido, sexo, estado, id, dia, mes, anio;
 	while (getline(pacientes, linea))
 	{
 		stringstream stream(linea);
-		string fecha; //pruebo leer con un auxiliar la variable de tipo tm para que no tire error
 
 		//------------------leemos el archivo--------------------
 		//pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> fecha >> coma >> aux.estado_paciente >> coma >> aux.id_os;
-		getline(pacientes, linea);
-		string dni, nombre, apellido, sexo,estado, id, dia, mes, anio;
+		
 		// Extraer todos los valores de esa fila		
 		getline(stream,dni, delimitador);
+		getline(stream, coma, delimitador);
 		getline(stream, nombre, delimitador);
+		getline(stream, coma, delimitador);
 		getline(stream, apellido, delimitador);
+		getline(stream, coma, delimitador);
 		getline(stream, sexo, delimitador);
+		getline(stream, coma, delimitador);
 		getline(stream, mes, delimitador_fecha);
+		getline(stream, coma, delimitador);
 		getline(stream, dia, delimitador_fecha);
+		getline(stream, coma, delimitador);
 		getline(stream, anio, delimitador);
+		getline(stream, coma, delimitador);
 		getline(stream, estado, delimitador);
+		getline(stream, coma, delimitador);
 		getline(stream, id, delimitador);
 
 		aux.dni = dni;
@@ -63,8 +68,9 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		aux.id_os = id;
 
 		//----------------Agregamos a la lista ----------------------
-		Agregar(Lista_pacientes, aux, &tamact_p);
 		resize(Lista_pacientes, &tamact_p, 1);
+		Agregar(Lista_pacientes, aux, &tamact_p);
+
 	}
 	pacientes.close();
 	
@@ -169,7 +175,8 @@ void resize(Paciente*& lista_alu, int* tamactual, int cantidad_aumentar)
 	*tamactual = *tamactual + cantidad_aumentar;
 	int i = 0;
 	Paciente* aux = new Paciente[*tamactual];
-	while (i < (*(tamactual) - cantidad_aumentar-1)) 
+
+	while (i < *tamactual - cantidad_aumentar &&*tamactual-cantidad_aumentar!= 0)
 	{
 		aux[i] = lista_alu[i];
 		i++;
