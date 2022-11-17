@@ -24,7 +24,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> aux.natalicio >>coma >> aux.estado_paciente>>coma >> aux.id_os;
 
 		//----------------Agregamos a la lista ----------------------
-		Agregar(Lista_pacientes, aux, tamact_p);
+		Agregar(Lista_pacientes, aux, &tamact_p);
 	}
 	pacientes.close();
 	
@@ -99,16 +99,16 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		Agregar_Consultas(lista_consultas, aux_consulta, tamactual_consultas);
 	}
 }
-void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int& tam)
+void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
-	tam ++;
+	*tam ++;
 	int i = 0;
-	Paciente* Lista_aux = new Paciente[tam];
+	Paciente* Lista_aux = new Paciente[*tam];
 
 	if (Lista_pacientes == NULL)
 		return;
 
-	while (i < tam && tam != 0)
+	while (i < *tam && *tam != 0)
 	{
 		Lista_aux[i] = Lista_pacientes[i];
 		i++;
@@ -122,16 +122,16 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int& tam)
 
 	return;
 }
-void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
+void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int* tam)
 {
-	tam ++;
+	*tam ++;
 	int i = 0;
-	Obra_social* Lista_aux = new Obra_social[tam];
+	Obra_social* Lista_aux = new Obra_social[*tam];
 
 	if (lista_obra == NULL)
 		return;
 
-	while (i < tam && tam != 0)
+	while (i < *tam && *tam != 0)
 	{
 		Lista_aux[i] = lista_obra[i];
 		i++;
@@ -144,16 +144,16 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int& tam)
 
 	return;
 }
-void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam)
+void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 {
-	tam++;
+	*tam++;
 	int i = 0;
-	Medico* Lista_aux = new Medico[tam];
+	Medico* Lista_aux = new Medico[*tam];
 
 	if (lista_meds == NULL)
 		return; 
 
-	while (i < tam && tam != 0)
+	while (i < *tam && *tam != 0)
 	{
 		Lista_aux[i] = lista_meds[i];
 		i++;
@@ -166,16 +166,16 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam)
 
 	return;
 }
-void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam)
+void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 {
-	tam++;
+	*tam++;
 	int i = 0;
-	Contacto* Lista_aux = new Contacto[tam];
+	Contacto* Lista_aux = new Contacto[*tam];
 
 	if (Lista_contactos == NULL)
 		return;
 
-	while (i < tam && tam != 0)
+	while (i < *tam && *tam != 0)
 	{
 		Lista_aux[i] = Lista_contactos[i];
 		i++;
@@ -188,16 +188,16 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam)
 
 	return;
 }
-void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam)
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 {
-	tam++;
+	*tam++;
 	int i = 0;
-	Consulta* Lista_aux = new Consulta[tam];
+	Consulta* Lista_aux = new Consulta[*tam];
 
 	if (Lista_consultas == NULL)
 		return;
 
-	while (i < tam && tam != 0)
+	while (i < *tam && *tam != 0)
 	{
 		Lista_aux[i] = Lista_consultas[i];
 		i++;
