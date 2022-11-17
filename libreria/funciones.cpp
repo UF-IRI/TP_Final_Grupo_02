@@ -9,6 +9,7 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 	Paciente* Lista_pacientes = new Paciente[0];
 	string headers;
 	char delimitador = ',';
+	char delimitador_fecha= '/';
 	Paciente aux;
 	fstream pacientes;
 	string linea;
@@ -34,13 +35,16 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		//------------------leemos el archivo--------------------
 		//pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> fecha >> coma >> aux.estado_paciente >> coma >> aux.id_os;
 		getline(pacientes, linea);
-		string dni, nombre, apellido, sexo,estado, id;
+		string dni, nombre, apellido, sexo,estado, id, dia, mes, anio;
 		// Extraer todos los valores de esa fila		
 		getline(stream,dni, delimitador);
 		getline(stream, nombre, delimitador);
 		getline(stream, apellido, delimitador);
 		getline(stream, sexo, delimitador);
-		getline(stream, fecha, delimitador);
+		getline(stream, mes, delimitador_fecha);
+		getline(stream, dia, delimitador_fecha);
+		getline(stream, anio, delimitador);
+		//getline(stream, fecha, delimitador);
 		getline(stream, estado, delimitador);
 		getline(stream, id, delimitador);
 
@@ -48,7 +52,8 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		aux.nombre = nombre;
 		aux.apellido = apellido;
 		aux.sexo = sexo;
-		//aux.fechaingreso= falta
+		aux.fechaingreso.tm_mday = static_cast<int>(dia);
+
 		aux.estado_paciente = estado;
 		aux.id_os = id;
 
@@ -159,7 +164,7 @@ void resize(Paciente*& lista_alu, int* tamactual, int cantidad_aumentar)
 	*tamactual = *tamactual + cantidad_aumentar;
 	int i = 0;
 	Paciente* aux = new Paciente[*tamactual];
-	while (i < *tamactual - cantidad_aumentar) 
+	while (i < (*(tamactual) - cantidad_aumentar-1)) 
 	{
 		aux[i] = lista_alu[i];
 		i++;
