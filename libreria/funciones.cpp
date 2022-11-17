@@ -9,7 +9,7 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 	Paciente aux;
 	fstream pacientes;
 	int tamact_p=0;
-	pacientes.open("IRI_Pacientes.csv", ios::in);
+	pacientes.open(archivo, ios::in);
 
 	if (!(pacientes.is_open()))
 	{
@@ -18,12 +18,13 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 	}
 
 	char coma;
-	pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header[5] >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
+	pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
 
 	while (pacientes)
 	{
+		string fecha; //pruebo leer con un auxiliar la variable de tipo tm para que no tire error
 		//------------------leemos el archivo--------------------
-		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> aux.natalicio >>coma >> aux.estado_paciente>>coma >> aux.id_os;
+		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> fecha >> coma >> aux.estado_paciente >> coma >> aux.id_os;
 
 		//----------------Agregamos a la lista ----------------------
 		Agregar(Lista_pacientes, aux, &tamact_p);
@@ -110,12 +111,12 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 	if (Lista_pacientes == NULL)
 		return;
 
-	while (i < *tam && *tam != 0)
+	while (i < *tam-1 && *tam-1 != 0)
 	{
 		Lista_aux[i] = Lista_pacientes[i];
 		i++;
 	}
-	i--;
+	
 	Lista_aux[i] = Datos_p;
 
 	delete[] Lista_pacientes;
@@ -133,12 +134,12 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int* tam)
 	if (lista_obra == NULL)
 		return;
 
-	while (i < *tam && *tam != 0)
+	while (i < *tam-1 && *tam-1 != 0)
 	{
 		Lista_aux[i] = lista_obra[i];
 		i++;
 	}
-	i--;
+	
 	Lista_aux[i] = agregado;
 	delete[] lista_obra;
 	lista_obra = Lista_aux;
@@ -154,12 +155,12 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 	if (lista_meds == NULL)
 		return; 
 
-	while (i < *tam && *tam != 0)
+	while (i < *tam-1 && *tam-1 != 0)
 	{
 		Lista_aux[i] = lista_meds[i];
 		i++;
 	}
-	i--;
+	
 	Lista_aux[i] = agregado;
 	delete[] lista_meds;
 	lista_meds = Lista_aux;
@@ -175,7 +176,7 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 	if (Lista_contactos == NULL)
 		return;
 
-	while (i < *tam && *tam != 0)
+	while (i < *tam-1 && *tam-1 != 0)
 	{
 		Lista_aux[i] = Lista_contactos[i];
 		i++;
@@ -197,7 +198,7 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 	if (Lista_consultas == NULL)
 		return;
 
-	while (i < *tam && *tam != 0)
+	while (i < *tam-1 && *tam-1 != 0)
 	{
 		Lista_aux[i] = Lista_consultas[i];
 		i++;
@@ -263,9 +264,9 @@ void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas 
 		return;
 
 	else
-	{
+	{		
 		archivados << "n_historialclinico,Nombre,Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
-		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio << coma << paciente.fechaingreso << coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad<< endl;
+		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio.tm_mon << coma << paciente.natalicio.tm_wday << paciente.natalicio.tm_year << coma << paciente.fechaingreso.tm_mon <<"/"<< paciente.fechaingreso.tm_wday<<"/"<< paciente.fechaingreso.tm_year<< coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad << endl;
 	}
 
 }
@@ -274,7 +275,7 @@ void Imprimir_Lista(Paciente* lista)
 	int i = 0;
 	while (i <= sizeof(lista))
 	{
-		cout << "Dni: " << lista[i].dni << "Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << "Sexo: " << lista[i].sexo << "Natalicio: " << lista[i].natalicio << "Estado: " << lista[i].estado_paciente << "Cobertura: " << lista[i].id_os << endl;
+		cout << "Dni: " << lista[i].dni << " Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << " Sexo: " << lista[i].sexo << " Natalicio: "<< lista[i].natalicio.tm_mon<<"/"<< lista[i].natalicio.tm_wday<<"/"<< lista[i].natalicio.tm_year << " Estado: " << lista[i].estado_paciente << " Cobertura: " << lista[i].id_os << endl;
 		i++;
 	}
 }

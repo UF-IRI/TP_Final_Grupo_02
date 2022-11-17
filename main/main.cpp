@@ -25,9 +25,9 @@ int main()
 	//Medico* Lista_medicos = new Medico[tamactual_Med];
 	//Contacto* Lista_contactos = new Contacto[tamactual_contactos];
 	//Consulta* Lista_consultas = new Consulta[tamactual_consultas];
-
+	string ruta = BASE_PATH + "../data_files/input/IRI_Pacientes.csv";
 	Paciente* Lista;
-	Lista=LeerArchivo(BASE_PATH+"../data_files/input/IRI_Pacientes.csv"); //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+	Lista=LeerArchivo(ruta); //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 	
 	// //adentro esta la funcion agregar, fijarse si funciona
 

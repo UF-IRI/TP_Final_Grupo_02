@@ -52,8 +52,8 @@ struct PACIENTE //tiene que haber un archivo con todos los pacientes
 	string apellido;
 	int dni ;
 	char sexo;
-	time_t natalicio;
-	time_t fechaingreso;
+	tm natalicio;
+	tm fechaingreso;
 	int id_os;
 	historial_clinico historial_clinico;
 	string estado_paciente; //internado,paciente,vivo
