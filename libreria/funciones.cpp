@@ -2,11 +2,13 @@
 #include <iostream>
 using namespace std;
 
-void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_obras, int &tamactual_O, Medico*& lista_medicos, int& tamactual_Med, Contacto*& lista_contactos, int& tamactual_contactos, Consulta*& lista_consultas,int& tamactual_consultas)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+void LeerArchivo(string archivo1,string archivo2, string archivo3, string archivo4, string archivo5)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 { 
+	Paciente* Lista_pacientes = new Paciente[0];
 	string header;
 	Paciente aux;
 	fstream pacientes;
+	int tamact_p=0;
 	pacientes.open("IRI_Pacientes.csv", ios::in);
 
 	if (!(pacientes.is_open()))
@@ -28,7 +30,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	}
 	pacientes.close();
 	
-	fstream Arch_obras;
+	/*fstream Arch_obras;
 	Arch_obras.open("IRI_ObraSocial.csv", ios::in);
 	if (!Arch_obras.is_open())
 	{
@@ -42,7 +44,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	{
 		Arch_obras >> aux_o.id_obrasocial >> coma >> aux_o.obrasocial;
 	
-		Agregar_obras(lista_obras, aux_o, tamactual_O);
+		Agregar_obras(lista_obras, aux_o, &tamactual_O);
 	}
 	Arch_obras.close();
 	
@@ -60,7 +62,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	{
 		Arch_Medicos >> aux_m.matricula >> coma >> aux_m.nombre >> coma >> aux_m.apellido >> coma >> aux_m.telefono >> coma >> aux_m.especialidad >> coma >> aux_m.activo;
 	
-		Agregar_Medicos(lista_medicos, aux_m, tamactual_Med);
+		Agregar_Medicos(lista_medicos, aux_m, &tamactual_Med);
 	}
 	Arch_Medicos.close();
 	
@@ -78,7 +80,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	{
 		Arch_Contactos >> aux_contacto.dni >> coma >> aux_contacto.tel >> coma >> aux_contacto.cel >> coma >> aux_contacto.direccion >> coma >> aux_contacto.mail;
 	
-		Agregar_Contactos(lista_contactos, aux_contacto, tamactual_contactos);
+		Agregar_Contactos(lista_contactos, aux_contacto, &tamactual_contactos);
 	}
 	Arch_Contactos.close();
 	
@@ -96,12 +98,12 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 	{
 		Arch_Consultas >> aux_consulta.dni >> coma >> aux_consulta.fecha_solicitado >> coma >> aux_consulta.fecha_turno >> coma >> aux_consulta.presento >> coma >> aux_consulta.matricula_med;
 	
-		Agregar_Consultas(lista_consultas, aux_consulta, tamactual_consultas);
-	}
+		Agregar_Consultas(lista_consultas, aux_consulta,& tamactual_consultas);
+	}*/
 }
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
-	*tam ++;
+	*tam=*tam+1;
 	int i = 0;
 	Paciente* Lista_aux = new Paciente[*tam];
 
@@ -118,13 +120,13 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 
 	delete[] Lista_pacientes;
 	Lista_pacientes = Lista_aux;
-	delete[]Lista_aux;
+	
 
 	return;
 }
 void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int* tam)
 {
-	*tam ++;
+	*tam=*tam+1;
 	int i = 0;
 	Obra_social* Lista_aux = new Obra_social[*tam];
 
@@ -140,13 +142,12 @@ void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int* tam)
 	Lista_aux[i] = agregado;
 	delete[] lista_obra;
 	lista_obra = Lista_aux;
-	delete[]Lista_aux;
-
+	
 	return;
 }
 void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 {
-	*tam++;
+	*tam=*tam+1;
 	int i = 0;
 	Medico* Lista_aux = new Medico[*tam];
 
@@ -162,13 +163,12 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 	Lista_aux[i] = agregado;
 	delete[] lista_meds;
 	lista_meds = Lista_aux;
-	delete[]Lista_aux;
-
+	
 	return;
 }
 void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 {
-	*tam++;
+	*tam=*tam+1;
 	int i = 0;
 	Contacto* Lista_aux = new Contacto[*tam];
 
@@ -184,13 +184,13 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 	Lista_aux[i] = agregado;
 	delete[] Lista_contactos;
 	Lista_contactos = Lista_aux;
-	delete[]Lista_aux;
-
+	
 	return;
 }
+
 void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 {
-	*tam++;
+	*tam=*tam+1;
 	int i = 0;
 	Consulta* Lista_aux = new Consulta[*tam];
 
@@ -206,8 +206,7 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 	Lista_aux[i] = agregado;
 	delete[] Lista_consultas;
 	Lista_consultas = Lista_aux;
-	delete[]Lista_aux;
-
+	
 	return;
 }
 int DevolverFecha(Paciente var)

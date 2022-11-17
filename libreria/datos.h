@@ -89,15 +89,15 @@ typedef struct OBRA_SOCIAL
 //	Medico medico;
 //}typedef datos;
 
-void LeerArchivo(Paciente*& Lista_pacientes, int& tamact_p, Obra_social*& lista_obras, int& tamactual_O, Medico*& lista_medicos, int& tamactual_Med, Contacto*& lista_contactos, int& tamactual_contactos, Consulta*& lista_consultas, int& tamactual_consultas);  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+void LeerArchivo(string archivo1, string archivo2, string archivo3, string archivo4, string archivo5);  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 void Escribir_Archivados(Paciente paciente);//se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
 void Archivar(Paciente*& Lista_pacientes);//cambia el estado archivado para los que corresponda
 
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
-void Agregar_obras(Obra_social*& lista_obras,Obra_social agregado, int& tam);
-void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int& tam);
-void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int& tam);
-void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int& tam);
+void Agregar_obras(Obra_social*& lista_obras,Obra_social agregado, int* tam);
+void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
+void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam);
 
 int DevolverFecha(Paciente var); //Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 void Fecha_random(Paciente*& paciente);
