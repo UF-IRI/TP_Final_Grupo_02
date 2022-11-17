@@ -24,7 +24,7 @@ void LeerArchivo(Paciente*& Lista_pacientes, int &tamact_p, Obra_social*& lista_
 		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> aux.natalicio >>coma >> aux.estado_paciente>>coma >> aux.id_os;
 
 		//----------------Agregamos a la lista ----------------------
-		Agregar(Lista_pacientes, aux, &tamact_p);
+		Agregar(Lista_pacientes, aux, tamact_p);
 	}
 	pacientes.close();
 	

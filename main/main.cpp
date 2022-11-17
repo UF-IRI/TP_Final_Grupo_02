@@ -1,4 +1,5 @@
 #include "funciones.cpp"
+#include <iri.cpp>
 #include <iostream>
 #include <cstdlib>
 
