@@ -7,30 +7,12 @@ using namespace std;
 
 int main()
 {
-	//int opcion;
-	//int tamact_p;
-	//int tamactual_O;
-	//int tamactual_Med;
-	//int tamactual_contactos;
-	//int tamactual_consultas;
-
-	//tamact_p = 0;
-	//tamactual_O = 0;
-	//tamactual_Med = 0;
-	//tamactual_contactos = 0;
-	//tamactual_consultas = 0;
-
-	//Paciente* Lista_pacientes = new Paciente[tamact_p];
-	//Obra_social* Lista_obras = new Obra_social[tamactual_O];
-	//Medico* Lista_medicos = new Medico[tamactual_Med];
-	//Contacto* Lista_contactos = new Contacto[tamactual_contactos];
-	//Consulta* Lista_consultas = new Consulta[tamactual_consultas];
-	string ruta = BASE_PATH + "..//data_files//input//IRI_Pacientes.csv";
+	
+	string ruta =(BASE_PATH + "../data_files/input/IRI_Pacientes.csv");
 	Paciente* Lista;
 	Lista=LeerArchivo(ruta); //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 	
-	// //adentro esta la funcion agregar, fijarse si funciona
-
+	
 	// //pruebo si esta leyendo y agregando bien a la lista con la funcion imprimir lista de pacientes. Si funciona deberimaos hacer lo mismo pero para el resto de las listas
 	Imprimir_Lista(Lista);
 

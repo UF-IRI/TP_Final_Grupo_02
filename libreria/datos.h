@@ -14,15 +14,15 @@ enum diagnostico { neurologia, kinesiologia, cardiologia, ginecologia, odontolog
 
 typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 {
-	string nombre, apellido, mail, direccion, tel, cel, provincia, pais;
-	int ID, edad, dni;
+	string nombre, apellido, mail, direccion, tel, cel, provincia, pais,dni;
+	int ID, edad;
 
 } Contacto;
 
 typedef struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consultas
 {
 	tm* fecha_uconsulta;
-	int dni_medico, dni_paciente;
+	string dni_medico, dni_paciente;
 	tm* next_consul;
 	bool reprogramacion;
 	bool concurrio; //true si atendio el turno, false sino 
@@ -50,11 +50,11 @@ typedef struct  PACIENTE//tiene que haber un archivo con todos los pacientes
 {
 	string nombre;
 	string apellido;
-	int dni ;
-	char sexo;
+	string dni ;
+	string sexo;
 	tm natalicio;
 	tm fechaingreso;
-	int id_os;
+	string id_os;
 	historial_clinico historial_clinico;
 	string estado_paciente; //internado,paciente,vivo
 	string cobertura;
@@ -81,13 +81,6 @@ typedef struct OBRA_SOCIAL
 	string obrasocial;
 }Obra_social;
 
-//struct DATOS
-//{
-//	Paciente paciente;
-//	Contacto contacto;
-//	U_consulta ultima_consulta;
-//	Medico medico;
-//}typedef datos;
 
 Paciente* LeerArchivo(string archivo1);  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 void Escribir_Archivados(Paciente paciente);//se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados

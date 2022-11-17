@@ -1,13 +1,18 @@
 #include "datos.h"
 #include <iostream>
+#include <sstream>
+
 using namespace std;
 
 Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 { 
 	Paciente* Lista_pacientes = new Paciente[0];
-	string header;
+	string headers;
+	char delimitador = ',';
 	Paciente aux;
 	fstream pacientes;
+	string linea;
+	
 	int tamact_p=0;
 	pacientes.open(archivo, ios::in);
 
@@ -18,13 +23,34 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 	}
 
 	char coma;
-	pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
+	getline(pacientes, headers);
+	//pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
 
-	while (pacientes)
+	while (getline(pacientes, linea))
 	{
+		stringstream stream(linea);
 		string fecha; //pruebo leer con un auxiliar la variable de tipo tm para que no tire error
+
 		//------------------leemos el archivo--------------------
-		pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> fecha >> coma >> aux.estado_paciente >> coma >> aux.id_os;
+		//pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> fecha >> coma >> aux.estado_paciente >> coma >> aux.id_os;
+		getline(pacientes, linea);
+		string dni, nombre, apellido, sexo,estado, id;
+		// Extraer todos los valores de esa fila		
+		getline(stream,dni, delimitador);
+		getline(stream, nombre, delimitador);
+		getline(stream, apellido, delimitador);
+		getline(stream, sexo, delimitador);
+		getline(stream, fecha, delimitador);
+		getline(stream, estado, delimitador);
+		getline(stream, id, delimitador);
+
+		aux.dni = dni;
+		aux.nombre = nombre;
+		aux.apellido = apellido;
+		aux.sexo = sexo;
+		//aux.fechaingreso= falta
+		aux.estado_paciente = estado;
+		aux.id_os = id;
 
 		//----------------Agregamos a la lista ----------------------
 		Agregar(Lista_pacientes, aux, &tamact_p);
