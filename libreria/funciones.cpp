@@ -44,7 +44,6 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		getline(stream, mes, delimitador_fecha);
 		getline(stream, dia, delimitador_fecha);
 		getline(stream, anio, delimitador);
-		//getline(stream, fecha, delimitador);
 		getline(stream, estado, delimitador);
 		getline(stream, id, delimitador);
 
@@ -52,7 +51,9 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		aux.nombre = nombre;
 		aux.apellido = apellido;
 		aux.sexo = sexo;
-		aux.fechaingreso.tm_mday = static_cast<int>(dia);
+		stringstream aux_fechas(dia);
+		aux_fechas>>aux.fechaingreso.tm_mday;
+
 
 		aux.estado_paciente = estado;
 		aux.id_os = id;
