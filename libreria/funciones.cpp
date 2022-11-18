@@ -24,15 +24,12 @@ Paciente* LeerPacientes(string archivo_Pac)  //leemos todos los archivos y guard
 	}
 
 	getline(pacientes, headers);
-	//pacientes >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header;//simepre vamos a saber la cantidad de variables es decir N
+	
 	string coma, dni, nombre, apellido, sexo, estado, id, dia, mes, anio;
 	while (getline(pacientes, linea))
 	{
 		stringstream stream(linea);
 
-		//------------------leemos el archivo--------------------
-		//pacientes >> aux.dni>>coma >> aux.nombre>>coma >> aux.apellido>>coma >> aux.sexo>>coma >> fecha >> coma >> aux.estado_paciente >> coma >> aux.id_os;
-		
 		// Extraer todos los valores de esa fila		
 		getline(stream,dni, delimitador);
 		getline(stream, coma, delimitador);
@@ -115,6 +112,7 @@ Medico* LeerMedicos(string archivo_Med)
 
 			aux.matricula = matricula;
 			aux.nombre = nombre;
+			aux.apellido = apellido;
 			aux.telefono = telefono;
 			aux.especialidad = especialidad;
 			if (activo == "1")
@@ -241,6 +239,7 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 	if (Lista_pacientes == NULL)
 		return;
 
+	//Copiamos y agregamos a la lista al paciente
 	while (i < *tam-1)
 	{
 		Lista_aux[i] = Lista_pacientes[i];
@@ -253,28 +252,6 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 	Lista_pacientes = Lista_aux;
 	
 
-	return;
-}
-
-void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int* tam)
-{
-	*tam=*tam+1;
-	int i = 0;
-	Obra_social* Lista_aux = new Obra_social[*tam];
-
-	if (lista_obra == NULL)
-		return;
-
-	while (i < *tam-1 && *tam-1 != 0)
-	{
-		Lista_aux[i] = lista_obra[i];
-		i++;
-	}
-	
-	Lista_aux[i] = agregado;
-	delete[] lista_obra;
-	lista_obra = Lista_aux;
-	
 	return;
 }
 void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
@@ -319,7 +296,6 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 	
 	return;
 }
-
 void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 {
 	*tam=*tam+1;
@@ -345,6 +321,7 @@ int DevolverFecha(Paciente var)
 {
 	int anios = 0;
 
+	//Devuelve la fecha actual
 	time_t rawtime;
 	struct tm* timeinfo;
 	time(&rawtime);
@@ -356,10 +333,12 @@ int DevolverFecha(Paciente var)
 	int mes = fecha_actual->tm_mon + 1;
 	int anio = fecha_actual->tm_year + 1900;
 
+	//Calculo la diferencia entre la fecha actual y la ultima consulta del paciente
 	long int dias1 = (anio * 365) + (mes * 30) + dia;
 	long int dias2 = ((var.datos_uconsul.fecha_uconsulta->tm_year) * 365) + ((var.datos_uconsul.fecha_uconsulta->tm_mon) * 30) + var.datos_uconsul.fecha_uconsulta->tm_mday;
-	dias = dias2 - dias1;
+	dias = dias1 - dias2;
 
+	//Paso los esa diferenca a anios y los retorno
 	anios = dias / 364;
 
 	return anios;
@@ -368,6 +347,9 @@ void Archivar(Paciente*& Lista_pacientes)
 {
 	int diferencia;
 	int i = 0;
+	//Si el tiempo que paso desde la ultima consulta del paciente y la fecha actvual es mayor a 10 y no concurrio se le archiva,
+	// Si es menor a 10 y no concurrio pero quiere reprogramar,se llama  a reprogramar paciente y se cambia la reprogramacion como true y tambin el retorna
+	//Si La diferencia de los anios es menor a 10 y no quiere retornar se archivan
 	do {
 		diferencia = DevolverFecha(Lista_pacientes[i]);
 		if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
@@ -380,7 +362,13 @@ void Archivar(Paciente*& Lista_pacientes)
 		{
 			if (Lista_pacientes[i].estado_paciente != "n/c")
 				Lista_pacientes[i].archivado = true;
-			//faltaria agregar en este caso tmb al archivo archivados?
+			Escribir_Archivados(Lista_pacientes[i]);
+		}
+		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == true)
+		{
+			Lista_pacientes[i].archivado = false;
+			Lista_pacientes[i].retorna = true;
+			Reprogramar_consulta(Lista_pacientes[i]);
 		}
 		i++;
 	} while (i <= sizeof(Lista_pacientes));
@@ -463,7 +451,7 @@ void Secretaria(Paciente*& lista, int opcion)//habria que mandarle unicamente la
 		}
 	}
 }
-void Fecha_random(Paciente*& paciente)
+void Fecha_random(Paciente paciente)
 {
 	time_t rawtime;
 	struct tm* timeinfo;
@@ -471,12 +459,12 @@ void Fecha_random(Paciente*& paciente)
 	timeinfo = localtime(&rawtime);
 	tm* fecha_actual = timeinfo;
 
-	paciente->datos_uconsul.next_consul->tm_mday = rand() % (30 - fecha_actual->tm_mday) + fecha_actual->tm_mday;
-	paciente->datos_uconsul.next_consul->tm_mon = rand() % (12 - fecha_actual->tm_mon) + fecha_actual->tm_mon;
-	paciente->datos_uconsul.next_consul->tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
+	paciente.datos_uconsul.next_consul->tm_mday = rand() % (30 - fecha_actual->tm_mday) + fecha_actual->tm_mday;
+	paciente.datos_uconsul.next_consul->tm_mon = rand() % (12 - fecha_actual->tm_mon) + fecha_actual->tm_mon;
+	paciente.datos_uconsul.next_consul->tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
 
 }
-void Reprogramar_consulta(Paciente*& paciente)
+void Reprogramar_consulta(Paciente paciente)
 {
 	//Como el paciente quiere retornar, se le asigna una cunsulta.
 	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
