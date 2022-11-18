@@ -256,28 +256,6 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 	return;
 }
 
-
-//void resize(Paciente*& lista_alu, int* tamactual, int cantidad_aumentar) 
-//{
-//	*tamactual = *tamactual + cantidad_aumentar;
-//	int i = 0;
-//	Paciente* aux = new Paciente[*tamactual];
-//
-//	while (i < *tamactual - cantidad_aumentar &&*tamactual-cantidad_aumentar!= 0)
-//	{
-//		aux[i] = lista_alu[i];
-//		i++;
-//	}
-//	delete[] lista_alu;
-//	lista_alu = aux;
-//
-//	return;
-//}
-
-
-
-
-
 void Agregar_obras(Obra_social*& lista_obra,Obra_social agregado, int* tam)
 {
 	*tam=*tam+1;
