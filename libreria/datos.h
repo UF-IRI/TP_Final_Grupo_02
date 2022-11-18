@@ -21,9 +21,9 @@ typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 
 typedef struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consultas
 {
-	tm* fecha_uconsulta;
+	tm fecha_uconsulta;
 	string dni_medico, dni_paciente;
-	tm* next_consul;
+	tm next_consul;
 	bool reprogramacion;
 	bool concurrio; //true si atendio el turno, false sino 
 	Cobertura cobertura;

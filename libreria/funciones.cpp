@@ -310,7 +310,6 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 		Lista_aux[i] = Lista_consultas[i];
 		i++;
 	}
-	i--;
 	Lista_aux[i] = agregado;
 	delete[] Lista_consultas;
 	Lista_consultas = Lista_aux;
@@ -335,7 +334,7 @@ int DevolverFecha(Paciente var)
 
 	//Calculo la diferencia entre la fecha actual y la ultima consulta del paciente
 	long int dias1 = (anio * 365) + (mes * 30) + dia;
-	long int dias2 = ((var.datos_uconsul.fecha_uconsulta->tm_year) * 365) + ((var.datos_uconsul.fecha_uconsulta->tm_mon) * 30) + var.datos_uconsul.fecha_uconsulta->tm_mday;
+	long int dias2 = ((var.datos_uconsul.fecha_uconsulta.tm_year) * 365) + ((var.datos_uconsul.fecha_uconsulta.tm_mon) * 30) + var.datos_uconsul.fecha_uconsulta.tm_mday;
 	dias = dias1 - dias2;
 
 	//Paso los esa diferenca a anios y los retorno
@@ -373,7 +372,7 @@ void Archivar(Paciente*& Lista_pacientes)
 		i++;
 	} while (i <= sizeof(Lista_pacientes));
 }
-void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas de los pacientes 
+void Escribir_Archivados(Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
 {
 	char coma = ',';
 	fstream archivados;
@@ -385,10 +384,11 @@ void Escribir_Archivados(Paciente paciente) //archivamos las historias clinicas 
 	else
 	{		
 		archivados << "n_historialclinico,Nombre,Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
-		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio.tm_mon << coma << paciente.natalicio.tm_wday << paciente.natalicio.tm_year << coma << paciente.fechaingreso.tm_mon <<"/"<< paciente.fechaingreso.tm_wday<<"/"<< paciente.fechaingreso.tm_year<< coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad << endl;
+		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio.tm_mon << coma << paciente.natalicio.tm_wday << paciente.natalicio.tm_year << coma << paciente.fechaingreso.tm_mon <<"/"<< paciente.fechaingreso.tm_wday<<"/"<< paciente.fechaingreso.tm_year<< coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta.tm_mday<<"/"<< paciente.datos_uconsul.fecha_uconsulta.tm_mon<<"/"<< paciente.datos_uconsul.fecha_uconsulta.tm_year << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad << endl;
 	}
 
 }
+//averiguar como hacer los archivos de output
 void Imprimir_Lista(Paciente* lista)
 {
 	int i = 0;
@@ -459,9 +459,9 @@ void Fecha_random(Paciente paciente)
 	timeinfo = localtime(&rawtime);
 	tm* fecha_actual = timeinfo;
 
-	paciente.datos_uconsul.next_consul->tm_mday = rand() % (30 - fecha_actual->tm_mday) + fecha_actual->tm_mday;
-	paciente.datos_uconsul.next_consul->tm_mon = rand() % (12 - fecha_actual->tm_mon) + fecha_actual->tm_mon;
-	paciente.datos_uconsul.next_consul->tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
+	paciente.datos_uconsul.next_consul.tm_mday = rand() % (30 - fecha_actual->tm_mday) + fecha_actual->tm_mday;
+	paciente.datos_uconsul.next_consul.tm_mon = rand() % (12 - fecha_actual->tm_mon) + fecha_actual->tm_mon;
+	paciente.datos_uconsul.next_consul.tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
 
 }
 void Reprogramar_consulta(Paciente paciente)
