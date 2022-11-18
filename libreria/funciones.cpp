@@ -133,15 +133,15 @@ Contacto* LeerContactos(string archivo_Cont)
 	string headers;
 	char delimitador = ' ';
 	char delimitador_fecha = '/';
-	Medico aux;
+	Contacto aux;
 	string linea;
-	int tamact_m = 0;
-	Medico* lista_medicos = new Medico[tamact_m];
+	int tamact_c = 0;
+	Contacto* lista_contactos = new Contacto[tamact_c];
 
 	Arch_Contactos.open(archivo_Cont, ios::in);
 	if (!(Arch_Contactos.is_open()))
 	{
-		cout << "No se pudo abrir el archivo de Contacos" << endl;
+		cout << "No se pudo abrir el archivo de Contactos" << endl;
 		return nullptr;
 	}
 	getline(Arch_Contactos, headers);
@@ -150,6 +150,8 @@ Contacto* LeerContactos(string archivo_Cont)
 
 	while (getline(Arch_Contactos, linea))
 	{
+		stringstream stream(linea);
+
 		getline(stream, dni_paciente, delimitador);
 		getline(stream, coma, delimitador);
 		getline(stream, telefono, delimitador);
@@ -157,9 +159,77 @@ Contacto* LeerContactos(string archivo_Cont)
 		getline(stream, celular, delimitador);
 		getline(stream, coma, delimitador);
 		getline(stream, direccion, delimitador);
-		\
-		getline(stream, mail, delimitador
 		getline(stream, coma, delimitador);
+		getline(stream, mail, delimitador);
+
+		aux.dni = dni_paciente;
+		aux.tel = telefono;
+		aux.cel = celular;
+		aux.direccion = direccion;
+		aux.mail = mail;
+		Agregar_Contactos(lista_contactos, aux, &tamact_c);
+	}
+}
+Consulta* LeerConsultas(string archivo_Cons)
+{
+	fstream Arch_Consultas;
+	string headers;
+	char delimitador = ' ';
+	char delimitador_fecha = '/';
+	Consulta aux;
+	string linea;
+	int tamact_c = 0;
+	Consulta* lista_consultas = new Consulta[tamact_c];
+
+	Arch_Consultas.open(archivo_Cons, ios::in);
+	if (!(Arch_Consultas.is_open()))
+	{
+		cout << "No se pudo abrir el archivo de Consultas" << endl;
+		return nullptr;
+	}
+	//dni_pac, fecha_solicitado, fecha_turno, presento, matricula_med
+	getline(Arch_Consultas, headers);
+	string coma,dni_pac, dia, mes, anio, dia1, mes1, anio1, fecha_turno, presento, matricula_med;
+
+	while (getline(Arch_Consultas, linea))
+	{
+		stringstream stream(linea);
+		getline(stream, dni_pac, delimitador);
+		getline(stream, coma, delimitador);
+		getline(stream, dia, delimitador_fecha);
+		getline(stream, mes, delimitador_fecha);
+		getline(stream, anio, delimitador);
+		getline(stream, coma, delimitador);
+		getline(stream, dia1, delimitador_fecha);
+		getline(stream, mes1, delimitador_fecha);
+		getline(stream, anio, delimitador);
+		getline(stream, coma, delimitador);
+		getline(stream, presento, delimitador);
+		getline(stream, coma, delimitador);
+		getline(stream, matricula_med, delimitador);
+
+		aux.dni = dni_pac;
+		
+		stringstream aux_fechas(dia);
+		aux_fechas >> aux.fecha_solicitado.tm_mday;
+		stringstream aux_fechas1(mes);
+		aux_fechas1 >> aux.fecha_solicitado.tm_mon;
+		stringstream aux_fechas2(anio);
+		aux_fechas2 >> aux.fecha_solicitado.tm_year;
+		stringstream aux_fechas3(dia1);
+		aux_fechas3 >> aux.fecha_turno.tm_mday;
+		stringstream aux_fechas4(mes1);
+		aux_fechas4 >> aux.fecha_turno.tm_mon;
+		stringstream aux_fechas5(anio1);
+		aux_fechas5 >> aux.fecha_turno.tm_year;
+
+		aux.matricula_med = matricula_med;
+		if (presento == "1")
+			aux.presento = true;
+		else
+			aux.presento = false;
+
+		Agregar_Consultas(lista_consultas, aux, &tamact_c);
 	}
 }
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)

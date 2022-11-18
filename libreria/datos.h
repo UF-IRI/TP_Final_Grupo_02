@@ -31,9 +31,9 @@ typedef struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultim
 
 typedef struct CONSULTA
 {
-	int dni;
-	time_t fecha_solicitado;
-	time_t fecha_turno;
+	string dni;
+	tm fecha_solicitado;
+	tm fecha_turno;
 	bool presento;
 	string matricula_med;
 
