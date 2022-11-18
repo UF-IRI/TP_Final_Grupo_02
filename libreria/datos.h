@@ -82,7 +82,10 @@ typedef struct OBRA_SOCIAL
 }Obra_social;
 
 
-Paciente* LeerArchivo(string archivo1);  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Paciente* LeerPacientes(string archivo_Pac );//leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Medico* LeerMedicos(string archivo_Med);
+Contacto* LeerContactos(string archivo_Cont);
+Consulta* LeerConsultas(string archivo_Cons);
 void Escribir_Archivados(Paciente paciente);//se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
 void Archivar(Paciente*& Lista_pacientes);//cambia el estado archivado para los que corresponda
 

@@ -3,7 +3,7 @@
 
 namespace PacientTest::tests {
 	
-	TEST(casos_base, prueba_agregar) {
+	TEST(Leer, prueba_agregar) {
 		int tamanio=0;
 		Paciente* lista_aux = new Paciente[tamanio];
 		Paciente aux;
@@ -17,6 +17,10 @@ namespace PacientTest::tests {
 
 		EXPECT_EQ(lista_aux[0].dni, aux.dni);
 		EXPECT_EQ(tamanio, 1);
+	}
+	TEST(Leer, Prueba_resize)
+	{
+
 	}
 	//TEST(Casos_Base, Test_Caso1) {
 	//	Paciente paciente;

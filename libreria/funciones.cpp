@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Paciente* LeerPacientes(string archivo_Pac)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 { 
 	Paciente* Lista_pacientes = new Paciente[0];
 	string headers;
@@ -15,7 +15,7 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 	string linea;
 	
 	int tamact_p=0;
-	pacientes.open(archivo, ios::in);
+	pacientes.open(archivo_Pac, ios::in);
 
 	if (!(pacientes.is_open()))
 	{
@@ -68,82 +68,99 @@ Paciente* LeerArchivo(string archivo)  //leemos todos los archivos y guardamos t
 		aux.id_os = id;
 
 		//----------------Agregamos a la lista ----------------------
-		resize(Lista_pacientes, &tamact_p, 1);
 		Agregar(Lista_pacientes, aux, &tamact_p);
 
 	}
 	pacientes.close();
-	
-	/*fstream Arch_obras;
-	Arch_obras.open("IRI_ObraSocial.csv", ios::in);
-	if (!Arch_obras.is_open())
-	{
-		cout << "no se abrio el archivo de obra social" << endl;
-		return;
-	}
-	
-	Obra_social aux_o;
-	Arch_obras >> header >> coma >> header;
-	while (Arch_obras)
-	{
-		Arch_obras >> aux_o.id_obrasocial >> coma >> aux_o.obrasocial;
-	
-		Agregar_obras(lista_obras, aux_o, &tamactual_O);
-	}
-	Arch_obras.close();
-	
+	//------------------Repetimos para los otros archivos-----------------
+	return Lista_pacientes;
+}
+Medico* LeerMedicos(string archivo_Med)
+{
 	fstream Arch_Medicos;
-	Arch_Medicos.open("IRI_Medicos.csv", ios::in);
-	if (!Arch_Medicos.is_open())
-	{
-		cout << "no se abrio el archivo de Medicos" << endl;
-		return;
-	}
-	
-	Medico aux_m;
-	Arch_Medicos >> header >> coma >> header>>coma>>header>>coma>>header>>coma>>header>>coma>>header;
-	while (Arch_Medicos)
-	{
-		Arch_Medicos >> aux_m.matricula >> coma >> aux_m.nombre >> coma >> aux_m.apellido >> coma >> aux_m.telefono >> coma >> aux_m.especialidad >> coma >> aux_m.activo;
-	
-		Agregar_Medicos(lista_medicos, aux_m, &tamactual_Med);
-	}
-	Arch_Medicos.close();
-	
+	string headers;
+	char delimitador = ' ';
+	char delimitador_fecha = '/';
+	Medico aux;
+	string linea;
+	int tamact_m = 0;
+	Medico* lista_medicos = new Medico[tamact_m];
+
+	Arch_Medicos.open(archivo_Med, ios::in);
+		if (!(Arch_Medicos.is_open()))
+		{
+			cout << "No se pudo abrir el archivo de Medicos" << endl;
+			return nullptr;
+		}
+
+		getline(Arch_Medicos, headers);
+		string coma, matricula, nombre, apellido, telefono, especialidad, activo;
+
+		while (getline(Arch_Medicos, linea))
+		{
+			stringstream stream(linea);
+			//matricula , nombre , apellido , telefono , especialidad , activo
+			getline(stream, matricula, delimitador);
+			getline(stream, coma, delimitador);
+			getline(stream, nombre, delimitador);
+			getline(stream, coma, delimitador);
+			getline(stream, apellido, delimitador);
+			getline(stream, coma, delimitador);
+			getline(stream, telefono, delimitador);
+			getline(stream, coma, delimitador);
+			getline(stream, especialidad, delimitador),
+			getline(stream, coma, delimitador);
+			getline(stream, activo, delimitador);
+
+
+			aux.matricula = matricula;
+			aux.nombre = nombre;
+			aux.telefono = telefono;
+			aux.especialidad = especialidad;
+			if (activo == "1")
+				aux.activo = true;
+			else
+				aux.activo = false;
+
+			Agregar_Medicos(lista_medicos, aux, &tamact_m);
+		}
+
+		return lista_medicos;
+}
+Contacto* LeerContactos(string archivo_Cont)
+{
 	fstream Arch_Contactos;
-	Arch_Contactos.open("IRI_Contactos.csv", ios::in);
-	if (!Arch_Contactos.is_open())
+	string headers;
+	char delimitador = ' ';
+	char delimitador_fecha = '/';
+	Medico aux;
+	string linea;
+	int tamact_m = 0;
+	Medico* lista_medicos = new Medico[tamact_m];
+
+	Arch_Contactos.open(archivo_Cont, ios::in);
+	if (!(Arch_Contactos.is_open()))
 	{
-		cout << "no se abrio el archivo de contactos"<<endl;
-		return;
+		cout << "No se pudo abrir el archivo de Contacos" << endl;
+		return nullptr;
 	}
-	
-	Contacto aux_contacto;
-	Arch_Contactos >> header >> coma >> header >> coma >> header >> coma >> header >> coma >> header;
-	while (Arch_Contactos)
+	getline(Arch_Contactos, headers);
+	//dni_paciente , telefono , celular , direccion , mail
+	string coma, dni_paciente, telefono, celular, direccion, mail;
+
+	while (getline(Arch_Contactos, linea))
 	{
-		Arch_Contactos >> aux_contacto.dni >> coma >> aux_contacto.tel >> coma >> aux_contacto.cel >> coma >> aux_contacto.direccion >> coma >> aux_contacto.mail;
-	
-		Agregar_Contactos(lista_contactos, aux_contacto, &tamactual_contactos);
+		getline(stream, dni_paciente, delimitador);
+		getline(stream, coma, delimitador);
+		getline(stream, telefono, delimitador);
+		getline(stream, coma, delimitador);
+		getline(stream, celular, delimitador);
+		getline(stream, coma, delimitador);
+		getline(stream, direccion, delimitador);
+		\
+		getline(stream, mail, delimitador
+		getline(stream, coma, delimitador);
 	}
-	Arch_Contactos.close();
-	
-	fstream Arch_Consultas;
-	Arch_Consultas.open("IRI_Constultas.csv", ios::in);
-	if (!Arch_Consultas.is_open())
-	{
-		cout << "No se pudo abrir el archivo de consultas" << endl;
-		return;
-	}
-	Consulta aux_consulta;
-	
-	Arch_Consultas >> header >> coma >> header >> coma >> header >> coma >> header >> header >> coma >> header;
-	while (Arch_Consultas)
-	{
-		Arch_Consultas >> aux_consulta.dni >> coma >> aux_consulta.fecha_solicitado >> coma >> aux_consulta.fecha_turno >> coma >> aux_consulta.presento >> coma >> aux_consulta.matricula_med;
-	
-		Agregar_Consultas(lista_consultas, aux_consulta,& tamactual_consultas);
-	}*/
 }
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
@@ -170,22 +187,22 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 }
 
 
-void resize(Paciente*& lista_alu, int* tamactual, int cantidad_aumentar) 
-{
-	*tamactual = *tamactual + cantidad_aumentar;
-	int i = 0;
-	Paciente* aux = new Paciente[*tamactual];
-
-	while (i < *tamactual - cantidad_aumentar &&*tamactual-cantidad_aumentar!= 0)
-	{
-		aux[i] = lista_alu[i];
-		i++;
-	}
-	delete[] lista_alu;
-	lista_alu = aux;
-
-	return;
-}
+//void resize(Paciente*& lista_alu, int* tamactual, int cantidad_aumentar) 
+//{
+//	*tamactual = *tamactual + cantidad_aumentar;
+//	int i = 0;
+//	Paciente* aux = new Paciente[*tamactual];
+//
+//	while (i < *tamactual - cantidad_aumentar &&*tamactual-cantidad_aumentar!= 0)
+//	{
+//		aux[i] = lista_alu[i];
+//		i++;
+//	}
+//	delete[] lista_alu;
+//	lista_alu = aux;
+//
+//	return;
+//}
 
 
 
