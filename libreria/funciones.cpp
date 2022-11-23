@@ -6,6 +6,8 @@
 
 using namespace std;
 
+//PACIENTES
+
 Paciente* LeerPacientes(fstream& pacientes)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 {
 	Paciente* Lista_pacientes = new Paciente[0];
@@ -28,7 +30,7 @@ Paciente* LeerPacientes(fstream& pacientes)  //leemos todos los archivos y guard
 		pacientes >> aux.dni >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.sexo >> coma >> aux.natalicio.tm_mday >> barra >> aux.natalicio.tm_mon >> barra >> aux.natalicio.tm_year >> coma >> aux.estado_paciente >> coma >> aux.id_os;
 		Agregar(Lista_pacientes, aux, &tamact_p);
 	}
-
+	pacientes.close();
 	return Lista_pacientes;
 }
 
@@ -57,7 +59,7 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 }
 
 
-void Imprimir_Lista(Paciente* lista)
+void Imprimir_Lista_pacientes(Paciente* lista)
 {
 	int i = 0;
 	while (i <= 99)
@@ -67,55 +69,95 @@ void Imprimir_Lista(Paciente* lista)
 	}
 }
 
+int DevolverFecha(Paciente paciente)
+{
+	int diferencia;
+	int i = 0;
+	time_t curr_time = time(NULL);
+	tm* tm_local = localtime(&curr_time);
 
-//}
-//	//string coma, dni, nombre, apellido, sexo, estado, id, dia, mes, anio;
-//	//while (getline(pacientes, linea))
-//	//{
-//	//	stringstream stream(linea);
-//
-//	//	// Extraer todos los valores de esa fila		
-//	//	getline(stream,dni, delimitador);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, nombre, delimitador);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, apellido, delimitador);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, sexo, delimitador);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, mes, delimitador_fecha);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, dia, delimitador_fecha);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, anio, delimitador);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, estado, delimitador);
-//	//	getline(stream, coma, delimitador);
-//	//	getline(stream, id, delimitador);
-//
-//	//	aux.dni = dni;
-//	//	aux.nombre = nombre;
-//	//	aux.apellido = apellido;
-//	//	aux.sexo = sexo;
-//
-//	//	stringstream aux_fechas(dia);
-//	//	aux_fechas>>aux.fechaingreso.tm_mday;
-//	//	stringstream aux_fechas1(mes);
-//	//	aux_fechas1 >> aux.fechaingreso.tm_mon;
-//	//	stringstream aux_fechas2(anio);
-//	//	aux_fechas2 >> aux.fechaingreso.tm_year;
-//
-//	//	aux.estado_paciente = estado;
-//	//	aux.id_os = id;
-//
-//	//	//----------------Agregamos a la lista ----------------------
-//	//	Agregar(Lista_pacientes, aux, &tamact_p);
-//
-//	//}
-//	//pacientes.close();
-//	////------------------Repetimos para los otros archivos-----------------
-//	//return Lista_pacientes;
-////}
+	time_t fecha_actual = mktime(tm_local);  //lo pasa a segundos
+	time_t fecha_uconsul = mktime(&(paciente.natalicio));
+
+	diferencia = difftime(fecha_actual, fecha_uconsul);
+
+	return diferencia;
+}
+
+
+
+
+
+//CONSULTAS
+
+U_consulta* LeerConsultas(fstream& consultas)
+{
+	U_consulta* Lista_consultas = new U_consulta[0];
+	string headers;
+	U_consulta aux;
+	char coma = ',';
+	char barra = '/';
+	int tamact_p = 0;
+
+	if (!(consultas.is_open()))
+	{
+		cout << "no se pudo abrir el archivo de pacientes" << endl;
+		return nullptr;
+	}
+
+	getline(consultas, headers);
+
+	while (consultas)
+	{
+		consultas>> aux.dni_pac >> coma >> aux.fecha_solicitado.tm_mday >> barra >> aux.fecha_solicitado.tm_mon >> barra >> aux.fecha_solicitado.tm_year >>coma>> aux.fecha_turno.tm_mday >> barra >> aux.fecha_turno.tm_mon >> barra >> aux.fecha_solicitado.tm_year >> coma >> aux.matriula_med;
+		Agregar_Consultas(Lista_consultas, aux, &tamact_p);
+	}
+	consultas.close();
+	return Lista_consultas;	
+}
+
+
+
+void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* tam)
+{
+	*tam=*tam+1;
+	int i = 0;
+	U_consulta* Lista_aux = new U_consulta[*tam];
+
+	if (Lista_consultas == NULL)
+		return;
+
+	while (i < *tam-1 && *tam-1 != 0)
+	{
+		Lista_aux[i] = Lista_consultas[i];
+		i++;
+	}
+	Lista_aux[i] = agregado;
+	delete[] Lista_consultas;
+	Lista_consultas = Lista_aux;
+	
+	return;
+}
+
+
+
+void Imprimir_Lista_consultas(U_consulta* lista)
+{
+	int i = 0;
+	while (i <= 990)
+	{
+		cout << "Dni: " << lista[i].dni_pac << " Fecha_solicitada: " << lista[i].fecha_solicitado.tm_mday << "/" << lista[i].fecha_solicitado.tm_mon << "/" << lista[i].fecha_solicitado.tm_year << " Fecha_turno: " << lista[i].fecha_turno.tm_mday << "/" << lista[i].fecha_turno.tm_mon << "/" << lista[i].fecha_turno.tm_year << " Matricula_med:" << lista[i].matriula_med<<endl;
+		i++;
+	}	
+}
+
+
+
+
+
+
+
+
 ////Medico* LeerMedicos(string archivo_Med)
 ////{
 ////	fstream Arch_Medicos;
@@ -212,68 +254,7 @@ void Imprimir_Lista(Paciente* lista)
 ////		Agregar_Contactos(lista_contactos, aux, &tamact_c);
 ////	}
 ////}
-//Consulta* LeerConsultas(string archivo_Cons)
-//{
-//	fstream Arch_Consultas;
-//	string headers;
-//	char delimitador = ' ';
-//	char delimitador_fecha = '/';
-//	Consulta aux;
-//	string linea;
-//	int tamact_c = 0;
-//	Consulta* lista_consultas = new Consulta[tamact_c];
 //
-//	Arch_Consultas.open(archivo_Cons, ios::in);
-//	if (!(Arch_Consultas.is_open()))
-//	{
-//		cout << "No se pudo abrir el archivo de Consultas" << endl;
-//		return nullptr;
-//	}
-//	//dni_pac, fecha_solicitado, fecha_turno, presento, matricula_med
-//	getline(Arch_Consultas, headers);
-//	string coma,dni_pac, dia, mes, anio, dia1, mes1, anio1, fecha_turno, presento, matricula_med;
-//
-//	while (getline(Arch_Consultas, linea))
-//	{
-//		stringstream stream(linea);
-//		getline(stream, dni_pac, delimitador);
-//		getline(stream, coma, delimitador);
-//		getline(stream, dia, delimitador_fecha);
-//		getline(stream, mes, delimitador_fecha);
-//		getline(stream, anio, delimitador);
-//		getline(stream, coma, delimitador);
-//		getline(stream, dia1, delimitador_fecha);
-//		getline(stream, mes1, delimitador_fecha);
-//		getline(stream, anio, delimitador);
-//		getline(stream, coma, delimitador);
-//		getline(stream, presento, delimitador);
-//		getline(stream, coma, delimitador);
-//		getline(stream, matricula_med, delimitador);
-//
-//		aux.dni = dni_pac;
-//		
-//		stringstream aux_fechas(dia);
-//		aux_fechas >> aux.fecha_solicitado.tm_mday;
-//		stringstream aux_fechas1(mes);
-//		aux_fechas1 >> aux.fecha_solicitado.tm_mon;
-//		stringstream aux_fechas2(anio);
-//		aux_fechas2 >> aux.fecha_solicitado.tm_year;
-//		stringstream aux_fechas3(dia1);
-//		aux_fechas3 >> aux.fecha_turno.tm_mday;
-//		stringstream aux_fechas4(mes1);
-//		aux_fechas4 >> aux.fecha_turno.tm_mon;
-//		stringstream aux_fechas5(anio1);
-//		aux_fechas5 >> aux.fecha_turno.tm_year;
-//
-//		aux.matricula_med = matricula_med;
-//		if (presento == "1")
-//			aux.presento = true;
-//		else
-//			aux.presento = false;
-//
-//		Agregar_Consultas(lista_consultas, aux, &tamact_c);
-//	}
-//}
 
 //void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 //{
@@ -317,26 +298,7 @@ void Imprimir_Lista(Paciente* lista)
 //	
 //	return;
 //}
-//void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
-//{
-//	*tam=*tam+1;
-//	int i = 0;
-//	Consulta* Lista_aux = new Consulta[*tam];
-//
-//	if (Lista_consultas == NULL)
-//		return;
-//
-//	while (i < *tam-1 && *tam-1 != 0)
-//	{
-//		Lista_aux[i] = Lista_consultas[i];
-//		i++;
-//	}
-//	Lista_aux[i] = agregado;
-//	delete[] Lista_consultas;
-//	Lista_consultas = Lista_aux;
-//	
-//	return;
-//}
+
 //int DevolverFecha(Paciente* Lista_pacientes)
 //{
 //	int diferencia;

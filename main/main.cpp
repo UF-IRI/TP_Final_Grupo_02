@@ -10,23 +10,29 @@ int main()
 	string ruta_pac =(BASE_PATH + "../data_files/input/IRI_Pacientes.csv");
 	fstream pacientes;
 	pacientes.open(ruta_pac, ios::in);
-	
 	Paciente* Lista_paciente;
 	Lista_paciente= LeerPacientes(pacientes); //funciona
+	cout << "-------------LISTA PACIENTES-----------" << endl;
+	Imprimir_Lista_pacientes(Lista_paciente);  //funciona
 
-	Imprimir_Lista(Lista_paciente);  //funciona
 	
+	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
+	fstream Consultas;
+	Consultas.open(ruta_pac, ios::in);
+	U_consulta* Lista_consultas;
+	Lista_consultas = LeerConsultas(Consultas);
+	cout << "----------LISTA CONSULTAS----------------"<<endl;
 
-	/*Paciente* Lista_pacientes;
-	Lista_pacientes=LeerPacientes(ruta_pac);*/ //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+	Imprimir_Lista_consultas(Lista_consultas);
+
+
+	
 	
 	//string ruta_med = (BASE_PATH + "../data_files/input/IRI_Medicos.csv");
 	//Medico* lista_medicos;
 	//lista_medicos = LeerMedicos(ruta_med);
 
-	//string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
-	//Consulta* lista_consultas;
-	//lista_consultas = LeerConsultas(ruta_cons);
+	
 
 	//string ruta_cont = (BASE_PATH + "../data_files/input/IRI_Contactos.csv");
 	//Contacto* lista_contactos;

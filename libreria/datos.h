@@ -19,34 +19,26 @@ typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 
 } Contacto;
 
-typedef struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consultas
+typedef struct ULTIMA_CONSULTA 
 {
-	tm fecha_uconsulta;
-	string dni_medico, dni_paciente;
+	tm fecha_turno; //fecha ultima consulta
+	tm fecha_solicitado;
+	string dni_pac;
+	string matriula_med;
 	tm next_consul;
 	bool reprogramacion;
-	bool concurrio; //true si atendio el turno, false sino 
+	bool presento; //true si atendio el turno, false sino 
 	Cobertura cobertura;
 } U_consulta;
-
-typedef struct CONSULTA
-{
-	string dni;
-	tm fecha_solicitado;
-	tm fecha_turno;
-	bool presento;
-	string matricula_med;
-
-}Consulta;
 
  typedef struct HISTORIAL_CLINICO
 {
 	string especialidad;
-	int n_historialclinico;//numeropiso, numerocama; //numero piso y cama van a ser null salvo que internacion sea true
+	int n_historialclinico; 
 
 } historial_clinico;
 
-typedef struct  PACIENTE//tiene que haber un archivo con todos los pacientes 
+typedef struct  PACIENTE
 {
 	string nombre;
 	string apellido;
@@ -76,12 +68,22 @@ typedef struct MEDICO
 } Medico;
 
 
-//leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
-Paciente* LeerPacientes(fstream& pacientes);
+Paciente* LeerPacientes(fstream& pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
+void Imprimir_Lista_pacientes(Paciente* lista);
+
+U_consulta* LeerConsultas(fstream& archivo_Cons);
+void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* tam);
+void Imprimir_Lista_consultas(U_consulta* lista);
+
+
+int DevolverFecha(Paciente pacientes);////Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+
+
 
 //Medico* LeerMedicos(string archivo_Med);
 //Contacto* LeerContactos(string archivo_Cont);
-//Consulta* LeerConsultas(string archivo_Cons);
+
 //
 ////se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
 //void Escribir_Archivados(Paciente paciente);
@@ -90,13 +92,11 @@ Paciente* LeerPacientes(fstream& pacientes);
 //void Archivar(Paciente*& Lista_pacientes);
 //
 ////Agregamos a cada lista su correspondiente dato
-void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
+
 //void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
 //void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
-//void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam);
-//
-////Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
-//int DevolverFecha(Paciente* Lista_pacientes); 
+
+
 //
 ////Asigna a la prixima consulta del paciente una fecha random entre la (fecha actual) y unos anios mas adelante
 //void Fecha_random(Paciente paciente);
