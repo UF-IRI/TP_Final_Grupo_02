@@ -77,39 +77,40 @@ typedef struct MEDICO
 
 
 //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
-Paciente* LeerPacientes(string archivo_Pac );
-Medico* LeerMedicos(string archivo_Med);
-Contacto* LeerContactos(string archivo_Cont);
-Consulta* LeerConsultas(string archivo_Cons);
+Paciente* LeerPacientes(fstream& pacientes);
 
-//se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
-void Escribir_Archivados(Paciente paciente);
-
-//cambia el estado archivado para los que corresponda
-void Archivar(Paciente*& Lista_pacientes);
-
-//Agregamos a cada lista su correspondiente dato
+//Medico* LeerMedicos(string archivo_Med);
+//Contacto* LeerContactos(string archivo_Cont);
+//Consulta* LeerConsultas(string archivo_Cons);
+//
+////se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
+//void Escribir_Archivados(Paciente paciente);
+//
+////cambia el estado archivado para los que corresponda
+//void Archivar(Paciente*& Lista_pacientes);
+//
+////Agregamos a cada lista su correspondiente dato
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
-void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
-void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
-void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam);
-
-//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
-int DevolverFecha(Paciente var); 
-
-//Asigna a la prixima consulta del paciente una fecha random entre la (fecha actual) y unos anios mas adelante
-void Fecha_random(Paciente paciente);
-
-//Imprimimos los datos de los pacientes
-void Imprimir_Lista(Paciente* lista);
-
-//Se le pasa la lista de pacientes y si quieren repregramar se llama a reprogramar consulta, sino se archivan
-void Secretaria(Paciente*& lista,int opcion);
-
-//Cambia la cobertura del paciente si este decidio camviarla.
-void Cambio_Cobertura(Paciente paciente, int opcion);
-
-//Reprograma la consulta del paciente, asignandole una fecha para su prox consulta
-void Reprogramar_consulta(Paciente paciente);
-
-
+//void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
+//void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
+//void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam);
+//
+////Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+//int DevolverFecha(Paciente* Lista_pacientes); 
+//
+////Asigna a la prixima consulta del paciente una fecha random entre la (fecha actual) y unos anios mas adelante
+//void Fecha_random(Paciente paciente);
+//
+////Imprimimos los datos de los pacientes
+//void Imprimir_Lista(Paciente* lista);
+//
+////Se le pasa la lista de pacientes y si quieren repregramar se llama a reprogramar consulta, sino se archivan
+//void Secretaria(Paciente*& lista,int opcion);
+//
+////Cambia la cobertura del paciente si este decidio camviarla.
+//void Cambio_Cobertura(Paciente paciente, int opcion);
+//
+////Reprograma la consulta del paciente, asignandole una fecha para su prox consulta
+//void Reprogramar_consulta(Paciente paciente);
+//
+//

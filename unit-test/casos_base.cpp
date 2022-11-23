@@ -3,7 +3,7 @@
 
 namespace PacientTest::tests {
 	
-	TEST(Leer, prueba_agregar) {
+	/*TEST(Leer, prueba_agregar) {
 		int tamanio=0;
 		Paciente* lista_aux = new Paciente[tamanio];
 		Paciente aux;
@@ -17,9 +17,9 @@ namespace PacientTest::tests {
 
 		EXPECT_EQ(lista_aux[0].dni, aux.dni);
 		EXPECT_EQ(tamanio, 1);
-	}
+	}*/
 
-	TEST(Leer, Prueba_Devolver_Fecha)
+	/*TEST(Leer, Prueba_Devolver_Fecha)
 	{
 		Paciente aux_archivable;
 		Paciente aux_recuperable;
@@ -30,7 +30,7 @@ namespace PacientTest::tests {
 		
 		int diferencia = DevolverFecha(aux_archivable);
 		EXPECT_EQ(diferencia, 10);
-	}
+	}*/
 	//TEST(Casos_Base, Test_Caso1) {
 	//	Paciente paciente;
 	//	paciente.datos_uconsul.fecha_uconsulta->tm_mday = 16;
