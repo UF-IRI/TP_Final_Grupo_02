@@ -69,16 +69,16 @@ void Imprimir_Lista_pacientes(Paciente* lista)
 	}
 }
 
-int DevolverFecha(Paciente paciente)
+int DevolverFecha(U_consulta paciente)
 {
-	int diferencia;
+	int diferencia=0;
 	int i = 0;
-	time_t curr_time = time(NULL);
-	tm* tm_local = localtime(&curr_time);
+	time_t hoy = time(0);
+	tm* aux = localtime(&hoy);
 
-	time_t fecha_actual = mktime(tm_local);  //lo pasa a segundos
-	time_t fecha_uconsul = mktime(&(paciente.natalicio));
-
+	time_t fecha_actual = mktime(aux);  //lo pasa a segundos
+	time_t fecha_uconsul = mktime(&(paciente.fecha_turno));
+	
 	diferencia = difftime(fecha_actual, fecha_uconsul);
 
 	return diferencia;

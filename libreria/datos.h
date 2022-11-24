@@ -77,7 +77,7 @@ void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* t
 void Imprimir_Lista_consultas(U_consulta* lista);
 
 
-int DevolverFecha(Paciente pacientes);////Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+int DevolverFecha(U_consulta pacientes);////Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
 
 
