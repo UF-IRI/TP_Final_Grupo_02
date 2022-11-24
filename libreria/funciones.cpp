@@ -109,7 +109,7 @@ U_consulta* LeerConsultas(fstream& consultas)
 
 	while (consultas)
 	{
-		consultas>> aux.dni_pac >> coma >> aux.fecha_solicitado.tm_mday >> barra >> aux.fecha_solicitado.tm_mon >> barra >> aux.fecha_solicitado.tm_year >>coma>> aux.fecha_turno.tm_mday >> barra >> aux.fecha_turno.tm_mon >> barra >> aux.fecha_solicitado.tm_year >> coma >> aux.matriula_med;
+		consultas >> aux.dni_pac >> coma >> aux.fecha_solicitado.tm_mday >> barra >> aux.fecha_solicitado.tm_mon >> barra >> aux.fecha_solicitado.tm_year >>coma>> aux.fecha_turno.tm_mday >> barra >> aux.fecha_turno.tm_mon >> barra >> aux.fecha_turno.tm_year >> coma >> aux.presento>>coma>>aux.matriula_med;
 		Agregar_Consultas(Lista_consultas, aux, &tamact_p);
 	}
 	consultas.close();

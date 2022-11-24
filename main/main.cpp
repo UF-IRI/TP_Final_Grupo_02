@@ -18,9 +18,11 @@ int main()
 	
 	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
 	fstream Consultas;
-	Consultas.open(ruta_pac, ios::in);
+	Consultas.open(ruta_cons, ios::in);
 	U_consulta* Lista_consultas;
 	Lista_consultas = LeerConsultas(Consultas);
+	cout << endl;
+	cout << endl;
 	cout << "----------LISTA CONSULTAS----------------"<<endl;
 
 	Imprimir_Lista_consultas(Lista_consultas);
