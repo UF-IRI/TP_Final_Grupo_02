@@ -87,7 +87,6 @@ int DevolverFecha(U_consulta paciente)
 
 
 
-
 //CONSULTAS
 
 U_consulta* LeerConsultas(fstream& consultas)
@@ -147,7 +146,9 @@ void Imprimir_Lista_consultas(U_consulta* lista)
 	while (i <= 990)
 	{
 		cout << "Dni: " << lista[i].dni_pac << " Fecha_solicitada: " << lista[i].fecha_solicitado.tm_mday << "/" << lista[i].fecha_solicitado.tm_mon << "/" << lista[i].fecha_solicitado.tm_year << " Fecha_turno: " << lista[i].fecha_turno.tm_mday << "/" << lista[i].fecha_turno.tm_mon << "/" << lista[i].fecha_turno.tm_year << " Matricula_med:" << lista[i].matriula_med<<endl;
-		i++;
+		int dif = DevolverFecha(lista[i]);
+		cout << "DIFERENCIA:" << dif<<endl;  //imprime 0 porque puede ser?
+		i++; 
 	}	
 }
 

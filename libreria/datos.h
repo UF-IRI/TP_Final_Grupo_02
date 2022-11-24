@@ -80,7 +80,6 @@ void Imprimir_Lista_consultas(U_consulta* lista);
 int DevolverFecha(U_consulta pacientes);////Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
 
-
 //Medico* LeerMedicos(string archivo_Med);
 //Contacto* LeerContactos(string archivo_Cont);
 

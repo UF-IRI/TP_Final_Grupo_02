@@ -27,11 +27,6 @@ int main()
 
 	Imprimir_Lista_consultas(Lista_consultas);
 
-	for (int i = 0; i < sizeof(Lista_consultas); i++)
-	{
-		int dif = DevolverFecha(Lista_consultas[i]);
-		cout << "Diferencia:" << dif << endl;
-	}
 	
 	
 	//string ruta_med = (BASE_PATH + "../data_files/input/IRI_Medicos.csv");
