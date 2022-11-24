@@ -418,24 +418,27 @@ void Imprimir_Lista_consultas(U_consulta* lista)
 //		}
 //	}
 //}
-//void Fecha_random(Paciente paciente)
-//{
-//	time_t rawtime;
-//	struct tm* timeinfo;
-//	time(&rawtime);
-//	timeinfo = localtime(&rawtime);
-//	tm* fecha_actual = timeinfo;
-//
-//	paciente.datos_uconsul.next_consul.tm_mday = rand() % (30 - fecha_actual->tm_mday) + fecha_actual->tm_mday;
-//	paciente.datos_uconsul.next_consul.tm_mon = rand() % (12 - fecha_actual->tm_mon) + fecha_actual->tm_mon;
-//	paciente.datos_uconsul.next_consul.tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
-//
-//}
-//void Reprogramar_consulta(Paciente paciente)
-//{
-//	//Como el paciente quiere retornar, se le asigna una cunsulta.
-//	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
-//
+void Fecha_random(Paciente paciente)
+{
+	int diferencia = 0;
+	int i = 0;
+	time_t hoy = time(0);
+	tm* aux = localtime(&hoy);
+
+	paciente.datos_uconsul.fecha_turno.tm_mon = 1 + rand() % 11;//rand del 1 al 12 por los meses 
+	paciente.datos_uconsul.fecha_turno.tm_mday = 1 + rand() % 29; //rand del 1 al 30 por los dias
+	paciente.datos_uconsul.fecha_solicitado.tm_year = aux->tm_year + rand() % (aux->tm_year + 2);
+
+	if (paciente.datos_uconsul.fecha_turno.tm_mon == 2 && paciente.datos_uconsul.fecha_turno.tm_mday > 28)//si justo mes == 02 volver a hacer un random del dia entre 1 y 28
+		paciente.datos_uconsul.fecha_turno.tm_mday = 1 + rand() % 28;
+	if (paciente.datos_uconsul.fecha_turno.tm_mon < aux->tm_mon && paciente.datos_uconsul.fecha_solicitado.tm_year == aux->tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
+		paciente.datos_uconsul.fecha_solicitado.tm_year = paciente.datos_uconsul.fecha_solicitado.tm_year + 1;
+}
+void Reprogramar_consulta(Paciente paciente)
+{
+	//Como el paciente quiere retornar, se le asigna una cunsulta.
+	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
+
 //
 //	
 //}

@@ -22,10 +22,9 @@ typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 typedef struct ULTIMA_CONSULTA 
 {
 	tm fecha_turno; //fecha ultima consulta
-	tm fecha_solicitado;
+	tm fecha_solicitado;  //next consult
 	string dni_pac;
 	string matriula_med;
-	tm next_consul;
 	bool reprogramacion;
 	bool presento; //true si atendio el turno, false sino 
 	Cobertura cobertura;
@@ -47,7 +46,7 @@ typedef struct  PACIENTE
 	tm natalicio;
 	tm fechaingreso;
 	string id_os;
-	historial_clinico historial_clinico;
+	//historial_clinico historial_clinico;
 	string estado_paciente; //internado,paciente,vivo
 	string cobertura;
 	Diagnostico diagnostico_p;
@@ -98,7 +97,7 @@ int DevolverFecha(U_consulta pacientes);////Devuelve la diferencia en anios desd
 
 //
 ////Asigna a la prixima consulta del paciente una fecha random entre la (fecha actual) y unos anios mas adelante
-//void Fecha_random(Paciente paciente);
+void Fecha_random(Paciente paciente);
 //
 ////Imprimimos los datos de los pacientes
 //void Imprimir_Lista(Paciente* lista);
