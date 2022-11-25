@@ -69,9 +69,9 @@ Paciente* LeerPacientes(string archivo_Pac)  //leemos todos los archivos y guard
 
 	}
 	pacientes.close();
-	//------------------Repetimos para los otros archivos-----------------
 	return Lista_pacientes;
 }
+//------------------Repetimos para los otros archivos-----------------
 Medico* LeerMedicos(string archivo_Med)
 {
 	fstream Arch_Medicos;
@@ -167,6 +167,7 @@ Contacto* LeerContactos(string archivo_Cont)
 		aux.mail = mail;
 		Agregar_Contactos(lista_contactos, aux, &tamact_c);
 	}
+	return lista_contactos;
 }
 Consulta* LeerConsultas(string archivo_Cons)
 {
@@ -229,6 +230,7 @@ Consulta* LeerConsultas(string archivo_Cons)
 
 		Agregar_Consultas(lista_consultas, aux, &tamact_c);
 	}
+	return lista_consultas;
 }
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
