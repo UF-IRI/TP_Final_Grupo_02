@@ -1,5 +1,5 @@
 #include "gmock/gmock.h"
-#include"datos.h"
+#include<funciones.h>
 
 namespace PacientTest::tests {
 	
