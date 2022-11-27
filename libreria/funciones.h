@@ -15,7 +15,7 @@ enum diagnostico { neurologia, kinesiologia, cardiologia, ginecologia, odontolog
 
 typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 {
-	string nombre, apellido, mail, direccion, tel, cel, provincia, pais,dni;
+	string nombre, apellido, mail, direccion, tel, cel, provincia, pais, dni;
 	int ID, edad;
 
 } Contacto;
@@ -48,7 +48,7 @@ typedef struct  PACIENTE
 	tm fechaingreso;
 	string id_os;
 	//historial_clinico historial_clinico;
-	string estado_paciente; //internado,paciente,vivo
+	string estado_paciente; //internado,fallecido,vivo
 	string cobertura;
 	Diagnostico diagnostico_p;
 	Consulta U_consulta;
@@ -92,27 +92,16 @@ void Escribir_Archivados(Paciente paciente);
 //cambia el estado archivado para los que corresponda
 void Archivar(Paciente*& Lista_pacientes);
 
-//Agregamos a cada lista su correspondiente dato
-
-void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
-void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
-
-
-
-//Asigna a la prixima consulta del paciente una fecha random entre la (fecha actual) y unos anios mas adelante
-void Fecha_random(Paciente paciente);
-
-//Imprimimos los datos de los pacientes
-void Imprimir_Lista(Paciente* lista);
-
 //Se le pasa la lista de pacientes y si quieren repregramar se llama a reprogramar consulta, sino se archivan
 void Secretaria(Paciente*& lista,int opcion);
 
 //Cambia la cobertura del paciente si este decidio camviarla.
 void Cambio_Cobertura(Paciente paciente, int opcion);
 
-//Reprograma la consulta del paciente, asignandole una fecha para su prox consulta
+//Reprograma la consulta del paciente, asignandole una fecha random para su prox consulta
 void Reprogramar_consulta(Paciente paciente);
 
 //Busca dentro de la lista de consultas la ultima consulta de cada paciente y los guarda dentro de la variable "U_consulta
 void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c);
+
+Paciente* Actualizar_listap(Paciente* lista_pacientes, int tam);

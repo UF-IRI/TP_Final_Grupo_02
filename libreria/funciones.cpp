@@ -303,7 +303,10 @@ int DevolverFecha(Paciente* Lista_pacientes)
 //		i++;
 //	} while (i <= sizeof(Lista_pacientes));
 //}
-//
+
+ 
+ 
+ 
 //void Escribir_Archivados(Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
 //{
 //	char coma = ',';
@@ -321,6 +324,10 @@ int DevolverFecha(Paciente* Lista_pacientes)
 //
 //}
 ////averiguar como hacer los archivos de output
+
+
+
+
 
 //void Cambio_Cobertura(Paciente paciente, int opcion)
 //{
@@ -357,7 +364,10 @@ int DevolverFecha(Paciente* Lista_pacientes)
 //	}
 //
 //}
-//void Secretaria(Paciente*& lista, int opcion)//habria que mandarle unicamente la lista de los pacientes posibles de volver, habria que quitar de la lista original los fallecidos y los que hace mas de 10 años no van
+ 
+ 
+ 
+//void Secretaria(Paciente* lista_actualizada, int opcion)    en el main hacer paciente Lista= Actualizar_listap y esa lista se la pasamos a la funcion secretaria
 //{
 //	for (int i = 0; i < sizeof(*lista); i++)
 //	{
@@ -375,8 +385,23 @@ int DevolverFecha(Paciente* Lista_pacientes)
 //		}
 //	}
 //}
-void Fecha_random(Paciente paciente)
+
+Paciente* Actualizar_listap(Paciente* lista_pacientes, int tam) //la llamamos luego de llamar a la funcion archivar
+{	
+	Paciente* Lista_actualizada = new Paciente[tam];
+
+	for (int i = 0;i < tam; i++)
+	{
+		Lista_actualizada[i] = lista_pacientes[i];	
+	}
+	return Lista_actualizada; //esta lista se la pasmaos a la secretaria, para pasarle aquellos pacientes que puedan llegar a volver 
+}
+
+
+
+void Reprogramar_consulta(Paciente paciente) //fijarse si funciona
 {
+	//Como el paciente quiere retornar, se le asigna una cunsulta.
 	int diferencia = 0;
 	int i = 0;
 	time_t hoy = time(0);
@@ -390,11 +415,6 @@ void Fecha_random(Paciente paciente)
 		paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 28;
 	if (paciente.U_consulta.fecha_turno.tm_mon < aux->tm_mon && paciente.U_consulta.fecha_solicitado.tm_year == aux->tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
 		paciente.U_consulta.fecha_solicitado.tm_year = paciente.U_consulta.fecha_solicitado.tm_year + 1;
-}
-void Reprogramar_consulta(Paciente paciente)
-{
-	//Como el paciente quiere retornar, se le asigna una cunsulta.
-	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
 
 }
 

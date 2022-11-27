@@ -14,6 +14,7 @@ int main()
 	Paciente* Lista_paciente;
 	int tamact_p = 0;
 	
+	
 	Lista_paciente= LeerPacientes(pacientes, tamact_p); //funciona
 	if (Lista_paciente == nullptr) {
 		cout << "hubo un error al leer los pacientes" << endl;
@@ -24,23 +25,35 @@ int main()
 	Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
 
 
-string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
-fstream Consultas;
-Consultas.open(ruta_cons, ios::in);
-Consulta* Lista_consultas;
-int tamact_cons = 0;
+	Paciente* Lista_copia = Actualizar_listap(Lista_paciente, tamact_p); //lista de los pacientes que NO ESTAN ARCHIVADOS 
+	int i = 0;
+	int j = 0;
+	for (i=0; i < tamact_p; i++)
+	{		
+		if (Lista_copia[i].estado_paciente != "n/c")
+			Lista_copia[i] = Lista_copia[i+1]; //piso el valor del fallecido para eliminarlo		 
+	}
 
-Lista_consultas = LeerConsultas(Consultas, tamact_cons);
-if (Lista_consultas == nullptr) {
-	cout << "hubo un error al leer los consultas" << endl;
-	return -1;
-}
-cout << endl<<endl;
 
-	cout << "----------LISTA CONSULTAS----------------"<<endl;
-	Imprimir_Lista_consultas(Lista_consultas, tamact_cons);
-
-	
+//
+//	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
+//	fstream Consultas;
+//	Consultas.open(ruta_cons, ios::in);
+//	Consulta* Lista_consultas;
+//	int tamact_cons = 0;
+//
+//	Lista_consultas = LeerConsultas(Consultas, tamact_cons);
+//	if (Lista_consultas == nullptr) 
+//	{
+//		cout << "hubo un error al leer los consultas" << endl;
+//		return -1;
+//	}
+//	cout << endl<<endl;
+//
+//	cout << "----------LISTA CONSULTAS----------------"<<endl;
+//	Imprimir_Lista_consultas(Lista_consultas, tamact_cons);
+//
+//	
 	
 //	string ruta_med = (BASE_PATH + "../data_files/input/IRI_Medicos.csv");
 //	fstream Medicos;
@@ -57,30 +70,32 @@ cout << endl<<endl;
 //	cout << "----------LISTA MEDICOS----------------" << endl;
 //	Imprimir_Lista_Medicos(lista_medicos, tamact_med);
 //
-//
-//	string ruta_cont = (BASE_PATH + "../data_files/input/IRI_Contactos.csv");
-//	fstream Contactos;
-//	Contactos.open(ruta_cont, ios::in);
-//	int tamact_cont=0;
-//	Contacto* lista_contactos;
-//
-//	lista_contactos = LeerContactos(Contactos, tamact_cont);
-//
-//	if (lista_contactos == nullptr) {
-//		cout << "hubo un error al leer los contactos" << endl;
-//		return -1;
-//	}
-//	cout<<"----------LISTA CONTACTOS----------------" << endl;
-//
-//	Imprimir_Lista_contactos(lista_contactos, tamact_cont);
 
-	Buscar_Ultima_Consulta(Lista_paciente, Lista_consultas, tamact_p, tamact_cons);
+/*	string ruta_cont = (BASE_PATH + "../data_files/input/IRI_Contactos.csv");
+	fstream Contactos;
+	Contactos.open(ruta_cont, ios::in);
+	int tamact_cont=0;
+	Contacto* lista_contactos;
+
+	lista_contactos = LeerContactos(Contactos, tamact_cont);
+
+	if (lista_contactos == nullptr)
+	{
+		cout << "hubo un error al leer los contactos" << endl;
+		return -1;
+	}
+	cout<<"----------LISTA CONTACTOS----------------" << endl;
+
+	Imprimir_Lista_contactos(lista_contactos, tamact_cont);*/ //si cambiamos el dni a int solo lee 7 contactos y si lo ponemos como string nos imprime con comas
+
+	/*Buscar_Ultima_Consulta(Lista_paciente, Lista_consultas, tamact_p, tamact_cons);
 
 	int i;
 	for (i = 0; i < tamact_p; i++)
 	{
 		cout << Lista_paciente[i].U_consulta.fecha_turno.tm_mday << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_mon << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_year << endl;
-	}
+	}*/
+
 	/*int dif;
 	dif = DevolverFecha(Lista_pacientes);
 	cout << dif;*/
@@ -100,9 +115,9 @@ cout << endl<<endl;
 	//
 	// system("pause");
 
-	delete[]Lista_consultas;
-	delete[]Lista_paciente;
-//	delete[]lista_contactos;
+	/*delete[]Lista_consultas;
+	delete[]Lista_paciente;*/
+	//delete[]lista_contactos;
 //	delete[]lista_medicos;
 	return 0;
 }
