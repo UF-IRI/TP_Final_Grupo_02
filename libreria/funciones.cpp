@@ -8,14 +8,14 @@ using namespace std;
 
 //PACIENTES
 
-Paciente* LeerPacientes(fstream& pacientes)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Paciente* LeerPacientes(fstream& pacientes, int &tamact_p)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 {
 	Paciente* Lista_pacientes = new Paciente[0];
 	string headers;	
 	Paciente aux;	
 	char coma = ',';
 	char barra = '/';
-	int tamact_p = 0;	
+		
 
 	if (!(pacientes.is_open()))
 	{
@@ -59,42 +59,26 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 }
 
 
-void Imprimir_Lista_pacientes(Paciente* lista)
+void Imprimir_Lista_pacientes(Paciente* lista, int tam)
 {
 
 	int i = 0;
-	while (lista != NULL && (lista+i+1)!= NULL)
+	while (i< tam)
 	{
 		cout << "Dni: " << lista[i].dni << " Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << " Sexo: " << lista[i].sexo << " Natalicio: "<< lista[i].natalicio.tm_mon<<"/"<< lista[i].natalicio.tm_mday<<"/"<< lista[i].natalicio.tm_year << " Estado: " << lista[i].estado_paciente << " Cobertura: " << lista[i].id_os << endl;
 		i++;
 	}
 }
 
-double DevolverFecha(U_consulta paciente)
-{
-	double diferencia=0;
-	int i = 0;
-	time_t hoy = time(0);
-	tm* aux = localtime(&hoy);
-
-	time_t fecha_actual = mktime(aux);  //lo pasa a segundos
-	time_t fecha_uconsul = mktime(&(paciente.fecha_turno));
-	
-	diferencia = difftime(fecha_actual, fecha_uconsul);
-
-	return diferencia;
-}
-
 //CONSULTAS
 
-U_consulta* LeerConsultas(fstream& consultas)
+U_consulta* LeerConsultas(fstream& consultas, int& tamact_cons)
 {
 	U_consulta* Lista_consultas = new U_consulta[0];
 	string headers;
 	U_consulta aux;
 	char coma = ',';
 	char barra= '/';
-	int tamact_p = 0;
 
 	if (!(consultas.is_open()))
 	{
@@ -107,7 +91,7 @@ U_consulta* LeerConsultas(fstream& consultas)
 	while (consultas)
 	{
 		consultas >> aux.dni_pac >> coma >> aux.fecha_solicitado.tm_mday >> barra >> aux.fecha_solicitado.tm_mon >> barra >> aux.fecha_solicitado.tm_year >>coma>> aux.fecha_turno.tm_mday >> barra >> aux.fecha_turno.tm_mon >> barra >> aux.fecha_turno.tm_year >> coma >> aux.presento>>coma>>aux.matriula_med;
-		Agregar_Consultas(Lista_consultas, aux, &tamact_p);
+		Agregar_Consultas(Lista_consultas, aux, &tamact_cons);
 	}
 	consultas.close();
 	return Lista_consultas;	
@@ -135,10 +119,10 @@ void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* t
 	return;
 }
 
-void Imprimir_Lista_consultas(U_consulta* lista)
+void Imprimir_Lista_consultas(U_consulta* lista, int tam)
 {
 	int i = 0;
-	while (i <= 990)
+	while (i < tam-1)
 	{
 		cout << "Dni: " << lista[i].dni_pac << " Fecha_solicitada: " << lista[i].fecha_solicitado.tm_mday << "/" << lista[i].fecha_solicitado.tm_mon << "/" << lista[i].fecha_solicitado.tm_year << " Fecha_turno: " << lista[i].fecha_turno.tm_mday << "/" << lista[i].fecha_turno.tm_mon << "/" << lista[i].fecha_turno.tm_year << " Matricula_med:" << lista[i].matriula_med<<endl;
 		double dif = DevolverFecha(lista[i]);
@@ -147,38 +131,35 @@ void Imprimir_Lista_consultas(U_consulta* lista)
 	}	
 }
 
-Medico* LeerMedicos(string archivo_Med)
+Medico* LeerMedicos(fstream& Archivo_Med, int& tamact_med)
 {
-	fstream Arch_Medicos;
 	string headers;
 	char coma;
 	char delimitador = ' ';
 	char delimitador_fecha = '/';
 	Medico aux;
-	string linea;
-	int tamact_m = 0;
-	Medico* lista_medicos = new Medico[tamact_m];
+	Medico* lista_medicos = new Medico[tamact_med];
 
-	Arch_Medicos.open(archivo_Med, ios::in);
-		if (!(Arch_Medicos.is_open()))
+		if (!(Archivo_Med.is_open()))
 		{
 			cout << "No se pudo abrir el archivo de Medicos" << endl;
 			return nullptr;
 		}
 
-		getline(Arch_Medicos, headers);
+		getline(Archivo_Med, headers);
 
 		string activo;
-		while (Arch_Medicos)
+		while (Archivo_Med)
 		{
-			Arch_Medicos >> aux.matricula >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.telefono >> coma >> aux.especialidad >> coma >> activo;
+			Archivo_Med >> aux.matricula >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.telefono >> coma >> aux.especialidad >> coma >> activo;
 			if (activo == "1")
 				aux.activo = true;
 			else
 				aux.activo = false;
 
-			Agregar_Medicos(lista_medicos, aux, &tamact_m);
+			Agregar_Medicos(lista_medicos, aux, &tamact_med);
 		}
+		Archivo_Med.close();
 
 		return lista_medicos;
 }
@@ -203,11 +184,10 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 
 	return;
 }
-void Imprimir_Lista_Medicos(Medico* lista)
+void Imprimir_Lista_Medicos(Medico* lista, int tam)
 {
 	int i = 0;
-	int tamanio = sizeof(lista);
-	while (i <=tamanio)
+	while (i < tam-1)
 	{
 		cout << lista[i].matricula << " , " << lista[i].nombre << " , " << lista[i].apellido << " , " << lista[i].telefono << " , " << lista[i].especialidad << " , " << lista[i].activo << endl;
 		i++;
@@ -216,31 +196,29 @@ void Imprimir_Lista_Medicos(Medico* lista)
 
 
 
-Contacto* LeerContactos(string archivo_Cont)
+Contacto* LeerContactos(fstream& Archivo_Cont, int& tamact_cont)
 {
-	fstream Arch_Contactos;
 	string headers;
 	char coma;
 	Contacto aux;
-	int tamact_c = 0;
-	Contacto* lista_contactos = new Contacto[tamact_c];
+	Contacto* lista_contactos = new Contacto[tamact_cont];
 
-	Arch_Contactos.open(archivo_Cont, ios::in);
-
-	if (!(Arch_Contactos.is_open()))
+	if (!(Archivo_Cont.is_open()))
 	{
 		cout << "No se pudo abrir el archivo de Contactos" << endl;
 		return nullptr;
 	}
+	//dni_paciente , telefono , celular , direccion , mail
 
-	getline(Arch_Contactos, headers);
+	getline(Archivo_Cont, headers);
 
-	while (Arch_Contactos)
+	while (Archivo_Cont)
 	{
-		Arch_Contactos >> aux.dni>>coma>>aux.tel>>coma>>aux.cel>>coma>>aux.direccion>>coma>>aux.mail;
+		Archivo_Cont >> aux.dni>>coma>>aux.tel>>coma>>aux.cel>>coma>>aux.direccion>>coma>>aux.mail;
 		
-		Agregar_Contactos(lista_contactos, aux, &tamact_c);
+		Agregar_Contactos(lista_contactos, aux, &tamact_cont);
 	}
+	Archivo_Cont.close();
 	return lista_contactos;
 }
 
@@ -267,11 +245,11 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 	
 	return;
 }
-void Imprimir_Lista_contactos(Contacto* lista)
+void Imprimir_Lista_contactos(Contacto* lista, int tam)
 {
 	int i = 0;
 
-	while (i <= sizeof(lista))
+	while (i < tam-1)
 	{
 		cout << lista[i].dni << " , " << lista[i].tel << " , " << lista[i].cel << " , " << lista[i].direccion << " , " << lista[i].mail << endl;
 		i++;
@@ -281,7 +259,7 @@ void Imprimir_Lista_contactos(Contacto* lista)
 
 int DevolverFecha(Paciente* Lista_pacientes)
 {
-	int diferencia;
+	double diferencia;
 	int i = 0;
 	time_t curr_time = time(NULL);
 	tm* tm_local = localtime(&curr_time);
@@ -418,4 +396,19 @@ void Reprogramar_consulta(Paciente paciente)
 	//Como el paciente quiere retornar, se le asigna una cunsulta.
 	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
 
+}
+
+double DevolverFecha(U_consulta paciente)
+{
+	double diferencia = 0;
+	int i = 0;
+	time_t hoy = time(0);
+	tm* aux = localtime(&hoy);
+
+	time_t fecha_actual = mktime(aux);  //lo pasa a segundos
+	time_t fecha_uconsul = mktime(&(paciente.fecha_turno));
+
+	diferencia = difftime(fecha_actual, fecha_uconsul);
+
+	return diferencia;
 }

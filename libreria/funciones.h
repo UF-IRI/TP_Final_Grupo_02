@@ -68,21 +68,21 @@ typedef struct MEDICO
 } Medico;
 
 
-Paciente* LeerPacientes(fstream& pacientes);//leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+Paciente* LeerPacientes(fstream& pacientes, int &tamact_p);//leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
-void Imprimir_Lista_pacientes(Paciente* lista);
+void Imprimir_Lista_pacientes(Paciente* lista, int tam);
 
-U_consulta* LeerConsultas(fstream& archivo_Cons);
+U_consulta* LeerConsultas(fstream& archivo_Cons, int& tamact_cons);
 void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* tam);
-void Imprimir_Lista_consultas(U_consulta* lista);
+void Imprimir_Lista_consultas(U_consulta* lista, int tam);
 
-Medico* LeerMedicos(string archivo_Med);
+Medico* LeerMedicos(fstream& Archivo_Med, int& tamact_med);
 void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
-void Imprimir_Lista_Medicos(Medico* lista);
+void Imprimir_Lista_Medicos(Medico* lista, int tam);
 
-Contacto* LeerContactos(string archivo_Cont);
+Contacto* LeerContactos(fstream& archivo_Cont, int& tamact_cont);
 void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
-void Imprimir_Lista_contactos(Contacto* lista);
+void Imprimir_Lista_contactos(Contacto* lista, int tam);
 
 double DevolverFecha(U_consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
