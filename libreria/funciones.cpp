@@ -17,10 +17,6 @@ Paciente* LeerPacientes(fstream& pacientes)  //leemos todos los archivos y guard
 	char barra = '/';
 	int tamact_p = 0;	
 
-	if (Lista_pacientes == nullptr) {
-		cout << "puntero paciente nulo" << endl;
-		return ;
-	}
 	if (!(pacientes.is_open()))
 	{
 		cout << "no se pudo abrir el archivo de pacientes" << endl;
@@ -65,8 +61,9 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 
 void Imprimir_Lista_pacientes(Paciente* lista)
 {
+
 	int i = 0;
-	while (i <= 99)
+	while (lista != NULL && (lista+i+1)!= NULL)
 	{
 		cout << "Dni: " << lista[i].dni << " Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << " Sexo: " << lista[i].sexo << " Natalicio: "<< lista[i].natalicio.tm_mon<<"/"<< lista[i].natalicio.tm_mday<<"/"<< lista[i].natalicio.tm_year << " Estado: " << lista[i].estado_paciente << " Cobertura: " << lista[i].id_os << endl;
 		i++;
@@ -87,9 +84,6 @@ double DevolverFecha(U_consulta paciente)
 
 	return diferencia;
 }
-
-
-
 
 //CONSULTAS
 
@@ -141,8 +135,6 @@ void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* t
 	return;
 }
 
-
-
 void Imprimir_Lista_consultas(U_consulta* lista)
 {
 	int i = 0;
@@ -154,13 +146,6 @@ void Imprimir_Lista_consultas(U_consulta* lista)
 		i++; 
 	}	
 }
-
-
-
-
-
-
-
 
 Medico* LeerMedicos(string archivo_Med)
 {
@@ -221,7 +206,8 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 void Imprimir_Lista_Medicos(Medico* lista)
 {
 	int i = 0;
-	while (i <= sizeof(lista))
+	int tamanio = sizeof(lista);
+	while (i <=tamanio)
 	{
 		cout << lista[i].matricula << " , " << lista[i].nombre << " , " << lista[i].apellido << " , " << lista[i].telefono << " , " << lista[i].especialidad << " , " << lista[i].activo << endl;
 		i++;
@@ -432,7 +418,4 @@ void Reprogramar_consulta(Paciente paciente)
 	//Como el paciente quiere retornar, se le asigna una cunsulta.
 	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
 
-//
-//	
 }
-//

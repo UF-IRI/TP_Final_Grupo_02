@@ -4,7 +4,7 @@
 #include <cstdlib>
 #pragma warning(disable : 4996)
 using namespace std;
-#define archpacientes ".../data_files/input/IRI_Pacientes.csv" 
+#define archpacientes "../data_files/input/IRI_Pacientes.csv" 
 int main()
 {	
 	string ruta_pac =(BASE_PATH + archpacientes);
@@ -24,11 +24,8 @@ int main()
 	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
 	fstream Consultas;
 	Consultas.open(ruta_cons, ios::in);
-	U_consulta* Lista_consultas=NULL;
-	if (Lista_consultas == nullptr) {
-		cout << "puntero consultas nulo" << endl;
-		return -1;
-	}
+	U_consulta* Lista_consultas;
+	
 	Lista_consultas = LeerConsultas(Consultas);
 	if (Lista_consultas == nullptr) {
 		cout << "hubo un error al leer los consultas" << endl;
@@ -42,11 +39,7 @@ int main()
 	
 	
 	string ruta_med = (BASE_PATH + "../data_files/input/IRI_Medicos.csv");
-	Medico* lista_medicos = NULL;
-	if (lista_medicos == nullptr) {
-		cout << "puntero medicos nulo" << endl;
-		return -1;
-	}
+	Medico* lista_medicos;
 
 	lista_medicos = LeerMedicos(ruta_med);
 
@@ -61,12 +54,7 @@ int main()
 
 
 	string ruta_cont = (BASE_PATH + "../data_files/input/IRI_Contactos.csv");
-	Contacto* lista_contactos= NULL;
-
-	if (lista_contactos == nullptr) {
-		cout << "puntero contactos nulo" << endl;
-		return -1;
-	}
+	Contacto* lista_contactos;
 
 	lista_contactos = LeerContactos(ruta_cont);
 
@@ -96,5 +84,9 @@ int main()
 	//
 	// system("pause");
 
+	delete[]Lista_consultas;
+	delete[]Lista_paciente;
+	delete[]lista_contactos;
+	delete[]lista_medicos;
 	return 0;
 }

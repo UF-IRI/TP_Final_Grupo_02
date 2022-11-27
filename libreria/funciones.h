@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
+#include <array>
 
 using namespace std;
 
