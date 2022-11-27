@@ -72,11 +72,11 @@ void Imprimir_Lista_pacientes(Paciente* lista, int tam)
 
 //CONSULTAS
 
-U_consulta* LeerConsultas(fstream& consultas, int& tamact_cons)
+Consulta* LeerConsultas(fstream& consultas, int& tamact_cons)
 {
-	U_consulta* Lista_consultas = new U_consulta[0];
+	Consulta* Lista_consultas = new Consulta[0];
 	string headers;
-	U_consulta aux;
+	Consulta aux;
 	char coma = ',';
 	char barra= '/';
 
@@ -98,11 +98,11 @@ U_consulta* LeerConsultas(fstream& consultas, int& tamact_cons)
 }
 
 
-void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* tam)
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 {
 	*tam=*tam+1;
 	int i = 0;
-	U_consulta* Lista_aux = new U_consulta[*tam];
+	Consulta* Lista_aux = new Consulta[*tam];
 
 	if (Lista_consultas == NULL)
 		return;
@@ -119,7 +119,7 @@ void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* t
 	return;
 }
 
-void Imprimir_Lista_consultas(U_consulta* lista, int tam)
+void Imprimir_Lista_consultas(Consulta* lista, int tam)
 {
 	int i = 0;
 	while (i < tam-1)
@@ -265,7 +265,7 @@ int DevolverFecha(Paciente* Lista_pacientes)
 	tm* tm_local = localtime(&curr_time);
 
 	time_t fecha_actual = mktime(tm_local);  //lo pasa a segundos
-	time_t fecha_uconsul = mktime(&(Lista_pacientes[i].datos_uconsul.fecha_turno));
+	time_t fecha_uconsul = mktime(&(Lista_pacientes[i].U_consulta.fecha_turno));
 
 	diferencia = difftime(fecha_actual, fecha_uconsul);
 
@@ -382,14 +382,14 @@ void Fecha_random(Paciente paciente)
 	time_t hoy = time(0);
 	tm* aux = localtime(&hoy);
 
-	paciente.datos_uconsul.fecha_turno.tm_mon = 1 + rand() % 11;//rand del 1 al 12 por los meses 
-	paciente.datos_uconsul.fecha_turno.tm_mday = 1 + rand() % 29; //rand del 1 al 30 por los dias
-	paciente.datos_uconsul.fecha_solicitado.tm_year = aux->tm_year + rand() % (aux->tm_year + 2);
+	paciente.U_consulta.fecha_turno.tm_mon = 1 + rand() % 11;//rand del 1 al 12 por los meses 
+	paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 29; //rand del 1 al 30 por los dias
+	paciente.U_consulta.fecha_solicitado.tm_year = aux->tm_year + rand() % (aux->tm_year + 2);
 
-	if (paciente.datos_uconsul.fecha_turno.tm_mon == 2 && paciente.datos_uconsul.fecha_turno.tm_mday > 28)//si justo mes == 02 volver a hacer un random del dia entre 1 y 28
-		paciente.datos_uconsul.fecha_turno.tm_mday = 1 + rand() % 28;
-	if (paciente.datos_uconsul.fecha_turno.tm_mon < aux->tm_mon && paciente.datos_uconsul.fecha_solicitado.tm_year == aux->tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
-		paciente.datos_uconsul.fecha_solicitado.tm_year = paciente.datos_uconsul.fecha_solicitado.tm_year + 1;
+	if (paciente.U_consulta.fecha_turno.tm_mon == 2 && paciente.U_consulta.fecha_turno.tm_mday > 28)//si justo mes == 02 volver a hacer un random del dia entre 1 y 28
+		paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 28;
+	if (paciente.U_consulta.fecha_turno.tm_mon < aux->tm_mon && paciente.U_consulta.fecha_solicitado.tm_year == aux->tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
+		paciente.U_consulta.fecha_solicitado.tm_year = paciente.U_consulta.fecha_solicitado.tm_year + 1;
 }
 void Reprogramar_consulta(Paciente paciente)
 {
@@ -398,7 +398,7 @@ void Reprogramar_consulta(Paciente paciente)
 
 }
 
-double DevolverFecha(U_consulta paciente)
+double DevolverFecha(Consulta paciente)
 {
 	double diferencia = 0;
 	int i = 0;
@@ -411,4 +411,39 @@ double DevolverFecha(U_consulta paciente)
 	diferencia = difftime(fecha_actual, fecha_uconsul);
 
 	return diferencia;
+}
+
+void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c)
+{
+	int i=0;
+	int j=0;
+
+	lista_p[0].U_consulta = lista_c[0];
+	while (i < tam_p)
+	{
+		while (j < tam_c)
+		{
+			if (lista_p[i].dni == lista_c[j].dni_pac)
+			{
+				if (lista_p[i].U_consulta.fecha_turno.tm_year < lista_c[j].fecha_turno.tm_year)
+				{
+					lista_p[i].U_consulta = lista_c[j];
+					break;
+				}
+				else if (lista_p[i].U_consulta.fecha_turno.tm_mon < lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
+				{
+					lista_p[i].U_consulta = lista_c[j];
+					break;
+				}
+				else if (lista_p[i].U_consulta.fecha_turno.tm_mday < lista_c[j].fecha_turno.tm_mday && lista_p[i].U_consulta.fecha_turno.tm_mon < lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
+				{
+					lista_p[i].U_consulta = lista_c[j];
+					break;
+				}
+
+			}
+			j++;
+		}
+		i++;
+	}
 }

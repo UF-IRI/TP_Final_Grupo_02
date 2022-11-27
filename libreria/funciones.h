@@ -20,7 +20,7 @@ typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 
 } Contacto;
 
-typedef struct ULTIMA_CONSULTA 
+typedef struct CONSULTA 
 {
 	tm fecha_turno; //fecha ultima consulta
 	tm fecha_solicitado;  //next consult
@@ -29,7 +29,7 @@ typedef struct ULTIMA_CONSULTA
 	bool reprogramacion;
 	bool presento; //true si atendio el turno, false sino 
 	Cobertura cobertura;
-} U_consulta;
+} Consulta;
 
  typedef struct HISTORIAL_CLINICO
 {
@@ -51,7 +51,7 @@ typedef struct  PACIENTE
 	string estado_paciente; //internado,paciente,vivo
 	string cobertura;
 	Diagnostico diagnostico_p;
-	U_consulta datos_uconsul;
+	Consulta U_consulta;
 	bool archivado=false;
 	bool retorna = false;
 
@@ -72,9 +72,9 @@ Paciente* LeerPacientes(fstream& pacientes, int &tamact_p);//leemos todos los ar
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
 void Imprimir_Lista_pacientes(Paciente* lista, int tam);
 
-U_consulta* LeerConsultas(fstream& archivo_Cons, int& tamact_cons);
-void Agregar_Consultas(U_consulta*& Lista_consultas, U_consulta agregado, int* tam);
-void Imprimir_Lista_consultas(U_consulta* lista, int tam);
+Consulta* LeerConsultas(fstream& archivo_Cons, int& tamact_cons);
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam);
+void Imprimir_Lista_consultas(Consulta* lista, int tam);
 
 Medico* LeerMedicos(fstream& Archivo_Med, int& tamact_med);
 void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
@@ -84,7 +84,7 @@ Contacto* LeerContactos(fstream& archivo_Cont, int& tamact_cont);
 void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
 void Imprimir_Lista_contactos(Contacto* lista, int tam);
 
-double DevolverFecha(U_consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+double DevolverFecha(Consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
 //se crea un archivo llamado "archivados" con aquellos pacientes que cumplan con la condicion de archivados
 void Escribir_Archivados(Paciente paciente);
@@ -114,4 +114,5 @@ void Cambio_Cobertura(Paciente paciente, int opcion);
 //Reprograma la consulta del paciente, asignandole una fecha para su prox consulta
 void Reprogramar_consulta(Paciente paciente);
 
-
+//Busca dentro de la lista de consultas la ultima consulta de cada paciente y los guarda dentro de la variable "U_consulta
+void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c);
