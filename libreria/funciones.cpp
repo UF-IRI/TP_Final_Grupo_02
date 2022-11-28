@@ -496,35 +496,40 @@ double DevolverFecha(Consulta paciente)
 
 void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c)
 {
-	int i=0;
+	int i;
 	int j=0;
 
-	lista_p[0].U_consulta = lista_c[0];
+	for (i = 0; i < tam_p; i++)
+	{
+		lista_p[i].U_consulta.fecha_turno.tm_year = 0;
+		lista_p[i].U_consulta.fecha_turno.tm_mon = 0;
+		lista_p[i].U_consulta.fecha_turno.tm_mday = 0;
+	}
+	i = 0;
 	while (i < tam_p)
 	{
 		while (j < tam_c)
 		{
 			if (lista_p[i].dni == lista_c[j].dni_pac)
 			{
+				cout << "encuentra paciente" << endl;
 				if (lista_p[i].U_consulta.fecha_turno.tm_year < lista_c[j].fecha_turno.tm_year)
 				{
 					lista_p[i].U_consulta = lista_c[j];
-					break;
 				}
 				else if (lista_p[i].U_consulta.fecha_turno.tm_mon < lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
 				{
 					lista_p[i].U_consulta = lista_c[j];
-					break;
 				}
 				else if (lista_p[i].U_consulta.fecha_turno.tm_mday < lista_c[j].fecha_turno.tm_mday && lista_p[i].U_consulta.fecha_turno.tm_mon < lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
 				{
 					lista_p[i].U_consulta = lista_c[j];
-					break;
 				}
 
 			}
 			j++;
 		}
+		j = 0;
 		i++;
 	}
 }

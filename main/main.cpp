@@ -26,25 +26,25 @@ int main()
 
 
 
-//
-//	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
-//	fstream Consultas;
-//	Consultas.open(ruta_cons, ios::in);
-//	Consulta* Lista_consultas;
-//	int tamact_cons = 0;
-//
-//	Lista_consultas = LeerConsultas(Consultas, tamact_cons);
-//	if (Lista_consultas == nullptr) 
-//	{
-//		cout << "hubo un error al leer los consultas" << endl;
-//		return -1;
-//	}
-//	cout << endl<<endl;
-//
-//	cout << "----------LISTA CONSULTAS----------------"<<endl;
-//	Imprimir_Lista_consultas(Lista_consultas, tamact_cons);
-//
-//	
+
+	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
+	fstream Consultas;
+	Consultas.open(ruta_cons, ios::in);
+	Consulta* Lista_consultas;
+	int tamact_cons = 0;
+
+	Lista_consultas = LeerConsultas(Consultas, tamact_cons);
+	if (Lista_consultas == nullptr) 
+	{
+		cout << "hubo un error al leer los consultas" << endl;
+		return -1;
+	}
+	cout << endl<<endl;
+
+	cout << "----------LISTA CONSULTAS----------------"<<endl;
+	Imprimir_Lista_consultas(Lista_consultas, tamact_cons);
+
+	
 	
 //	string ruta_med = (BASE_PATH + "../data_files/input/IRI_Medicos.csv");
 //	fstream Medicos;
@@ -79,19 +79,19 @@ int main()
 
 	Imprimir_Lista_contactos(lista_contactos, tamact_cont);*/ //si cambiamos el dni a int solo lee 7 contactos y si lo ponemos como string nos imprime con comas
 
-	/*Buscar_Ultima_Consulta(Lista_paciente, Lista_consultas, tamact_p, tamact_cons);
+	Buscar_Ultima_Consulta(Lista_paciente, Lista_consultas, tamact_p, tamact_cons);
 
 	int i;
 	for (i = 0; i < tamact_p; i++)
 	{
-		cout << Lista_paciente[i].U_consulta.fecha_turno.tm_mday << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_mon << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_year << endl;
-	}*/
+		cout <<"presento: " << Lista_paciente[i].U_consulta.presento << " dni" << Lista_paciente[i].dni << " " << Lista_paciente[i].U_consulta.fecha_turno.tm_mday << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_mon << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_year <<" matri med: "<<Lista_paciente[i].U_consulta.matriula_med << endl;
+	}
 
 	// system("pause");
 
-	/*delete[]Lista_consultas;
-	delete[]Lista_paciente;*/
+	delete[]Lista_consultas;
+	delete[]Lista_paciente;
 	//delete[]lista_contactos;
-//	delete[]lista_medicos;
+	//delete[]lista_medicos;
 	return 0;
 }
