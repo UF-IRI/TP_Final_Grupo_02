@@ -273,58 +273,132 @@ int DevolverFecha(Paciente* Lista_pacientes)
 }
 
 
-//void Archivar(Paciente*& Lista_pacientes)
+//void Archivar(Consulta*& Lista_consultas, Paciente*& Lista_pacientes)
 //{
 //	int diferencia;
 //	int i = 0;
 //	//Si el tiempo que paso desde la ultima consulta del paciente y la fecha actvual es mayor a 10 y no concurrio se le archiva,
-//	// Si es menor a 10 y no concurrio pero quiere reprogramar,se llama  a reprogramar paciente y se cambia la reprogramacion como true y tambin el retorna
+//	 //Si es menor a 10 y no concurrio pero quiere reprogramar,se llama  a reprogramar paciente y se cambia la reprogramacion como true y tambin el retorna
 //	//Si La diferencia de los anios es menor a 10 y no quiere retornar se archivan
 //	do {
-//		diferencia = DevolverFecha(Lista_pacientes[i]);
-//		if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
+//		diferencia = DevolverFecha(Lista_consultas[i]);
+//		if (diferencia > 10 && Lista_consultas[i].presento == false) //no vuelven
 //		{
-//			Lista_pacientes[i].archivado = true;
-//			if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
-//				Escribir_Archivados(Lista_pacientes[i]);
+//			Lista_pacientes[i].archivado= true;
+//			Escribir_Archivados(Lista_pacientes[i]);			
 //		}
-//		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == false)
+//		else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == false)
 //		{
-//			if (Lista_pacientes[i].estado_paciente != "n/c")
+//			if (Lista_pacientes[i].estado_paciente != "n/c") //escribir en el archivo archivados los fallecidos
 //				Lista_pacientes[i].archivado = true;
 //			Escribir_Archivados(Lista_pacientes[i]);
 //		}
-//		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == true)
+//		else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == true)
 //		{
 //			Lista_pacientes[i].archivado = false;
-//			Lista_pacientes[i].retorna = true;
-//		/*	Reprogramar_consulta(Lista_pacientes[i]);*/
+//			Lista_pacientes[i].retorna = true;	
 //		}
 //		i++;
 //	} while (i <= sizeof(Lista_pacientes));
 //}
 
- 
- 
- 
-//void Escribir_Archivados(Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
-//{
-//	char coma = ',';
-//	fstream archivados;
-//	archivados.open("Pacientes_Archivados.csv", ios::out); //escribe en un nuevo archivo llamado archivados 
-//
-//	if (!archivados.is_open())
-//		return;
-//
-//	else
-//	{		
-//		archivados << "n_historialclinico,Nombre,Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
-//		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio.tm_mon << coma << paciente.natalicio.tm_wday << paciente.natalicio.tm_year << coma << paciente.fechaingreso.tm_mon <<"/"<< paciente.fechaingreso.tm_wday<<"/"<< paciente.fechaingreso.tm_year<< coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta.tm_mday<<"/"<< paciente.datos_uconsul.fecha_uconsulta.tm_mon<<"/"<< paciente.datos_uconsul.fecha_uconsulta.tm_year << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad << endl;
-//	}
-//
-//}
-////averiguar como hacer los archivos de output
 
+Paciente* archivar(Consulta*& Lista_consultas,int tam_c, Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m)
+{
+	Paciente* Lista_retornantes = new Paciente[0];
+	Medico* medico;
+	int tam_nuevo = 0;
+	double diferencia;
+	string matricula_medico;
+	for (int i = 0; i < tam_c; i++) //recorro lista consultas 
+	{
+		diferencia= DevolverFecha(Lista_consultas[i]); //obtengo la diferencia de las fechas para ver si pasaron 10 años
+		for (int j = 0; j < tam_p; j++)
+		{
+			if (Lista_consultas[i].dni_pac == Lista_pacientes[j].dni) //busco el paciente al que le correspondan los datos de esa ultima consulta
+			{
+				matricula_medico = Lista_consultas[i].matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
+				if (diferencia > 10 && Lista_consultas[i].presento == false)//si pasaron mas de 10 años y no se presento lo archivamos
+				{
+					Lista_pacientes[i].archivado = true; //archivo a ESE paciente
+					medico=Buscar_Medico(Lista_medicos,matricula_medico,tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
+					Escribir_Archivados(medico, Lista_pacientes[i]);
+				}
+				else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
+				{
+					if (Lista_pacientes[i].estado_paciente == "fallecido") //escribir en el archivo archivados los fallecidos
+					{
+						Lista_pacientes[i].archivado = true;
+						medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
+						Escribir_Archivados(medico,Lista_pacientes[i]);
+					}				
+					else  //los internados o n/c podrian volver
+					{
+						Lista_pacientes[i].archivado = false;
+						Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_nuevo); //lo agrego a una lista de posibles retornantes y esa es la que le vamos a pasar a secretaria 
+					}						
+				}
+				else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == true)
+				{
+					Lista_pacientes[i].archivado = false;					
+					Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_nuevo);
+				}					
+			}
+		}		
+	}
+	return Lista_pacientes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
+}
+
+ 
+void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
+{
+	*tam = *tam + 1;
+	int i = 0;
+	Paciente* Lista_posibles_retornantes = new Paciente[*tam];
+
+	if (Lista_pacientes == NULL)
+		return;
+
+	//Copiamos y agregamos a la lista al paciente
+	while (i < *tam - 1 && *tam - 1 != 0)
+	{
+		Lista_posibles_retornantes[i] = Lista_pacientes[i];
+		i++;
+	}
+
+	Lista_posibles_retornantes[i] = Datos_p;
+
+	delete[] Lista_pacientes;
+	Lista_pacientes = Lista_posibles_retornantes;
+
+	return;
+}
+ 
+Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m)
+{
+	for (int i = 0; i < tam_m;i++)
+	{
+		if (Lista_medicos[i].matricula == matricula_medico)
+			return &Lista_medicos[i];
+	}
+}
+
+void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
+{
+	char coma = ',';
+	fstream archivados;
+	archivados.open("Pacientes_Archivados.csv", ios::out); //escribe en un nuevo archivo llamado archivados 
+
+	if (!archivados.is_open())
+		return;
+
+	else
+	{
+		archivados << "Nombre paciente, Apellido paciente, Dni paciente, ID_os, Nombre medico, Apellido medico, Teléfono de contacto medico, Matricula medico, especialidad" << endl;
+		archivados << paciente.nombre<<coma<<paciente.apellido<<coma<<paciente.dni<<paciente.id_os<<coma<<medico->nombre << coma << medico->apellido << coma << medico->telefono << coma << medico->matricula << coma << medico->especialidad << endl;
+	}
+
+}
 
 
 
@@ -386,18 +460,6 @@ int DevolverFecha(Paciente* Lista_pacientes)
 //	}
 //}
 
-Paciente* Actualizar_listap(Paciente* lista_pacientes, int tam) //la llamamos luego de llamar a la funcion archivar
-{	
-	Paciente* Lista_actualizada = new Paciente[tam];
-
-	for (int i = 0;i < tam; i++)
-	{
-		Lista_actualizada[i] = lista_pacientes[i];	
-	}
-	return Lista_actualizada; //esta lista se la pasmaos a la secretaria, para pasarle aquellos pacientes que puedan llegar a volver 
-}
-
-
 
 void Reprogramar_consulta(Paciente paciente) //fijarse si funciona
 {
@@ -415,7 +477,6 @@ void Reprogramar_consulta(Paciente paciente) //fijarse si funciona
 		paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 28;
 	if (paciente.U_consulta.fecha_turno.tm_mon < aux->tm_mon && paciente.U_consulta.fecha_solicitado.tm_year == aux->tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
 		paciente.U_consulta.fecha_solicitado.tm_year = paciente.U_consulta.fecha_solicitado.tm_year + 1;
-
 }
 
 double DevolverFecha(Consulta paciente)
@@ -428,7 +489,7 @@ double DevolverFecha(Consulta paciente)
 	time_t fecha_actual = mktime(aux);  //lo pasa a segundos
 	time_t fecha_uconsul = mktime(&(paciente.fecha_turno));
 
-	diferencia = difftime(fecha_actual, fecha_uconsul);
+	diferencia = difftime(fecha_actual, fecha_uconsul)/31530000; //lo pasamos de seg a anios
 
 	return diferencia;
 }

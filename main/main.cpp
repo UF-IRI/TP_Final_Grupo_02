@@ -25,15 +25,6 @@ int main()
 	Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
 
 
-	Paciente* Lista_copia = Actualizar_listap(Lista_paciente, tamact_p); //lista de los pacientes que NO ESTAN ARCHIVADOS 
-	int i = 0;
-	int j = 0;
-	for (i=0; i < tamact_p; i++)
-	{		
-		if (Lista_copia[i].estado_paciente != "n/c")
-			Lista_copia[i] = Lista_copia[i+1]; //piso el valor del fallecido para eliminarlo		 
-	}
-
 
 //
 //	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
@@ -96,23 +87,6 @@ int main()
 		cout << Lista_paciente[i].U_consulta.fecha_turno.tm_mday << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_mon << "/" << Lista_paciente[i].U_consulta.fecha_turno.tm_year << endl;
 	}*/
 
-	/*int dif;
-	dif = DevolverFecha(Lista_pacientes);
-	cout << dif;*/
-
-
-	/* Archivar(Lista_pacientes);*/ //adentro esta la funcion de devolver fecha y escrbir archivados(fijarse si se crea y se escribe el archivo), fijarse si funcionan
-
-	 //pruebo si esta leyendo y agregando bien a la lista con la funcion imprimir lista de pacientes. Si funciona deberimaos hacer lo mismo pero para el resto de las listas
-	/* Imprimir_Lista(Lista_pacientes);*/
-
-	//
-	//
-	// cout << "Contactando..." << endl; //podriamos meterlo en un bucle y que vaya contactando paciente por paciente 
-	// cout << "Si desea reprogramar un turno ingrese un 1, de otra forma ingrese cualquier numero: ";
-	// cin >> opcion;
-	// Secretaria(Lista_pacientes, opcion); //tiene adentro cambio_cobertura y reprogramar consulta(tiene adentro fecha random)
-	//
 	// system("pause");
 
 	/*delete[]Lista_consultas;

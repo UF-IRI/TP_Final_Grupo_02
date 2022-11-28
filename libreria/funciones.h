@@ -87,10 +87,14 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam);
 double DevolverFecha(Consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
 //se crea un archivo llamado "archivados" con aquellos pacientes que cumplan con la condicion de archivados
-void Escribir_Archivados(Paciente paciente);
+void Escribir_Archivados(Medico* Lista_medicos, Paciente paciente);
+
+void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
 
 //cambia el estado archivado para los que corresponda
-void Archivar(Paciente*& Lista_pacientes);
+Paciente* Archivar(Consulta* Lista_consultas, int tam_c, Paciente* Lista_pacientes, int tam_p, Medico* Lista_medicos, int tam_m);
+
+Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m);
 
 //Se le pasa la lista de pacientes y si quieren repregramar se llama a reprogramar consulta, sino se archivan
 void Secretaria(Paciente*& lista,int opcion);
@@ -103,5 +107,3 @@ void Reprogramar_consulta(Paciente paciente);
 
 //Busca dentro de la lista de consultas la ultima consulta de cada paciente y los guarda dentro de la variable "U_consulta
 void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c);
-
-Paciente* Actualizar_listap(Paciente* lista_pacientes, int tam);
