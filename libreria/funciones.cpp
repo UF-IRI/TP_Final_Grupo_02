@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 #define _CRT_SECURE_NO_WARNINGS
 
 using namespace std;
@@ -257,20 +258,6 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam)
 }
 
 
-int DevolverFecha(Paciente* Lista_pacientes)
-{
-	double diferencia;
-	int i = 0;
-	time_t curr_time = time(NULL);
-	tm* tm_local = localtime(&curr_time);
-
-	time_t fecha_actual = mktime(tm_local);  //lo pasa a segundos
-	time_t fecha_uconsul = mktime(&(Lista_pacientes[i].U_consulta.fecha_turno));
-
-	diferencia = difftime(fecha_actual, fecha_uconsul);
-
-	return diferencia;
-}
 
 
 //void Archivar(Consulta*& Lista_consultas, Paciente*& Lista_pacientes)
@@ -484,14 +471,17 @@ double DevolverFecha(Consulta paciente)
 	double diferencia = 0;
 	int i = 0;
 	time_t hoy = time(0);
-	tm* aux = localtime(&hoy);
+	struct std::tm fecha;
+	
+	std::istringstream ss(to_string(paciente.fecha_turno.tm_mday) + "/" + to_string(paciente.fecha_turno.tm_mon) + "/" + to_string(paciente.fecha_turno.tm_year) + " 00:00:00");
+	
+	ss >> std::get_time(&fecha, "%d/%m/%Y %H:%M:%S");
 
-	time_t fecha_actual = mktime(aux);  //lo pasa a segundos
-	time_t fecha_uconsul = mktime(&(paciente.fecha_turno));
+	time_t fecha_uconsul = mktime(&fecha);
 
-	diferencia = difftime(fecha_actual, fecha_uconsul)/31530000; //lo pasamos de seg a anios
-
+	diferencia = difftime(hoy, fecha_uconsul) / 31530000; //lo pasamos de seg a anios
 	return diferencia;
+	
 }
 
 void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c)
