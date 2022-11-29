@@ -92,7 +92,7 @@ void Escribir_Archivados(Medico* Lista_medicos, Paciente paciente);
 void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
 
 //cambia el estado archivado para los que corresponda
-Paciente* Archivar(Consulta* Lista_consultas, int tam_c, Paciente* Lista_pacientes, int tam_p, Medico* Lista_medicos, int tam_m);
+Paciente* Archivar(Paciente* Lista_pacientes, int tam_p, Medico* Lista_medicos, int tam_m);
 
 Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m);
 

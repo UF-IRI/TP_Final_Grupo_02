@@ -290,48 +290,43 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam)
 //}
 
 
-Paciente* archivar(Consulta*& Lista_consultas,int tam_c, Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m)
+Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m)
 {
 	Paciente* Lista_retornantes = new Paciente[0];
 	Medico* medico;
 	int tam_nuevo = 0;
 	double diferencia;
 	string matricula_medico;
-	for (int i = 0; i < tam_c; i++) //recorro lista consultas 
+	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
 	{
-		diferencia= DevolverFecha(Lista_consultas[i]); //obtengo la diferencia de las fechas para ver si pasaron 10 años
-		for (int j = 0; j < tam_p; j++)
+		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
+		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
+			
+		if (diferencia > 10 && Lista_pacientes[i].U_consulta.presento == false)//si pasaron mas de 10 años y no se presento lo archivamos
 		{
-			if (Lista_consultas[i].dni_pac == Lista_pacientes[j].dni) //busco el paciente al que le correspondan los datos de esa ultima consulta
+			Lista_pacientes[i].archivado = true; //archivo a ESE paciente
+			medico=Buscar_Medico(Lista_medicos,matricula_medico,tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
+			Escribir_Archivados(medico, Lista_pacientes[i]);
+		}
+		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false && Lista_pacientes[i].U_consulta.reprogramacion == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
+		{
+			if (Lista_pacientes[i].estado_paciente == "fallecido") //escribir en el archivo archivados los fallecidos
 			{
-				matricula_medico = Lista_consultas[i].matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
-				if (diferencia > 10 && Lista_consultas[i].presento == false)//si pasaron mas de 10 años y no se presento lo archivamos
-				{
-					Lista_pacientes[i].archivado = true; //archivo a ESE paciente
-					medico=Buscar_Medico(Lista_medicos,matricula_medico,tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
-					Escribir_Archivados(medico, Lista_pacientes[i]);
-				}
-				else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
-				{
-					if (Lista_pacientes[i].estado_paciente == "fallecido") //escribir en el archivo archivados los fallecidos
-					{
-						Lista_pacientes[i].archivado = true;
-						medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
-						Escribir_Archivados(medico,Lista_pacientes[i]);
-					}				
-					else  //los internados o n/c podrian volver
-					{
-						Lista_pacientes[i].archivado = false;
-						Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_nuevo); //lo agrego a una lista de posibles retornantes y esa es la que le vamos a pasar a secretaria 
-					}						
-				}
-				else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == true)
-				{
-					Lista_pacientes[i].archivado = false;					
-					Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_nuevo);
-				}					
-			}
-		}		
+				Lista_pacientes[i].archivado = true;
+				medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
+				Escribir_Archivados(medico,Lista_pacientes[i]);
+			}				
+			else  //los internados o n/c podrian volver
+			{
+				Lista_pacientes[i].archivado = false;
+				Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_nuevo); //lo agrego a una lista de posibles retornantes y esa es la que le vamos a pasar a secretaria 
+			}						
+		}
+		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false && Lista_pacientes[i].U_consulta.reprogramacion == true)
+		{
+			Lista_pacientes[i].archivado = false;					
+			Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_nuevo);
+		}				
 	}
 	return Lista_pacientes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
 }
