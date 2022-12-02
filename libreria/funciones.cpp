@@ -461,6 +461,7 @@ void Reprogramar_consulta(Paciente paciente) //fijarse si funciona
 		paciente.U_consulta.fecha_solicitado.tm_year = paciente.U_consulta.fecha_solicitado.tm_year + 1;
 }
 
+//creo que funciona bien 
 double DevolverFecha(Consulta paciente)
 {
 	double diferencia = 0;
