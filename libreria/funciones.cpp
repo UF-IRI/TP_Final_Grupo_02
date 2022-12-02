@@ -419,6 +419,7 @@ void Cambio_Cobertura(Paciente paciente, int opcion)
 	}
 
 }
+//hola
   
  
 void Secretaria(Paciente* lista_actualizada, int opcion,int tam_Lista_retornantes) //   en el main hacer paciente Lista= Actualizar_listap y esa lista se la pasamos a la funcion secretaria
