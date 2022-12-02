@@ -290,11 +290,10 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam)
 //}
 
 
-Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m)
+Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m,int& tam_lista_retornables)
 {
 	Paciente* Lista_retornantes = new Paciente[0];
 	Medico* medico;
-	int tam_nuevo = 0;
 	double diferencia;
 	string matricula_medico;
 	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
@@ -319,13 +318,13 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 			else  //los internados o n/c podrian volver
 			{
 				Lista_pacientes[i].archivado = false;
-				Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_nuevo); //lo agrego a una lista de posibles retornantes y esa es la que le vamos a pasar a secretaria 
+				Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_lista_retornables); //lo agrego a una lista de posibles retornantes y esa es la que le vamos a pasar a secretaria 
 			}						
 		}
 		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false && Lista_pacientes[i].U_consulta.reprogramacion == true)
 		{
 			Lista_pacientes[i].archivado = false;					
-			Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_nuevo);
+			Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_lista_retornables);
 		}				
 	}
 	return Lista_pacientes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
@@ -385,80 +384,84 @@ void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el arch
 
 
 
-//void Cambio_Cobertura(Paciente paciente, int opcion)
-//{
-//	switch (opcion)
-//	{
-//	 case 1:
-//		paciente.cobertura = OSDE;
-//		paciente.id_os = 1;
-//		break;
-//	 case 2:
-//		paciente.cobertura = MEDICUS;
-//		paciente.id_os = 2;
-//		break;
-//	 case 3:
-//		paciente.cobertura = IOSFA;
-//		paciente.id_os = 3;
-//		break;
-//	 case 4:
-//		paciente.cobertura = ITALIANO;
-//		paciente.id_os = 4;
-//		break;
-//	 case 5:
-//		paciente.cobertura = ALEMAN;
-//		paciente.id_os = 5;
-//		break;
-//	 case 6:
-//		paciente.cobertura = ESPANYOL;
-//		paciente.id_os = 6;
-//		break;
-//
-//	 default: 
-//		 cout << " invaind input" << endl;
-//		 break;
-//	}
-//
-//}
- 
- 
- 
-//void Secretaria(Paciente* lista_actualizada, int opcion)    en el main hacer paciente Lista= Actualizar_listap y esa lista se la pasamos a la funcion secretaria
-//{
-//	for (int i = 0; i < sizeof(*lista); i++)
-//	{
-//		if (lista[i].datos_uconsul.reprogramacion == 1)
-//		{
-//			//Reprogramar_consulta(lista[i]);
-//			Cambio_Cobertura(lista[i], opcion);
-//			lista[i].retorna = true;
-//		}
-//		else
-//		{
-//			Escribir_Archivados(lista[i]);
-//			lista[i].datos_uconsul.reprogramacion = false;
-//			lista[i].retorna = false;
-//		}
-//	}
-//}
-
-
-void Reprogramar_consulta(Paciente paciente) //fijarse si funciona
+void Cambio_Cobertura(Paciente paciente, int opcion)
 {
-	//Como el paciente quiere retornar, se le asigna una cunsulta.
-	int diferencia = 0;
+	switch (opcion)
+	{
+	 case 1:
+		paciente.cobertura = OSDE;
+		paciente.id_os = 1;
+		break;
+	 case 2:
+		paciente.cobertura = MEDICUS;
+		paciente.id_os = 2;
+		break;
+	 case 3:
+		paciente.cobertura = IOSFA;
+		paciente.id_os = 3;
+		break;
+	 case 4:
+		paciente.cobertura = ITALIANO;
+		paciente.id_os = 4;
+		break;
+	 case 5:
+		paciente.cobertura = ALEMAN;
+		paciente.id_os = 5;
+		break;
+	 case 6:
+		paciente.cobertura = ESPANYOL;
+		paciente.id_os = 6;
+		break;
+
+	 default: 
+		 cout << " invaind input" << endl;
+		 break;
+	}
+
+}
+  
+ 
+void Secretaria(Paciente* lista_actualizada, int opcion,int tam_Lista_retornantes) //   en el main hacer paciente Lista= Actualizar_listap y esa lista se la pasamos a la funcion secretaria
+{	
+	int obra_social = 1 + rand() % 5; //simulamos un cambio de cobertura
+	int i;
+	if (opcion == 1)
+	{
+		for (i = 0; i < tam_Lista_retornantes; i++)
+		{
+			Cambio_Cobertura(lista_actualizada[i], obra_social);
+			lista_actualizada[i].retorna = true;
+		}
+	}
+	else
+	{			
+		lista_actualizada[i].retorna = false;
+	}	
+}
+
+
+
+void Reprogramar_consulta(Paciente& paciente) //fijarse de arreglar porque los años nos dan unicamnete tres digitos
+{
+	srand(time(NULL));
+
+	double diferencia = 0;
 	int i = 0;
 	time_t hoy = time(0);
-	tm* aux = localtime(&hoy);
+	struct std::tm fecha;
+
+	std::istringstream ss(to_string(paciente.U_consulta.fecha_turno.tm_mday) + "/" + to_string(paciente.U_consulta.fecha_turno.tm_mon) + "/" + to_string(paciente.U_consulta.fecha_turno.tm_year) + " 00:00:00");
+
+	ss >> std::get_time(&fecha, "%d/%m/%Y %H:%M:%S");
 
 	paciente.U_consulta.fecha_turno.tm_mon = 1 + rand() % 11;//rand del 1 al 12 por los meses 
 	paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 29; //rand del 1 al 30 por los dias
-	paciente.U_consulta.fecha_solicitado.tm_year = aux->tm_year + rand() % (aux->tm_year + 2);
+	paciente.U_consulta.fecha_turno.tm_year = fecha.tm_year + rand() % (fecha.tm_year + 2);
 
 	if (paciente.U_consulta.fecha_turno.tm_mon == 2 && paciente.U_consulta.fecha_turno.tm_mday > 28)//si justo mes == 02 volver a hacer un random del dia entre 1 y 28
 		paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 28;
-	if (paciente.U_consulta.fecha_turno.tm_mon < aux->tm_mon && paciente.U_consulta.fecha_solicitado.tm_year == aux->tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
-		paciente.U_consulta.fecha_solicitado.tm_year = paciente.U_consulta.fecha_solicitado.tm_year + 1;
+	if (paciente.U_consulta.fecha_turno.tm_mon < fecha.tm_mon && paciente.U_consulta.fecha_solicitado.tm_year == fecha.tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
+		paciente.U_consulta.fecha_turno.tm_year = paciente.U_consulta.fecha_solicitado.tm_year + 1;
 }
 
 //creo que funciona bien 
@@ -518,4 +521,21 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 		j = 0;
 		i++;
 	}
+}
+void Buscar_contacto(Paciente* lista_actualizados, int tamact_p, Contacto* lista_contactos, int tamact_cont)
+{
+	for (int i = 0; i < tamact_p; i++)
+	{
+		lista_actualizados[i].contacto_p.cel = -1;
+	}
+
+	for (int i = 0; i < tamact_p; i++)
+	{
+		for (int j = 0; j < tamact_cont; j++)
+		{
+			if (lista_actualizados[i].dni == lista_contactos[j].dni)
+				lista_actualizados[i].contacto_p = lista_contactos[j];							
+		}
+	}
+
 }

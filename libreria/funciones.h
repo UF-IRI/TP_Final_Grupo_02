@@ -54,6 +54,7 @@ typedef struct  PACIENTE
 	Consulta U_consulta;
 	bool archivado=false;
 	bool retorna = false;
+	Contacto contacto_p;
 
 } Paciente;
 
@@ -92,18 +93,19 @@ void Escribir_Archivados(Medico* Lista_medicos, Paciente paciente);
 void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
 
 //cambia el estado archivado para los que corresponda
-Paciente* Archivar(Paciente* Lista_pacientes, int tam_p, Medico* Lista_medicos, int tam_m);
+Paciente* Archivar(Paciente* Lista_pacientes, int tam_p, Medico* Lista_medicos, int tam_m, int& tam_lista_retornables);
 
 Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m);
 
 //Se le pasa la lista de pacientes y si quieren repregramar se llama a reprogramar consulta, sino se archivan
-void Secretaria(Paciente*& lista,int opcion);
+void Secretaria(Paciente* lista_actualizada, int opcion, int tam_Lista_retornantes);
 
 //Cambia la cobertura del paciente si este decidio camviarla.
 void Cambio_Cobertura(Paciente paciente, int opcion);
 
 //Reprograma la consulta del paciente, asignandole una fecha random para su prox consulta
-void Reprogramar_consulta(Paciente paciente);
+void Reprogramar_consulta(Paciente& paciente);
 
 //Busca dentro de la lista de consultas la ultima consulta de cada paciente y los guarda dentro de la variable "U_consulta
 void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c);
+void Buscar_contacto(Paciente* lista_actualizados, int tamact_p, Contacto* lista_contactos, int tamact_cont);
