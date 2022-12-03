@@ -362,6 +362,7 @@ Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m)
 		if (Lista_medicos[i].matricula == matricula_medico)
 			return &Lista_medicos[i];
 	}
+	return nullptr;
 }
 
 void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
@@ -426,21 +427,21 @@ void Secretaria(Paciente* lista_actualizada, int opcion,int tam_Lista_retornante
 {	
 	int obra_social = 1 + rand() % 5; //simulamos un cambio de cobertura
 	int i;
-	if (opcion == 1)
+	for (i = 0; i < tam_Lista_retornantes; i++)
 	{
-		for (i = 0; i < tam_Lista_retornantes; i++)
+		if (opcion == 1)
 		{
+
 			Cambio_Cobertura(lista_actualizada[i], obra_social);
 			lista_actualizada[i].retorna = true;
+
+		}
+		else
+		{
+			lista_actualizada[i].retorna = false;
 		}
 	}
-	else
-	{			
-		lista_actualizada[i].retorna = false;
-	}	
 }
-
-
 
 void Reprogramar_consulta(Paciente& paciente) //fijarse de arreglar porque los años nos dan unicamnete tres digitos
 {
@@ -492,7 +493,7 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 	for (i = 0; i < tam_p; i++)
 	{
 		lista_p[i].U_consulta.fecha_turno.tm_year = 0;
-		lista_p[i].U_consulta.fecha_turno.tm_mon = 0;
+		lista_p[i].U_consulta.fecha_turno.tm_mon = 0;   // inicializamos las fechas para saber que valor tienen si no son encontradas y para que funcione la busqueda por maxima fecha
 		lista_p[i].U_consulta.fecha_turno.tm_mday = 0;
 	}
 	i = 0;
@@ -511,7 +512,7 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 				{
 					lista_p[i].U_consulta = lista_c[j];
 				}
-				else if (lista_p[i].U_consulta.fecha_turno.tm_mday < lista_c[j].fecha_turno.tm_mday && lista_p[i].U_consulta.fecha_turno.tm_mon < lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
+				else if (lista_p[i].U_consulta.fecha_turno.tm_mday < lista_c[j].fecha_turno.tm_mday && lista_p[i].U_consulta.fecha_turno.tm_mon ==lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
 				{
 					lista_p[i].U_consulta = lista_c[j];
 				}
@@ -527,7 +528,7 @@ void Buscar_contacto(Paciente* lista_actualizados, int tamact_p, Contacto* lista
 {
 	for (int i = 0; i < tamact_p; i++)
 	{
-		lista_actualizados[i].contacto_p.cel = -1;
+		lista_actualizados[i].contacto_p.cel = -1; //inicializamos todos los celulares de los contactos en -1 para saber cuando un contacto no es encontrado
 	}
 
 	for (int i = 0; i < tamact_p; i++)

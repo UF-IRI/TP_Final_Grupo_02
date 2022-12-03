@@ -8,7 +8,7 @@ namespace PacientTest::tests {
 		Paciente* lista_aux = new Paciente[tamanio];
 		Paciente aux;
 		aux.apellido = "Monteros";
-		aux.dni = 45524255;
+		aux.dni = "45524255";
 		aux.sexo = 'm';
 		aux.archivado = false;
 		aux.nombre = "Thiago";
@@ -21,7 +21,7 @@ namespace PacientTest::tests {
 
 	TEST(Devolverfecha, prueba_Devolver_fecha)
 	{
-		int diferencia = 0;
+		double diferencia = 0;
 		Consulta consulta;
 		consulta.fecha_turno.tm_mday = 2;
 		consulta.fecha_turno.tm_mon = 11;
@@ -31,10 +31,10 @@ namespace PacientTest::tests {
 
 		EXPECT_EQ(diferencia, 20);
 	}
-
-	/*TEST(BuscarMedico, prueba_buscar_medico)
+	
+	TEST(Busquedas, Buscar_medico)
 	{
-
+	
 		Medico* Lista = new Medico[3];
 		Lista[0].nombre = "Jacinta";
 		Lista[0].apellido = "Ralston";
@@ -54,10 +54,63 @@ namespace PacientTest::tests {
 		Lista[2].matricula = "06-445-0805";
 		Lista[2].especialidad = "cardiologia";
 		Lista[2].telefono = "+54(047)30321236";
-
+	
 		Medico* auxiliar = Buscar_Medico(Lista, "04-726-6430", 3);
+	
+		EXPECT_EQ(auxiliar->matricula, Lista[1].matricula);
+	
+	}
+	TEST(Busquedas, Buscar_u_consulta)
+	{
+		int tamp = 3;
+		int tamc = 6;
 
-		EXPECT_EQ(auxiliar, Lista[1]);
+		Paciente* lista_p = new Paciente[tamp];
+		Consulta* lista_c = new Consulta[tamc];
 
-	}*/
+		lista_p[0].dni = "45524255";
+		lista_p[1].dni = "45524258";
+		lista_p[2].dni = "45524259";
+
+		lista_c[0].fecha_turno.tm_mday = 23;
+		lista_c[0].fecha_turno.tm_mon = 5;
+		lista_c[0].fecha_turno.tm_year = 2009;
+		lista_c[0].dni_pac = "45524255";
+		lista_c[5].fecha_turno.tm_mday = 29;
+		lista_c[5].fecha_turno.tm_mon = 5;
+		lista_c[5].fecha_turno.tm_year = 2009;
+		lista_c[5].dni_pac = "45524255";
+		lista_c[1].fecha_turno.tm_mday = 23;
+		lista_c[1].fecha_turno.tm_mon = 5;
+		lista_c[1].fecha_turno.tm_year = 2017;
+		lista_c[1].dni_pac = "45524258";
+		lista_c[2].fecha_turno.tm_mday = 23;
+		lista_c[2].fecha_turno.tm_mon = 5;
+		lista_c[2].fecha_turno.tm_year = 2009;
+		lista_c[2].dni_pac = "45524258";
+		lista_c[3].fecha_turno.tm_mday = 23;
+		lista_c[3].fecha_turno.tm_mon = 5;
+		lista_c[3].fecha_turno.tm_year = 2009;
+		lista_c[3].dni_pac = "45524259";
+		lista_c[4].fecha_turno.tm_mday = 23;
+		lista_c[4].fecha_turno.tm_mon = 6;
+		lista_c[4].fecha_turno.tm_year = 2009;
+		lista_c[4].dni_pac = "45524259";
+	
+
+		Buscar_Ultima_Consulta(lista_p, lista_c, tamp, tamc);
+
+		//primer paciente, reconocible por el dia
+		EXPECT_EQ(lista_p[0].U_consulta.fecha_turno.tm_mday, 29);
+		EXPECT_EQ(lista_p[0].U_consulta.fecha_turno.tm_year, 2009);
+		EXPECT_EQ(lista_p[0].U_consulta.fecha_turno.tm_mon, 5);
+		//segundo paciente, reconocible por el anio
+		EXPECT_EQ(lista_p[1].U_consulta.fecha_turno.tm_mday, 23);
+		EXPECT_EQ(lista_p[1].U_consulta.fecha_turno.tm_year, 2017);
+		EXPECT_EQ(lista_p[1].U_consulta.fecha_turno.tm_mon, 5);
+		//tercer paciente, reconocible por el mes
+		EXPECT_EQ(lista_p[2].U_consulta.fecha_turno.tm_mday, 23);
+		EXPECT_EQ(lista_p[2].U_consulta.fecha_turno.tm_year, 2009);
+		EXPECT_EQ(lista_p[2].U_consulta.fecha_turno.tm_mon, 6);
+	}
 }
