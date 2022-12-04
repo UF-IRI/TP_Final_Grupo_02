@@ -95,13 +95,13 @@ int main()
 
 	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retonrantes);
 
-	Buscar_contacto(lista_actualizados, tamact_p, lista_contactos, tamact_cont); //le asigna a los pacientes sus datos de contacto
+	//Buscar_contacto(lista_actualizados, tamact_p, lista_contactos, tamact_cont); //le asigna a los pacientes sus datos de contacto
 
 
-	cout << "Contactandose con el numero... " << lista_actualizados->contacto_p.cel << "..." << endl;
-	cout << "Si desea reprogrmar un nuevo turno ingrese un 1: ";
-	int reprogramacion = rand() % 1; //simulamos comunicacion con el usuario sin usar cin
-	Secretaria(lista_actualizados, reprogramacion, tam_lista_retonrantes);
+	//cout << "Contactandose con el numero... " << lista_actualizados->contacto_p.cel << "..." << endl;
+	//cout << "Si desea reprogrmar un nuevo turno ingrese un 1: ";
+	//int reprogramacion = rand() % 1; //simulamos comunicacion con el usuario sin usar cin
+	//Secretaria(lista_actualizados, reprogramacion, tam_lista_retonrantes);
 
 
 
