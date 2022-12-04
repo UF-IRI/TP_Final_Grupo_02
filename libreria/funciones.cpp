@@ -126,8 +126,8 @@ void Imprimir_Lista_consultas(Consulta* lista, int tam)
 	while (i < tam-1)
 	{
 		cout << "Dni: " << lista[i].dni_pac << " Fecha_solicitada: " << lista[i].fecha_solicitado.tm_mday << "/" << lista[i].fecha_solicitado.tm_mon << "/" << lista[i].fecha_solicitado.tm_year << " Fecha_turno: " << lista[i].fecha_turno.tm_mday << "/" << lista[i].fecha_turno.tm_mon << "/" << lista[i].fecha_turno.tm_year << " Matricula_med:" << lista[i].matriula_med<<endl;
-		double dif = DevolverFecha(lista[i]);
-		cout << "DIFERENCIA:" << dif<<endl;  //imprime 0 porque puede ser?
+		//double dif = DevolverFecha(lista[i]);
+		//cout << "DIFERENCIA:" << dif<<endl;
 		i++; 
 	}	
 }
@@ -307,7 +307,7 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 			medico=Buscar_Medico(Lista_medicos,matricula_medico,tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
 			Escribir_Archivados(medico, Lista_pacientes[i]);
 		}
-		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false && Lista_pacientes[i].U_consulta.reprogramacion == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
+		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
 		{
 			if (Lista_pacientes[i].estado_paciente == "fallecido") //escribir en el archivo archivados los fallecidos
 			{
@@ -321,7 +321,7 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 				Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_lista_retornables); //lo agrego a una lista de posibles retornantes y esa es la que le vamos a pasar a secretaria 
 			}						
 		}
-		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false && Lista_pacientes[i].U_consulta.reprogramacion == true)
+		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == true)
 		{
 			Lista_pacientes[i].archivado = false;					
 			Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_lista_retornables);
@@ -503,7 +503,7 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 		{
 			if (lista_p[i].dni == lista_c[j].dni_pac)
 			{
-				cout << "encuentra paciente" << endl;
+				cout << "Paciente encontrado" << endl;
 				if (lista_p[i].U_consulta.fecha_turno.tm_year < lista_c[j].fecha_turno.tm_year)
 				{
 					lista_p[i].U_consulta = lista_c[j];
