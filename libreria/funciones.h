@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
+#include <array>
 
 using namespace std;
 
@@ -19,34 +20,25 @@ typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 
 } Contacto;
 
-typedef struct ULTIMA_CONSULTA  //tiene que haber un archivo con todos las ultimas consultas
-{
-	tm fecha_uconsulta;
-	string dni_medico, dni_paciente;
-	tm next_consul;
-	bool reprogramacion;
-	bool concurrio; //true si atendio el turno, false sino 
-	Cobertura cobertura;
-} U_consulta;
-
 typedef struct CONSULTA
 {
-	string dni;
-	tm fecha_solicitado;
-	tm fecha_turno;
-	bool presento;
-	string matricula_med;
-
-}Consulta;
+	tm fecha_turno; //fecha ultima consulta
+	tm fecha_solicitado;  //next consult
+	string dni_pac;
+	string matriula_med;
+	bool reprogramacion;
+	bool presento; //true si atendio el turno, false sino 
+	Cobertura cobertura;
+} Consulta;
 
 typedef struct HISTORIAL_CLINICO
 {
 	string especialidad;
-	int n_historialclinico;//numeropiso, numerocama; //numero piso y cama van a ser null salvo que internacion sea true
+	int n_historialclinico;
 
 } historial_clinico;
 
-typedef struct  PACIENTE//tiene que haber un archivo con todos los pacientes 
+typedef struct  PACIENTE
 {
 	string nombre;
 	string apellido;
@@ -55,13 +47,14 @@ typedef struct  PACIENTE//tiene que haber un archivo con todos los pacientes
 	tm natalicio;
 	tm fechaingreso;
 	string id_os;
-	historial_clinico historial_clinico;
-	string estado_paciente; //internado,paciente,vivo
+	//historial_clinico historial_clinico;
+	string estado_paciente; //internado,fallecido,vivo
 	string cobertura;
 	Diagnostico diagnostico_p;
-	U_consulta datos_uconsul;
+	Consulta U_consulta;
 	bool archivado = false;
 	bool retorna = false;
+	Contacto contacto_p;
 
 } Paciente;
 
@@ -76,38 +69,43 @@ typedef struct MEDICO
 } Medico;
 
 
-//leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
-Paciente* LeerPacientes(string archivo_Pac);
-Medico* LeerMedicos(string archivo_Med);
-Contacto* LeerContactos(string archivo_Cont);
-Consulta* LeerConsultas(string archivo_Cons);
+Paciente* LeerPacientes(fstream& pacientes, int& tamact_p);//leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
+void Imprimir_Lista_pacientes(Paciente* lista, int tam);
 
-//se crea un archivo llamado "archivados"con aquellos pacientes que cumplan con la condicion de archivados
-void Escribir_Archivados(Paciente paciente);
+Consulta* LeerConsultas(fstream& archivo_Cons, int& tamact_cons);
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam);
+void Imprimir_Lista_consultas(Consulta* lista, int tam);
+
+Medico* LeerMedicos(fstream& Archivo_Med, int& tamact_med);
+void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
+void Imprimir_Lista_Medicos(Medico* lista, int tam);
+
+Contacto* LeerContactos(fstream& archivo_Cont, int& tamact_cont);
+void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
+void Imprimir_Lista_contactos(Contacto* lista, int tam);
+
+double DevolverFecha(Consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+
+//se crea un archivo llamado "archivados" con aquellos pacientes que cumplan con la condicion de archivados
+void Escribir_Archivados(Medico* Lista_medicos, Paciente paciente);
+
+void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
 
 //cambia el estado archivado para los que corresponda
-void Archivar(Paciente*& Lista_pacientes);
+Paciente* archivar(Paciente*& Lista_pacientes, int tam_p, Medico* Lista_medicos, int tam_m, int& tam_lista_retornables);
 
-//Agregamos a cada lista su correspondiente dato
-void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
-void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam);
-void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
-void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam);
-
-//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
-int DevolverFecha(Paciente var);
-
-//Asigna a la prixima consulta del paciente una fecha random entre la (fecha actual) y unos anios mas adelante
-void Fecha_random(Paciente paciente);
-
-//Imprimimos los datos de los pacientes
-void Imprimir_Lista(Paciente* lista);
+Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m);
 
 //Se le pasa la lista de pacientes y si quieren repregramar se llama a reprogramar consulta, sino se archivan
-void Secretaria(Paciente*& lista, int opcion);
+void Secretaria(Paciente* lista_actualizada, int opcion, int tam_Lista_retornantes);
 
 //Cambia la cobertura del paciente si este decidio camviarla.
 void Cambio_Cobertura(Paciente paciente, int opcion);
 
-//Reprograma la consulta del paciente, asignandole una fecha para su prox consulta
-void Reprogramar_consulta(Paciente paciente);
+//Reprograma la consulta del paciente, asignandole una fecha random para su prox consulta
+void Reprogramar_consulta(Paciente& paciente);
+
+//Busca dentro de la lista de consultas la ultima consulta de cada paciente y los guarda dentro de la variable "U_consulta
+void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c);
+void Buscar_contacto(Paciente* lista_actualizados, int tamact_p, Contacto* lista_contactos, int tamact_cont);
