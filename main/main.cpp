@@ -88,6 +88,11 @@ int main()
 	//	Lista_paciente[i].U_consulta.fecha_turno.tm_year;
 	//}
 	int tam_lista_retonrantes=0;
+	cout << endl;
+	for (int i = 0; i < tamact_p; i++)
+	{
+		cout<<Lista_paciente[i].U_consulta.fecha_turno.tm_year<<endl;
+	}
 	
 	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retonrantes);
 

@@ -265,7 +265,10 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 	string matricula_medico;
 	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
 	{
-		Lista_pacientes[i].U_consulta.matriula_med;
+		Lista_pacientes[i].U_consulta.fecha_turno.tm_mday;
+		Lista_pacientes[i].U_consulta.fecha_turno.tm_mon;
+		Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
+
 		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
 		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
 			
@@ -402,11 +405,12 @@ void Secretaria(Paciente* lista_actualizada, int opcion,int tam_Lista_retornante
 
 			Cambio_Cobertura(lista_actualizada[i], obra_social);
 			lista_actualizada[i].retorna = true;
-
+			//return string=retorna
 		}
 		else
 		{
 			lista_actualizada[i].retorna = false;
+			//return string=no retorna y en el mian hacemos cout<<secretaria() hacerla string 
 		}
 	}
 }
@@ -494,6 +498,7 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 		i++;
 	}
 }
+
 void Buscar_contacto(Paciente* lista_actualizados, int tamact_p, Contacto* lista_contactos, int tamact_cont)
 {
 	for (int i = 0; i < tamact_p; i++)
