@@ -20,8 +20,8 @@ int main()
 		return -1;
 	}
 
-	cout << "-------------LISTA PACIENTES-----------" << endl;
-	Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
+	//cout << "-------------LISTA PACIENTES-----------" << endl;
+	//Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
 
 
 
@@ -40,8 +40,8 @@ int main()
 	}
 	cout << endl<<endl;
 
-	cout << "----------LISTA CONSULTAS----------------"<<endl;
-	Imprimir_Lista_consultas(Lista_consultas, tamact_cons);
+	//cout << "----------LISTA CONSULTAS----------------"<<endl;
+	//Imprimir_Lista_consultas(Lista_consultas, tamact_cons);
 
 	
 	
@@ -58,8 +58,8 @@ int main()
 		return -1;
 	}
 
-	cout << "----------LISTA MEDICOS----------------" << endl;
-	Imprimir_Lista_Medicos(lista_medicos, tamact_med);
+	//cout << "----------LISTA MEDICOS----------------" << endl;
+	//Imprimir_Lista_Medicos(lista_medicos, tamact_med);
 
 
 	string ruta_cont = (BASE_PATH + "../data_files/input/IRI_Contactos.csv");
@@ -76,12 +76,17 @@ int main()
 		return -1;
 	}
 	cout << endl;
-	cout<<"----------LISTA CONTACTOS----------------" << endl;
-
-	Imprimir_Lista_contactos(lista_contactos, tamact_cont); //si cambiamos el dni a int solo lee 7 contactos y si lo ponemos como string nos imprime con comas
+	//cout<<"----------LISTA CONTACTOS----------------" << endl;
+	//
+	//Imprimir_Lista_contactos(lista_contactos, tamact_cont); //si cambiamos el dni a int solo lee 7 contactos y si lo ponemos como string nos imprime con comas
 
 	Buscar_Ultima_Consulta(Lista_paciente, Lista_consultas, tamact_p, tamact_cons);
-
+	//for (int i = 0; i < tamact_p; i++)
+	//{
+	//	Lista_paciente[i].U_consulta.fecha_turno.tm_mday;
+	//	Lista_paciente[i].U_consulta.fecha_turno.tm_mon;
+	//	Lista_paciente[i].U_consulta.fecha_turno.tm_year;
+	//}
 	int tam_lista_retonrantes=0;
 	
 	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retonrantes);
@@ -90,7 +95,7 @@ int main()
 
 
 	//cout << "Contactandose con el numero... " << lista_actualizados->contacto_p.cel << "..." << endl;
-	//cout << "Si desea reprogrmar un nuevo turno ingrese un 1: ";
+	//cout << "Si desea reprogramar un nuevo turno ingrese un 1: ";
 	//int reprogramacion=rand()%1; //simulamos comunicacion con el usuario sin usar cin
 	//Secretaria(lista_actualizados, reprogramacion, tam_lista_retonrantes);
 
@@ -98,9 +103,9 @@ int main()
 	//cambio
 	// system("pause");
 
-	/*delete[]Lista_consultas;
+	delete[]Lista_consultas;
 	delete[]Lista_paciente;
 	delete[]lista_contactos;
-	delete[]lista_medicos;*/
+	delete[]lista_medicos;
 	return 0;
 }

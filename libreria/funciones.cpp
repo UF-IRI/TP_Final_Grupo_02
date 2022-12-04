@@ -257,39 +257,6 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam)
 	}
 }
 
-
-
-
-//void Archivar(Consulta*& Lista_consultas, Paciente*& Lista_pacientes)
-//{
-//	int diferencia;
-//	int i = 0;
-//	//Si el tiempo que paso desde la ultima consulta del paciente y la fecha actvual es mayor a 10 y no concurrio se le archiva,
-//	 //Si es menor a 10 y no concurrio pero quiere reprogramar,se llama  a reprogramar paciente y se cambia la reprogramacion como true y tambin el retorna
-//	//Si La diferencia de los anios es menor a 10 y no quiere retornar se archivan
-//	do {
-//		diferencia = DevolverFecha(Lista_consultas[i]);
-//		if (diferencia > 10 && Lista_consultas[i].presento == false) //no vuelven
-//		{
-//			Lista_pacientes[i].archivado= true;
-//			Escribir_Archivados(Lista_pacientes[i]);			
-//		}
-//		else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == false)
-//		{
-//			if (Lista_pacientes[i].estado_paciente != "n/c") //escribir en el archivo archivados los fallecidos
-//				Lista_pacientes[i].archivado = true;
-//			Escribir_Archivados(Lista_pacientes[i]);
-//		}
-//		else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == true)
-//		{
-//			Lista_pacientes[i].archivado = false;
-//			Lista_pacientes[i].retorna = true;	
-//		}
-//		i++;
-//	} while (i <= sizeof(Lista_pacientes));
-//}
-
-
 Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m,int& tam_lista_retornables)
 {
 	Paciente* Lista_retornantes = new Paciente[0];
@@ -298,6 +265,7 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 	string matricula_medico;
 	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
 	{
+		Lista_pacientes[i].U_consulta.matriula_med;
 		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
 		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
 			
@@ -499,11 +467,11 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 	i = 0;
 	while (i < tam_p)
 	{
+
 		while (j < tam_c)
 		{
 			if (lista_p[i].dni == lista_c[j].dni_pac)
 			{
-				cout << "Paciente encontrado" << endl;
 				if (lista_p[i].U_consulta.fecha_turno.tm_year < lista_c[j].fecha_turno.tm_year)
 				{
 					lista_p[i].U_consulta = lista_c[j];
@@ -521,6 +489,8 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 			j++;
 		}
 		j = 0;
+
+		cout << lista_p[i].U_consulta.fecha_turno.tm_mday << "/" << lista_p[i].U_consulta.fecha_turno.tm_mon << "/" << lista_p[i].U_consulta.fecha_turno.tm_year << endl;
 		i++;
 	}
 }
