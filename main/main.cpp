@@ -1,7 +1,7 @@
 #include "iri.cpp"
 #include <iostream>
 #include <cstdlib>
-#include <datos.h>
+#include <funciones.h>
 using namespace std;
 
 int main()
