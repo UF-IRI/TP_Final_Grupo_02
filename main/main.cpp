@@ -95,7 +95,7 @@ int main()
 	//Secretaria(lista_actualizados, reprogramacion, tam_lista_retonrantes);
 
 		//push
-
+	//cambio
 	// system("pause");
 
 	/*delete[]Lista_consultas;
