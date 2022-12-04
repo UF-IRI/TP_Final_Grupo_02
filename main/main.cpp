@@ -103,7 +103,7 @@ int main()
 	//int reprogramacion=rand()%1; //simulamos comunicacion con el usuario sin usar cin
 	//Secretaria(lista_actualizados, reprogramacion, tam_lista_retonrantes);
 
-		
+		//push
 
 	// system("pause");
 
