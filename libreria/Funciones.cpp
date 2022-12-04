@@ -1,21 +1,22 @@
-#include "datos.h"
+#include "funciones.h"
 #include <iostream>
+#include <fstream>
 #include <sstream>
+#include <iomanip>
+#define _CRT_SECURE_NO_WARNINGS
 
 using namespace std;
 
-Paciente* LeerPacientes(string archivo_Pac)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
+//PACIENTES
+
+Paciente* LeerPacientes(fstream& pacientes, int& tamact_p)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 {
 	Paciente* Lista_pacientes = new Paciente[0];
 	string headers;
-	char delimitador = ' ';
-	char delimitador_fecha = '/';
 	Paciente aux;
-	fstream pacientes;
-	string linea;
+	char coma = ',';
+	char barra = '/';
 
-	int tamact_p = 0;
-	pacientes.open(archivo_Pac, ios::in);
 
 	if (!(pacientes.is_open()))
 	{
@@ -25,236 +26,143 @@ Paciente* LeerPacientes(string archivo_Pac)  //leemos todos los archivos y guard
 
 	getline(pacientes, headers);
 
-	string coma, dni, nombre, apellido, sexo, estado, id, dia, mes, anio;
-	while (getline(pacientes, linea))
+	while (pacientes)
 	{
-		stringstream stream(linea);
-
-		// Extraer todos los valores de esa fila		
-		getline(stream, dni, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, nombre, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, apellido, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, sexo, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, mes, delimitador_fecha);
-		getline(stream, coma, delimitador);
-		getline(stream, dia, delimitador_fecha);
-		getline(stream, coma, delimitador);
-		getline(stream, anio, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, estado, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, id, delimitador);
-
-		aux.dni = dni;
-		aux.nombre = nombre;
-		aux.apellido = apellido;
-		aux.sexo = sexo;
-
-		stringstream aux_fechas(dia);
-		aux_fechas >> aux.fechaingreso.tm_mday;
-		stringstream aux_fechas1(mes);
-		aux_fechas1 >> aux.fechaingreso.tm_mon;
-		stringstream aux_fechas2(anio);
-		aux_fechas2 >> aux.fechaingreso.tm_year;
-
-		aux.estado_paciente = estado;
-		aux.id_os = id;
-
-		//----------------Agregamos a la lista ----------------------
+		pacientes >> aux.dni >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.sexo >> coma >> aux.natalicio.tm_mday >> barra >> aux.natalicio.tm_mon >> barra >> aux.natalicio.tm_year >> coma >> aux.estado_paciente >> coma >> aux.id_os;
 		Agregar(Lista_pacientes, aux, &tamact_p);
-
 	}
 	pacientes.close();
 	return Lista_pacientes;
 }
-//------------------Repetimos para los otros archivos-----------------
-Medico* LeerMedicos(string archivo_Med)
-{
-	fstream Arch_Medicos;
-	string headers;
-	char delimitador = ' ';
-	char delimitador_fecha = '/';
-	Medico aux;
-	string linea;
-	int tamact_m = 0;
-	Medico* lista_medicos = new Medico[tamact_m];
 
-	Arch_Medicos.open(archivo_Med, ios::in);
-	if (!(Arch_Medicos.is_open()))
-	{
-		cout << "No se pudo abrir el archivo de Medicos" << endl;
-		return nullptr;
-	}
-
-	getline(Arch_Medicos, headers);
-	string coma, matricula, nombre, apellido, telefono, especialidad, activo;
-
-	while (getline(Arch_Medicos, linea))
-	{
-		stringstream stream(linea);
-		//matricula , nombre , apellido , telefono , especialidad , activo
-		getline(stream, matricula, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, nombre, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, apellido, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, telefono, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, especialidad, delimitador),
-			getline(stream, coma, delimitador);
-		getline(stream, activo, delimitador);
-
-
-		aux.matricula = matricula;
-		aux.nombre = nombre;
-		aux.apellido = apellido;
-		aux.telefono = telefono;
-		aux.especialidad = especialidad;
-		if (activo == "1")
-			aux.activo = true;
-		else
-			aux.activo = false;
-
-		Agregar_Medicos(lista_medicos, aux, &tamact_m);
-	}
-
-	return lista_medicos;
-}
-Contacto* LeerContactos(string archivo_Cont)
-{
-	fstream Arch_Contactos;
-	string headers;
-	char delimitador = ' ';
-	char delimitador_fecha = '/';
-	Contacto aux;
-	string linea;
-	int tamact_c = 0;
-	Contacto* lista_contactos = new Contacto[tamact_c];
-
-	Arch_Contactos.open(archivo_Cont, ios::in);
-	if (!(Arch_Contactos.is_open()))
-	{
-		cout << "No se pudo abrir el archivo de Contactos" << endl;
-		return nullptr;
-	}
-	getline(Arch_Contactos, headers);
-	//dni_paciente , telefono , celular , direccion , mail
-	string coma, dni_paciente, telefono, celular, direccion, mail;
-
-	while (getline(Arch_Contactos, linea))
-	{
-		stringstream stream(linea);
-
-		getline(stream, dni_paciente, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, telefono, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, celular, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, direccion, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, mail, delimitador);
-
-		aux.dni = dni_paciente;
-		aux.tel = telefono;
-		aux.cel = celular;
-		aux.direccion = direccion;
-		aux.mail = mail;
-		Agregar_Contactos(lista_contactos, aux, &tamact_c);
-	}
-	return lista_contactos;
-}
-Consulta* LeerConsultas(string archivo_Cons)
-{
-	fstream Arch_Consultas;
-	string headers;
-	char delimitador = ' ';
-	char delimitador_fecha = '/';
-	Consulta aux;
-	string linea;
-	int tamact_c = 0;
-	Consulta* lista_consultas = new Consulta[tamact_c];
-
-	Arch_Consultas.open(archivo_Cons, ios::in);
-	if (!(Arch_Consultas.is_open()))
-	{
-		cout << "No se pudo abrir el archivo de Consultas" << endl;
-		return nullptr;
-	}
-	//dni_pac, fecha_solicitado, fecha_turno, presento, matricula_med
-	getline(Arch_Consultas, headers);
-	string coma, dni_pac, dia, mes, anio, dia1, mes1, anio1, fecha_turno, presento, matricula_med;
-
-	while (getline(Arch_Consultas, linea))
-	{
-		stringstream stream(linea);
-		getline(stream, dni_pac, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, dia, delimitador_fecha);
-		getline(stream, mes, delimitador_fecha);
-		getline(stream, anio, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, dia1, delimitador_fecha);
-		getline(stream, mes1, delimitador_fecha);
-		getline(stream, anio, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, presento, delimitador);
-		getline(stream, coma, delimitador);
-		getline(stream, matricula_med, delimitador);
-
-		aux.dni = dni_pac;
-
-		stringstream aux_fechas(dia);
-		aux_fechas >> aux.fecha_solicitado.tm_mday;
-		stringstream aux_fechas1(mes);
-		aux_fechas1 >> aux.fecha_solicitado.tm_mon;
-		stringstream aux_fechas2(anio);
-		aux_fechas2 >> aux.fecha_solicitado.tm_year;
-		stringstream aux_fechas3(dia1);
-		aux_fechas3 >> aux.fecha_turno.tm_mday;
-		stringstream aux_fechas4(mes1);
-		aux_fechas4 >> aux.fecha_turno.tm_mon;
-		stringstream aux_fechas5(anio1);
-		aux_fechas5 >> aux.fecha_turno.tm_year;
-
-		aux.matricula_med = matricula_med;
-		if (presento == "1")
-			aux.presento = true;
-		else
-			aux.presento = false;
-
-		Agregar_Consultas(lista_consultas, aux, &tamact_c);
-	}
-	return lista_consultas;
-}
 void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
 	*tam = *tam + 1;
 	int i = 0;
-	Paciente* Lista_aux = new Paciente[*tam];
+	Paciente* aux = new Paciente[*tam];
 
 	if (Lista_pacientes == NULL)
 		return;
 
 	//Copiamos y agregamos a la lista al paciente
-	while (i < *tam - 1)
+	while (i < *tam - 1 && *tam - 1 != 0)
 	{
-		Lista_aux[i] = Lista_pacientes[i];
+		aux[i] = Lista_pacientes[i];
 		i++;
 	}
 
-	Lista_aux[i] = Datos_p;
+	aux[i] = Datos_p;
 
 	delete[] Lista_pacientes;
-	Lista_pacientes = Lista_aux;
-
+	Lista_pacientes = aux;
 
 	return;
+}
+
+
+void Imprimir_Lista_pacientes(Paciente* lista, int tam)
+{
+
+	int i = 0;
+	while (i < tam)
+	{
+		cout << "Dni: " << lista[i].dni << " Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << " Sexo: " << lista[i].sexo << " Natalicio: " << lista[i].natalicio.tm_mon << "/" << lista[i].natalicio.tm_mday << "/" << lista[i].natalicio.tm_year << " Estado: " << lista[i].estado_paciente << " Cobertura: " << lista[i].id_os << endl;
+		i++;
+	}
+}
+
+//CONSULTAS
+
+Consulta* LeerConsultas(fstream& consultas, int& tamact_cons)
+{
+	Consulta* Lista_consultas = new Consulta[0];
+	string headers;
+	Consulta aux;
+	char coma = ',';
+	char barra = '/';
+
+	if (!(consultas.is_open()))
+	{
+		cout << "no se pudo abrir el archivo de pacientes" << endl;
+		return nullptr;
+	}
+
+	getline(consultas, headers);
+
+	while (consultas)
+	{
+		consultas >> aux.dni_pac >> coma >> aux.fecha_solicitado.tm_mday >> barra >> aux.fecha_solicitado.tm_mon >> barra >> aux.fecha_solicitado.tm_year >> coma >> aux.fecha_turno.tm_mday >> barra >> aux.fecha_turno.tm_mon >> barra >> aux.fecha_turno.tm_year >> coma >> aux.presento >> coma >> aux.matriula_med;
+		Agregar_Consultas(Lista_consultas, aux, &tamact_cons);
+	}
+	consultas.close();
+	return Lista_consultas;
+}
+
+
+void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
+{
+	*tam = *tam + 1;
+	int i = 0;
+	Consulta* Lista_aux = new Consulta[*tam];
+
+	if (Lista_consultas == NULL)
+		return;
+
+	while (i < *tam - 1 && *tam - 1 != 0)
+	{
+		Lista_aux[i] = Lista_consultas[i];
+		i++;
+	}
+	Lista_aux[i] = agregado;
+	delete[] Lista_consultas;
+	Lista_consultas = Lista_aux;
+
+	return;
+}
+
+void Imprimir_Lista_consultas(Consulta* lista, int tam)
+{
+	int i = 0;
+	while (i < tam - 1)
+	{
+		cout << "Dni: " << lista[i].dni_pac << " Fecha_solicitada: " << lista[i].fecha_solicitado.tm_mday << "/" << lista[i].fecha_solicitado.tm_mon << "/" << lista[i].fecha_solicitado.tm_year << " Fecha_turno: " << lista[i].fecha_turno.tm_mday << "/" << lista[i].fecha_turno.tm_mon << "/" << lista[i].fecha_turno.tm_year << " Matricula_med:" << lista[i].matriula_med << endl;
+		double dif = DevolverFecha(lista[i]);
+		cout << "DIFERENCIA:" << dif << endl;  //imprime 0 porque puede ser?
+		i++;
+	}
+}
+
+Medico* LeerMedicos(fstream& Archivo_Med, int& tamact_med)
+{
+	string headers;
+	char coma;
+	char delimitador = ' ';
+	char delimitador_fecha = '/';
+	Medico aux;
+	Medico* lista_medicos = new Medico[tamact_med];
+
+	if (!(Archivo_Med.is_open()))
+	{
+		cout << "No se pudo abrir el archivo de Medicos" << endl;
+		return nullptr;
+	}
+
+	getline(Archivo_Med, headers);
+
+	string activo;
+	while (Archivo_Med)
+	{
+		Archivo_Med >> aux.matricula >> coma >> aux.nombre >> coma >> aux.apellido >> coma >> aux.telefono >> coma >> aux.especialidad >> coma >> activo;
+		if (activo == "1")
+			aux.activo = true;
+		else
+			aux.activo = false;
+
+		Agregar_Medicos(lista_medicos, aux, &tamact_med);
+	}
+	Archivo_Med.close();
+
+	return lista_medicos;
 }
 void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 {
@@ -277,6 +185,46 @@ void Agregar_Medicos(Medico*& lista_meds, Medico agregado, int* tam)
 
 	return;
 }
+void Imprimir_Lista_Medicos(Medico* lista, int tam)
+{
+	int i = 0;
+	while (i < tam - 1)
+	{
+		cout << lista[i].matricula << " , " << lista[i].nombre << " , " << lista[i].apellido << " , " << lista[i].telefono << " , " << lista[i].especialidad << " , " << lista[i].activo << endl;
+		i++;
+	}
+}
+
+
+
+Contacto* LeerContactos(fstream& Archivo_Cont, int& tamact_cont)
+{
+	string headers;
+	char coma;
+	Contacto aux;
+	Contacto* lista_contactos = new Contacto[tamact_cont];
+
+	if (!(Archivo_Cont.is_open()))
+	{
+		cout << "No se pudo abrir el archivo de Contactos" << endl;
+		return nullptr;
+	}
+	//dni_paciente , telefono , celular , direccion , mail
+
+	getline(Archivo_Cont, headers);
+
+	while (Archivo_Cont)
+	{
+		Archivo_Cont >> aux.dni >> coma >> aux.tel >> coma >> aux.cel >> coma >> aux.direccion >> coma >> aux.mail;
+
+		Agregar_Contactos(lista_contactos, aux, &tamact_cont);
+	}
+	Archivo_Cont.close();
+	return lista_contactos;
+}
+
+
+
 void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 {
 	*tam = *tam + 1;
@@ -291,90 +239,133 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 		Lista_aux[i] = Lista_contactos[i];
 		i++;
 	}
-	i--;
+
 	Lista_aux[i] = agregado;
 	delete[] Lista_contactos;
 	Lista_contactos = Lista_aux;
 
 	return;
 }
-void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
+void Imprimir_Lista_contactos(Contacto* lista, int tam)
+{
+	int i = 0;
+
+	while (i < tam - 1)
+	{
+		cout << lista[i].dni << " , " << lista[i].tel << " , " << lista[i].cel << " , " << lista[i].direccion << " , " << lista[i].mail << endl;
+		i++;
+	}
+}
+
+
+
+
+//void Archivar(Consulta*& Lista_consultas, Paciente*& Lista_pacientes)
+//{
+//	int diferencia;
+//	int i = 0;
+//	//Si el tiempo que paso desde la ultima consulta del paciente y la fecha actvual es mayor a 10 y no concurrio se le archiva,
+//	 //Si es menor a 10 y no concurrio pero quiere reprogramar,se llama  a reprogramar paciente y se cambia la reprogramacion como true y tambin el retorna
+//	//Si La diferencia de los anios es menor a 10 y no quiere retornar se archivan
+//	do {
+//		diferencia = DevolverFecha(Lista_consultas[i]);
+//		if (diferencia > 10 && Lista_consultas[i].presento == false) //no vuelven
+//		{
+//			Lista_pacientes[i].archivado= true;
+//			Escribir_Archivados(Lista_pacientes[i]);			
+//		}
+//		else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == false)
+//		{
+//			if (Lista_pacientes[i].estado_paciente != "n/c") //escribir en el archivo archivados los fallecidos
+//				Lista_pacientes[i].archivado = true;
+//			Escribir_Archivados(Lista_pacientes[i]);
+//		}
+//		else if (diferencia < 10 && Lista_consultas[i].presento == false && Lista_consultas[i].reprogramacion == true)
+//		{
+//			Lista_pacientes[i].archivado = false;
+//			Lista_pacientes[i].retorna = true;	
+//		}
+//		i++;
+//	} while (i <= sizeof(Lista_pacientes));
+//}
+
+
+Paciente* archivar(Paciente*& Lista_pacientes, int tam_p, Medico* Lista_medicos, int tam_m, int& tam_lista_retornables)
+{
+	Paciente* Lista_retornantes = new Paciente[0];
+	Medico* medico;
+	double diferencia;
+	string matricula_medico;
+	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
+	{
+		diferencia = DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
+		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
+
+		if (diferencia > 10 && Lista_pacientes[i].U_consulta.presento == false)//si pasaron mas de 10 años y no se presento lo archivamos
+		{
+			Lista_pacientes[i].archivado = true; //archivo a ESE paciente
+			medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
+			Escribir_Archivados(medico, Lista_pacientes[i]);
+		}
+		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false && Lista_pacientes[i].U_consulta.reprogramacion == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
+		{
+			if (Lista_pacientes[i].estado_paciente == "fallecido") //escribir en el archivo archivados los fallecidos
+			{
+				Lista_pacientes[i].archivado = true;
+				medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
+				Escribir_Archivados(medico, Lista_pacientes[i]);
+			}
+			else  //los internados o n/c podrian volver
+			{
+				Lista_pacientes[i].archivado = false;
+				Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_lista_retornables); //lo agrego a una lista de posibles retornantes y esa es la que le vamos a pasar a secretaria 
+			}
+		}
+		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false && Lista_pacientes[i].U_consulta.reprogramacion == true)
+		{
+			Lista_pacientes[i].archivado = false;
+			Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_lista_retornables);
+		}
+	}
+	return Lista_pacientes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
+}
+
+
+void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 {
 	*tam = *tam + 1;
 	int i = 0;
-	Consulta* Lista_aux = new Consulta[*tam];
+	Paciente* Lista_posibles_retornantes = new Paciente[*tam];
 
-	if (Lista_consultas == NULL)
+	if (Lista_pacientes == NULL)
 		return;
 
+	//Copiamos y agregamos a la lista al paciente
 	while (i < *tam - 1 && *tam - 1 != 0)
 	{
-		Lista_aux[i] = Lista_consultas[i];
+		Lista_posibles_retornantes[i] = Lista_pacientes[i];
 		i++;
 	}
-	Lista_aux[i] = agregado;
-	delete[] Lista_consultas;
-	Lista_consultas = Lista_aux;
+
+	Lista_posibles_retornantes[i] = Datos_p;
+
+	delete[] Lista_pacientes;
+	Lista_pacientes = Lista_posibles_retornantes;
 
 	return;
 }
-int DevolverFecha(Paciente var)
+
+Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m)
 {
-	int anios = 0;
-
-	//Devuelve la fecha actual
-	time_t rawtime;
-	struct tm* timeinfo;
-	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-	tm* fecha_actual = timeinfo;
-
-	int dias = 0;
-	int dia = fecha_actual->tm_mday;
-	int mes = fecha_actual->tm_mon + 1;
-	int anio = fecha_actual->tm_year + 1900;
-
-	//Calculo la diferencia entre la fecha actual y la ultima consulta del paciente
-	long int dias1 = (anio * 365) + (mes * 30) + dia;
-	long int dias2 = ((var.datos_uconsul.fecha_uconsulta.tm_year) * 365) + ((var.datos_uconsul.fecha_uconsulta.tm_mon) * 30) + var.datos_uconsul.fecha_uconsulta.tm_mday;
-	dias = dias1 - dias2;
-
-	//Paso los esa diferenca a anios y los retorno
-	anios = dias / 364;
-
-	return anios;
+	for (int i = 0; i < tam_m; i++)
+	{
+		if (Lista_medicos[i].matricula == matricula_medico)
+			return &Lista_medicos[i];
+	}
+	return nullptr;
 }
-void Archivar(Paciente*& Lista_pacientes)
-{
-	int diferencia;
-	int i = 0;
-	//Si el tiempo que paso desde la ultima consulta del paciente y la fecha actvual es mayor a 10 y no concurrio se le archiva,
-	// Si es menor a 10 y no concurrio pero quiere reprogramar,se llama  a reprogramar paciente y se cambia la reprogramacion como true y tambin el retorna
-	//Si La diferencia de los anios es menor a 10 y no quiere retornar se archivan
-	do {
-		diferencia = DevolverFecha(Lista_pacientes[i]);
-		if (diferencia > 10 && Lista_pacientes[i].datos_uconsul.concurrio == false)
-		{
-			Lista_pacientes[i].archivado = true;
-			if (Lista_pacientes[i].datos_uconsul.dni_medico == Lista_pacientes[i].dni)
-				Escribir_Archivados(Lista_pacientes[i]);
-		}
-		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == false)
-		{
-			if (Lista_pacientes[i].estado_paciente != "n/c")
-				Lista_pacientes[i].archivado = true;
-			Escribir_Archivados(Lista_pacientes[i]);
-		}
-		else if (diferencia < 10 && Lista_pacientes[i].datos_uconsul.concurrio == false && Lista_pacientes[i].datos_uconsul.reprogramacion == true)
-		{
-			Lista_pacientes[i].archivado = false;
-			Lista_pacientes[i].retorna = true;
-			Reprogramar_consulta(Lista_pacientes[i]);
-		}
-		i++;
-	} while (i <= sizeof(Lista_pacientes));
-}
-void Escribir_Archivados(Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
+
+void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
 {
 	char coma = ',';
 	fstream archivados;
@@ -385,21 +376,15 @@ void Escribir_Archivados(Paciente paciente) //escribimos el archivo de output de
 
 	else
 	{
-		archivados << "n_historialclinico,Nombre,Apellido,DNI,Sexo,Natalicio,Fecha de ingreso,Cobertura,Fecha ultima consulta,Medico ultima consulta,Diagnostico" << endl;
-		archivados << paciente.historial_clinico.n_historialclinico << coma << paciente.nombre << coma << paciente.apellido << paciente.dni << coma << paciente.sexo << coma << paciente.natalicio.tm_mon << coma << paciente.natalicio.tm_wday << paciente.natalicio.tm_year << coma << paciente.fechaingreso.tm_mon << "/" << paciente.fechaingreso.tm_wday << "/" << paciente.fechaingreso.tm_year << coma << paciente.id_os << coma << paciente.datos_uconsul.fecha_uconsulta.tm_mday << "/" << paciente.datos_uconsul.fecha_uconsulta.tm_mon << "/" << paciente.datos_uconsul.fecha_uconsulta.tm_year << coma << paciente.datos_uconsul.dni_medico << coma << paciente.historial_clinico.especialidad << endl;
+		archivados << "Nombre paciente, Apellido paciente, Dni paciente, ID_os, Nombre medico, Apellido medico, Teléfono de contacto medico, Matricula medico, especialidad" << endl;
+		archivados << paciente.nombre << coma << paciente.apellido << coma << paciente.dni << paciente.id_os << coma << medico->nombre << coma << medico->apellido << coma << medico->telefono << coma << medico->matricula << coma << medico->especialidad << endl;
 	}
 
 }
-//averiguar como hacer los archivos de output
-void Imprimir_Lista(Paciente* lista)
-{
-	int i = 0;
-	while (i <= sizeof(lista))
-	{
-		cout << "Dni: " << lista[i].dni << " Nombre: " << lista[i].nombre << " Apellido: " << lista[i].apellido << " Sexo: " << lista[i].sexo << " Natalicio: " << lista[i].natalicio.tm_mon << "/" << lista[i].natalicio.tm_wday << "/" << lista[i].natalicio.tm_year << " Estado: " << lista[i].estado_paciente << " Cobertura: " << lista[i].id_os << endl;
-		i++;
-	}
-}
+
+
+
+
 void Cambio_Cobertura(Paciente paciente, int opcion)
 {
 	switch (opcion)
@@ -435,42 +420,124 @@ void Cambio_Cobertura(Paciente paciente, int opcion)
 	}
 
 }
-void Secretaria(Paciente*& lista, int opcion)//habria que mandarle unicamente la lista de los pacientes posibles de volver, habria que quitar de la lista original los fallecidos y los que hace mas de 10 años no van
+//hola
+
+
+void Secretaria(Paciente* lista_actualizada, int opcion, int tam_Lista_retornantes) //   en el main hacer paciente Lista= Actualizar_listap y esa lista se la pasamos a la funcion secretaria
 {
-	for (int i = 0; i < sizeof(*lista); i++)
+	int obra_social = 1 + rand() % 5; //simulamos un cambio de cobertura
+	int i;
+	for (i = 0; i < tam_Lista_retornantes; i++)
 	{
-		if (lista[i].datos_uconsul.reprogramacion == 1)
+		if (opcion == 1)
 		{
-			//Reprogramar_consulta(lista[i]);
-			Cambio_Cobertura(lista[i], opcion);
-			lista[i].retorna = true;
+
+			Cambio_Cobertura(lista_actualizada[i], obra_social);
+			lista_actualizada[i].retorna = true;
+
 		}
 		else
 		{
-			Escribir_Archivados(lista[i]);
-			lista[i].datos_uconsul.reprogramacion = false;
-			lista[i].retorna = false;
+			lista_actualizada[i].retorna = false;
 		}
 	}
 }
-void Fecha_random(Paciente paciente)
-{
-	time_t rawtime;
-	struct tm* timeinfo;
-	time(&rawtime);
-	timeinfo = localtime(&rawtime);
-	tm* fecha_actual = timeinfo;
 
-	paciente.datos_uconsul.next_consul.tm_mday = rand() % (30 - fecha_actual->tm_mday) + fecha_actual->tm_mday;
-	paciente.datos_uconsul.next_consul.tm_mon = rand() % (12 - fecha_actual->tm_mon) + fecha_actual->tm_mon;
-	paciente.datos_uconsul.next_consul.tm_year = rand() % (2033 - fecha_actual->tm_year) + fecha_actual->tm_year;
+void Reprogramar_consulta(Paciente& paciente) //fijarse de arreglar porque los años nos dan unicamnete tres digitos
+{
+	srand(time(NULL));
+
+	double diferencia = 0;
+	int i = 0;
+	time_t hoy = time(0);
+	struct std::tm fecha;
+
+	std::istringstream ss(to_string(paciente.U_consulta.fecha_turno.tm_mday) + "/" + to_string(paciente.U_consulta.fecha_turno.tm_mon) + "/" + to_string(paciente.U_consulta.fecha_turno.tm_year) + " 00:00:00");
+
+	ss >> std::get_time(&fecha, "%d/%m/%Y %H:%M:%S");
+
+	paciente.U_consulta.fecha_turno.tm_mon = 1 + rand() % 11;//rand del 1 al 12 por los meses 
+	paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 29; //rand del 1 al 30 por los dias
+	paciente.U_consulta.fecha_turno.tm_year = fecha.tm_year + rand() % (fecha.tm_year + 2);
+
+	if (paciente.U_consulta.fecha_turno.tm_mon == 2 && paciente.U_consulta.fecha_turno.tm_mday > 28)//si justo mes == 02 volver a hacer un random del dia entre 1 y 28
+		paciente.U_consulta.fecha_turno.tm_mday = 1 + rand() % 28;
+	if (paciente.U_consulta.fecha_turno.tm_mon < fecha.tm_mon && paciente.U_consulta.fecha_solicitado.tm_year == fecha.tm_year)//si el mes generado aleatoriamente es menor al mes actual y al año que se genero es el mismo, como el turno ya habria pasado tengo que sumarle uno al año
+		paciente.U_consulta.fecha_turno.tm_year = paciente.U_consulta.fecha_solicitado.tm_year + 1;
+}
+
+//creo que funciona bien 
+double DevolverFecha(Consulta paciente)
+{
+	double diferencia = 0;
+	int i = 0;
+	time_t hoy = time(0);
+	struct std::tm fecha;
+
+	std::istringstream ss(to_string(paciente.fecha_turno.tm_mday) + "/" + to_string(paciente.fecha_turno.tm_mon) + "/" + to_string(paciente.fecha_turno.tm_year) + " 00:00:00");
+
+	ss >> std::get_time(&fecha, "%d/%m/%Y %H:%M:%S");
+
+	time_t fecha_uconsul = mktime(&fecha);
+
+	diferencia = difftime(hoy, fecha_uconsul) / 31530000; //lo pasamos de seg a anios
+	return diferencia;
 
 }
-void Reprogramar_consulta(Paciente paciente)
+
+void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, int tam_c)
 {
-	//Como el paciente quiere retornar, se le asigna una cunsulta.
-	Fecha_random(paciente); //Funcion le coloca una fecha para la proxima cosulta random
+	int i;
+	int j = 0;
 
+	for (i = 0; i < tam_p; i++)
+	{
+		lista_p[i].U_consulta.fecha_turno.tm_year = 0;
+		lista_p[i].U_consulta.fecha_turno.tm_mon = 0;   // inicializamos las fechas para saber que valor tienen si no son encontradas y para que funcione la busqueda por maxima fecha
+		lista_p[i].U_consulta.fecha_turno.tm_mday = 0;
+	}
+	i = 0;
+	while (i < tam_p)
+	{
+		while (j < tam_c)
+		{
+			if (lista_p[i].dni == lista_c[j].dni_pac)
+			{
+				cout << "encuentra paciente" << endl;
+				if (lista_p[i].U_consulta.fecha_turno.tm_year < lista_c[j].fecha_turno.tm_year)
+				{
+					lista_p[i].U_consulta = lista_c[j];
+				}
+				else if (lista_p[i].U_consulta.fecha_turno.tm_mon < lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
+				{
+					lista_p[i].U_consulta = lista_c[j];
+				}
+				else if (lista_p[i].U_consulta.fecha_turno.tm_mday < lista_c[j].fecha_turno.tm_mday && lista_p[i].U_consulta.fecha_turno.tm_mon == lista_c[j].fecha_turno.tm_mon && lista_p[i].U_consulta.fecha_turno.tm_year == lista_c[j].fecha_turno.tm_year)
+				{
+					lista_p[i].U_consulta = lista_c[j];
+				}
 
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+}
+void Buscar_contacto(Paciente* lista_actualizados, int tamact_p, Contacto* lista_contactos, int tamact_cont)
+{
+	for (int i = 0; i < tamact_p; i++)
+	{
+		lista_actualizados[i].contacto_p.cel = -1; //inicializamos todos los celulares de los contactos en -1 para saber cuando un contacto no es encontrado
+	}
+
+	for (int i = 0; i < tamact_p; i++)
+	{
+		for (int j = 0; j < tamact_cont; j++)
+		{
+			if (lista_actualizados[i].dni == lista_contactos[j].dni)
+				lista_actualizados[i].contacto_p = lista_contactos[j];
+		}
+	}
 
 }
