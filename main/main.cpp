@@ -85,7 +85,7 @@ int main()
 	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retornantes);
 
 	//PROBAMOS SI FUNCIONA LA FUNCION ARCHIVAR Y AGREGAR A RETORNANTES: funciona
-	cout << "PACIENTES QUE PUEDEN RETORNAR" << endl;
+	cout << "PACIENTES QUE PUEDEN RETORNAR" << endl<<endl;
 	for (int i = 0; i < tam_lista_retornantes; i++)
 	{
 		cout <<"nombre: "<<lista_actualizados[i].nombre<<" "<< lista_actualizados[i].apellido << " estado:" << lista_actualizados[i].estado_paciente << " archivado:" << lista_actualizados[i].archivado << endl;
@@ -118,7 +118,11 @@ int main()
 		cout << "El paciente "<<lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido <<" con cobertura actual:"<< lista_actualizados[i].cobertura<<" "<< lista_actualizados[i].retorna << endl;
 	}
 
-	
+	for (int i = 0; i < tamact_p; i++)
+	{
+		Cambio_Cobertura(Lista_paciente[i]);
+		cout << Lista_paciente[i].cobertura << endl;
+	}
 	system("pause");
 
 	delete[]Lista_consultas;

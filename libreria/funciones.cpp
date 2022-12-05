@@ -47,7 +47,7 @@ void Agregar(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam)
 	if (Lista_pacientes == NULL)
 		return;
 
-	//Copiamos y agregamos a la lista al paciente
+	//Copiamos y agregamos a la lista el paciente
 	while (i < *tam - 1 && *tam - 1 != 0)
 	{
 		aux[i] = Lista_pacientes[i];
@@ -119,7 +119,6 @@ void Agregar_Consultas(Consulta*& Lista_consultas, Consulta agregado, int* tam)
 	Lista_aux[i] = agregado;
 	delete[] Lista_consultas;
 	Lista_consultas = Lista_aux;
-	
 	return;
 }
 
@@ -129,8 +128,8 @@ void Imprimir_Lista_consultas(Consulta* lista, int tam)
 	while (i < tam-1)
 	{
 		cout << "Dni: " << lista[i].dni_pac << " Fecha_solicitada: " << lista[i].fecha_solicitado.tm_mday << "/" << lista[i].fecha_solicitado.tm_mon << "/" << lista[i].fecha_solicitado.tm_year << " Fecha_turno: " << lista[i].fecha_turno.tm_mday << "/" << lista[i].fecha_turno.tm_mon << "/" << lista[i].fecha_turno.tm_year << " Matricula_med:" << lista[i].matriula_med<<endl;
-		//double dif = DevolverFecha(lista[i]);
-		//cout << "DIFERENCIA:" << dif<<endl;
+		int dif = DevolverFecha(lista[i]);
+		cout << "DIFERENCIA:" << dif<<endl;
 		i++; 
 	}	
 }
@@ -225,9 +224,6 @@ Contacto* LeerContactos(fstream& Archivo_Cont, int& tamact_cont)
 	Archivo_Cont.close();
 	return lista_contactos;
 }
-
-
-
 void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 {
 	*tam=*tam+1;
@@ -246,7 +242,6 @@ void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam)
 	Lista_aux[i] = agregado;
 	delete[] Lista_contactos;
 	Lista_contactos = Lista_aux;
-	
 	return;
 }
 void Imprimir_Lista_contactos(Contacto* lista, int tam)
@@ -260,15 +255,16 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam)
 	}
 }
 
+
 Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m,int& tam_lista_retornables)
 {
 	Paciente* Lista_retornantes = new Paciente[tam_lista_retornables];
 	Medico* medico;
 	double diferencia;
 	string matricula_medico;
-	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
+	for (int i = 0; i < tam_p; i++) //recorro lista pacientes 
 	{
-		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
+		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver cuantos años pasaron, se guarda en un int para que se trunque el numero en su entero
 		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
 		Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
 		if (diferencia > 10 )//si pasaron mas de 10 años lo archivamos
@@ -276,15 +272,15 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 			Lista_pacientes[i].archivado = true; //archivo a ESE paciente
 			medico=Buscar_Medico(Lista_medicos,matricula_medico,tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
 			Escribir_Archivados(medico, Lista_pacientes[i]);
-		}
-		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
+		} 
+		else if (diferencia <= 10 && Lista_pacientes[i].U_consulta.presento == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
 		{
 			if (Lista_pacientes[i].estado_paciente == "fallecido") //escribir en el archivo archivados los fallecidos
 			{
 				Lista_pacientes[i].archivado = true;
 				medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
 				Escribir_Archivados(medico,Lista_pacientes[i]);
-			}				
+			}
 			else  //los internados o n/c podrian volver
 			{
 				Lista_pacientes[i].archivado = false;
@@ -330,7 +326,6 @@ void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int
 
 	delete[] Lista_pacientes;
 	Lista_pacientes = Lista_posibles_retornantes;
-
 	return;
 }
  
@@ -364,42 +359,47 @@ void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el arch
 
 
 
-void Cambio_Cobertura(Paciente paciente)
+void Cambio_Cobertura(Paciente paciente) // esta funcion simularia la interaccion entre la secretaria y un paciente que podria haber cambiado de obra social de forma aleatoria
 {
-	int obra_social = 1 + rand() % 6;//simulamos un cambio de cobertura
+	srand(time(NULL));
+	int cambia = 1+ rand()%2;
 
-	switch (obra_social)
+	if (cambia == 2)
 	{
-	 case 1:
-		paciente.cobertura = "OSDE";
-		paciente.id_os = 1;
-		break;
-	 case 2:
-		paciente.cobertura = "MEDICUS";
-		paciente.id_os = 2;
-		break;
-	 case 3:
-		paciente.cobertura = "IOSFA";
-		paciente.id_os = 3;
-		break;
-	 case 4:
-		paciente.cobertura = "ITALIANO";
-		paciente.id_os = 4;
-		break;
-	 case 5:
-		paciente.cobertura = "ALEMAN";
-		paciente.id_os = 5;
-		break;
-	 case 6:
-		paciente.cobertura = "ESPANYOL";
-		paciente.id_os = 6;
-		break;
+ 		int obra_social = 1+ rand() % 5;//simulamos un cambio de cobertura
 
-	 default: 
-		 cout << " invaind input" << endl;
-		 break;
+		switch (obra_social)
+		{
+		case 1:
+			paciente.cobertura = "OSDE";
+			paciente.id_os = 1;
+			break;
+		case 2:
+			paciente.cobertura = "MEDICUS";
+			paciente.id_os = 2;
+			break;
+		case 3:
+			paciente.cobertura = "IOSFA";
+			paciente.id_os = 3;
+			break;
+		case 4:
+			paciente.cobertura = "ITALIANO";
+			paciente.id_os = 4;
+			break;
+		case 5:
+			paciente.cobertura = "ALEMAN";
+			paciente.id_os = 5;
+			break;
+		case 6:
+			paciente.cobertura = "ESPANYOL";
+			paciente.id_os = 6;
+			break;
+
+		default:
+			cout << " invaind input" << endl;
+			break;
+		}
 	}
-
 }
 
   
@@ -518,7 +518,7 @@ void Buscar_contacto(Paciente* lista_actualizados, int tamact_retornantes, Conta
 		for (int j = 0; j < tamact_cont; j++)
 		{
 			if (lista_actualizados[i].dni == lista_contactos[j].dni)
-				lista_actualizados[i].contacto_p = lista_contactos[j];							
+				lista_actualizados[i].contacto_p = lista_contactos[j];	
 		}
 	}
 
