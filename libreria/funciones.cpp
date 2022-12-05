@@ -265,9 +265,13 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 	string matricula_medico;
 	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
 	{
+		cout << endl;
+		cout<< Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
 		Lista_pacientes[i].U_consulta.fecha_turno.tm_mday;
 		Lista_pacientes[i].U_consulta.fecha_turno.tm_mon;
 		Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
+		cout << "\n"<<Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
+		cout << endl;
 
 		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
 		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
