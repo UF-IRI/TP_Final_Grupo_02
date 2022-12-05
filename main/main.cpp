@@ -19,8 +19,8 @@ int main()
 		return -1;
 	}
 
-	//cout << "-------------LISTA PACIENTES-----------" << endl;
-	//Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
+	cout << "-------------LISTA PACIENTES-----------" << endl;
+	Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
 
 
 
@@ -86,15 +86,15 @@ int main()
 
 	//PROBAMOS SI FUNCIONA LA FUNCION ARCHIVAR Y AGREGAR A RETORNANTES: funciona
 	cout << "PACIENTES QUE PUEDEN RETORNAR" << endl<<endl;
-	for (int i = 0; i < tam_lista_retornantes; i++)
+	for (int i = 0; i < tam_lista_retornantes-1; i++)
 	{
-		cout <<"nombre: "<<lista_actualizados[i].nombre<<" "<< lista_actualizados[i].apellido << " estado:" << lista_actualizados[i].estado_paciente << " archivado:" << lista_actualizados[i].archivado << endl;
+		cout <<"nombre: "<<lista_actualizados[i].nombre<<" "<< lista_actualizados[i].apellido << " estado:" << lista_actualizados[i].estado_paciente << " archivado:" << lista_actualizados[i].archivado<< endl;
 	}
 
 	cout << endl;
 	Buscar_contacto(lista_actualizados,tam_lista_retornantes,lista_contactos,tamact_cont); //le asigna a los pacientes sus datos de contacto
 	cout << "Contactandose con paciente" << endl;
-	for (int i = 0; i < tam_lista_retornantes; i++)
+	for (int i = 0; i < tam_lista_retornantes-1; i++)
 	{		
 		if (lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
 		{
@@ -104,25 +104,26 @@ int main()
 	cout << endl;
 
 	cout << "No es posible contactar a los siguientes pacientes debido a que no se encontraron los datos del contacto:" << endl;
-	for (int i = 0; i < tam_lista_retornantes; i++)
+	for (int i = 0; i < tam_lista_retornantes-1; i++)
 	{
 		if (lista_actualizados[i].contacto_p.cel == "Datos del contacto no encontrado\n")
-			cout << lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido << endl;
+		cout << lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido << endl; 
 	}
 	
 	cout << endl;
 	Secretaria(lista_actualizados, tam_lista_retornantes);
-	for (int i = 0; i < tam_lista_retornantes; i++)
+	
+	/*for (int i = 0; i < tam_lista_retornantes; i++) para probar si funcionaba: funciona ok
+	{
+		Cambio_Cobertura(lista_actualizados[i]);	
+	}*/
+	for (int i = 0; i < tam_lista_retornantes-1; i++)
 	{
 		if(lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
-		cout << "El paciente "<<lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido <<" con cobertura actual:"<< lista_actualizados[i].cobertura<<" "<< lista_actualizados[i].retorna << endl;
+		cout << "El paciente "<<lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido <<" con cobertura actual:"<< lista_actualizados[i].id_os<<", "<< lista_actualizados[i].retorna << endl;
 	}
 
-	for (int i = 0; i < tamact_p; i++)
-	{
-		Cambio_Cobertura(Lista_paciente[i]);
-		cout << Lista_paciente[i].cobertura << endl;
-	}
+	
 	system("pause");
 
 	delete[]Lista_consultas;

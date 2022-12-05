@@ -362,9 +362,9 @@ void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el arch
 void Cambio_Cobertura(Paciente paciente) // esta funcion simularia la interaccion entre la secretaria y un paciente que podria haber cambiado de obra social de forma aleatoria
 {
 	srand(time(NULL));
-	int cambia = 1+ rand()%2;
+	int cambia =  rand()%2; // del 0 al 1
 
-	if (cambia == 2)
+	if (cambia == 1)
 	{
  		int obra_social = 1+ rand() % 5;//simulamos un cambio de cobertura
 
@@ -372,11 +372,11 @@ void Cambio_Cobertura(Paciente paciente) // esta funcion simularia la interaccio
 		{
 		case 1:
 			paciente.cobertura = "OSDE";
-			paciente.id_os = 1;
+			paciente.id_os = 2;
 			break;
 		case 2:
 			paciente.cobertura = "MEDICUS";
-			paciente.id_os = 2;
+			paciente.id_os = 1;
 			break;
 		case 3:
 			paciente.cobertura = "IOSFA";
