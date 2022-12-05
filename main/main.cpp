@@ -2,11 +2,10 @@
 #include <iri.cpp>
 #pragma warning(disable : 4996)
 using namespace std;
-#define archpacientes "../data_files/input/IRI_Pacientes.csv" 
 
 int main()
 {	
-	string ruta_pac =(BASE_PATH + archpacientes);
+	string ruta_pac =(BASE_PATH + ArchPacientes);
 	fstream pacientes;
 	pacientes.open(ruta_pac, ios::in);
 	Paciente* Lista_paciente;
@@ -26,7 +25,7 @@ int main()
 
 
 
-	string ruta_cons = (BASE_PATH + "../data_files/input/IRI_Consultas.csv");
+	string ruta_cons = (BASE_PATH + ArchConsultas);
 	fstream Consultas;
 	Consultas.open(ruta_cons, ios::in);
 	Consulta* Lista_consultas;
@@ -45,7 +44,7 @@ int main()
 
 	
 	
-	string ruta_med = (BASE_PATH + "../data_files/input/IRI_Medicos.csv");
+	string ruta_med = (BASE_PATH + ArchMedicos);
 	fstream Medicos;
 	Medicos.open(ruta_med, ios::in);
 	Medico* lista_medicos;
@@ -62,7 +61,7 @@ int main()
 	//Imprimir_Lista_Medicos(lista_medicos, tamact_med);
 
 
-	string ruta_cont = (BASE_PATH + "../data_files/input/IRI_Contactos.csv");
+	string ruta_cont = (BASE_PATH + ArchContactos);
 	fstream Contactos;
 	Contactos.open(ruta_cont, ios::in);
 	int tamact_cont=0;
@@ -81,19 +80,8 @@ int main()
 	//Imprimir_Lista_contactos(lista_contactos, tamact_cont); //si cambiamos el dni a int solo lee 7 contactos y si lo ponemos como string nos imprime con comas
 
 	Buscar_Ultima_Consulta(Lista_paciente, Lista_consultas, tamact_p, tamact_cons);
-	//for (int i = 0; i < tamact_p; i++)
-	//{
-	//	Lista_paciente[i].U_consulta.fecha_turno.tm_mday;
-	//	Lista_paciente[i].U_consulta.fecha_turno.tm_mon;
-	//	Lista_paciente[i].U_consulta.fecha_turno.tm_year;
-	//}
-	int tam_lista_retonrantes=0;
-	cout << endl;
-	for (int i = 0; i < tamact_p; i++)
-	{
-		cout<<Lista_paciente[i].U_consulta.fecha_turno.tm_year<<endl;
-	}
 	
+	int tam_lista_retonrantes=0;
 	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retonrantes);
 
 	//Buscar_contacto(lista_actualizados,tamact_p,lista_contactos,tamact_cont); //le asigna a los pacientes sus datos de contacto

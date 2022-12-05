@@ -7,6 +7,11 @@
 #include <sstream>
 #include <array>
 
+#define ArchPacientes "../data_files/input/IRI_Pacientes.csv" 
+#define ArchConsultas "../data_files/input/IRI_Consultas.csv"
+#define ArchMedicos "../data_files/input/IRI_Medicos.csv"
+#define ArchContactos "../data_files/input/IRI_Contactos.csv"
+#define Pacientes_Archivados "../data_files/output/IRI_Pacientes_archivados.txt"
 using namespace std;
 
 enum cobertura { OSDE = 1, MEDICUS, IOSFA, ITALIANO, ALEMAN, ESPANYOL }typedef Cobertura; //el hospital trabaja unicamnete con estas obras sociales 

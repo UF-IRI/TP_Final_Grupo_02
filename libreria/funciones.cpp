@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+
+
 #define _CRT_SECURE_NO_WARNINGS
 
 using namespace std;
@@ -259,19 +261,12 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam)
 
 Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, int tam_m,int& tam_lista_retornables)
 {
-	Paciente* Lista_retornantes = new Paciente[0];
+	Paciente* Lista_retornantes = new Paciente[tam_lista_retornables];
 	Medico* medico;
 	double diferencia;
 	string matricula_medico;
 	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
 	{
-		cout << endl;
-		cout<< Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
-		Lista_pacientes[i].U_consulta.fecha_turno.tm_mday;
-		Lista_pacientes[i].U_consulta.fecha_turno.tm_mon;
-		Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
-		cout << "\n"<<Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
-		cout << endl;
 
 		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
 		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
@@ -299,7 +294,7 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == true)
 		{
 			Lista_pacientes[i].archivado = false;					
-			Agregar_alistaretornantes(Lista_pacientes, Lista_pacientes[i], &tam_lista_retornables);
+			Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_lista_retornables);
 		}				
 	}
 	return Lista_pacientes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
@@ -344,7 +339,7 @@ void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el arch
 {
 	char coma = ',';
 	fstream archivados;
-	archivados.open("Pacientes_Archivados.csv", ios::out); //escribe en un nuevo archivo llamado archivados 
+	archivados.open("Hola_Que_Tal", ios::out); //escribe en un nuevo archivo llamado archivados 
 
 	if (!archivados.is_open())
 		return;
@@ -497,8 +492,6 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 			j++;
 		}
 		j = 0;
-
-		cout << lista_p[i].U_consulta.fecha_turno.tm_mday << "/" << lista_p[i].U_consulta.fecha_turno.tm_mon << "/" << lista_p[i].U_consulta.fecha_turno.tm_year << endl;
 		i++;
 	}
 }
