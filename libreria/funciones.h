@@ -82,7 +82,7 @@ Contacto* LeerContactos(fstream& archivo_Cont, int& tamact_cont);
 void Agregar_Contactos(Contacto*& Lista_contactos, Contacto agregado, int* tam);
 void Imprimir_Lista_contactos(Contacto* lista, int tam);
 
-double DevolverFecha(Consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
+int DevolverFecha(Consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
 //se crea un archivo llamado "archivados" con aquellos pacientes que cumplan con la condicion de archivados
 void Escribir_Archivados(Medico* Lista_medicos, Paciente paciente);

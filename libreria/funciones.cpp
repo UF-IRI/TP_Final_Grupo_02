@@ -448,9 +448,9 @@ void Reprogramar_consulta(Paciente& paciente) //fijarse de arreglar porque los a
 }
 
 //creo que funciona bien 
-double DevolverFecha(Consulta paciente)
+int DevolverFecha(Consulta paciente)
 {
-	double diferencia = 0;
+	int diferencia = 0;
 	int i = 0;
 	time_t hoy = time(0);
 	struct std::tm fecha;
