@@ -114,6 +114,7 @@ int main()
 	Secretaria(lista_actualizados, tam_lista_retornantes);
 	for (int i = 0; i < tam_lista_retornantes; i++)
 	{
+		if(lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
 		cout << "El paciente "<<lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido <<" con cobertura actual:"<< lista_actualizados[i].cobertura<<" "<< lista_actualizados[i].retorna << endl;
 	}
 

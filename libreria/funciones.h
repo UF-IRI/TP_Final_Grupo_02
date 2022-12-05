@@ -21,7 +21,7 @@ enum diagnostico { neurologia, kinesiologia, cardiologia, ginecologia, odontolog
 typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 {
 	string nombre, apellido, mail, direccion, tel, cel,provincia, pais, dni;
-	int ID, edad;
+	int ID, edad;	
 
 } Contacto;
 
