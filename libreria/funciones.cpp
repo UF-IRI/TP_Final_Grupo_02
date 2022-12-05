@@ -11,6 +11,7 @@ using namespace std;
 
 //PACIENTES
 
+
 Paciente* LeerPacientes(fstream& pacientes, int &tamact_p)  //leemos todos los archivos y guardamos todos los datos en una lista de cada tipo
 {
 	Paciente* Lista_pacientes = new Paciente[0];
@@ -267,11 +268,10 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 	string matricula_medico;
 	for (int i = 0; i < tam_p; i++) //recorro lista consultas 
 	{
-
 		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver si pasaron 10 años
 		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
-			
-		if (diferencia > 10 && Lista_pacientes[i].U_consulta.presento == false)//si pasaron mas de 10 años y no se presento lo archivamos
+		Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
+		if (diferencia > 10 )//si pasaron mas de 10 años lo archivamos
 		{
 			Lista_pacientes[i].archivado = true; //archivo a ESE paciente
 			medico=Buscar_Medico(Lista_medicos,matricula_medico,tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
@@ -293,11 +293,20 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 		}
 		else if (diferencia < 10 && Lista_pacientes[i].U_consulta.presento == true)
 		{
-			Lista_pacientes[i].archivado = false;					
-			Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_lista_retornables);
+			if (Lista_pacientes[i].estado_paciente == "fallecido")
+			{
+				Lista_pacientes[i].archivado = true;
+				medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
+				Escribir_Archivados(medico, Lista_pacientes[i]);				
+			}
+			else
+			{
+				Lista_pacientes[i].archivado = false;
+				Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_lista_retornables);
+			}			
 		}				
-	}
-	return Lista_pacientes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
+	}	
+	return Lista_retornantes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
 }
 
  
@@ -339,7 +348,7 @@ void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el arch
 {
 	char coma = ',';
 	fstream archivados;
-	archivados.open("Hola_Que_Tal", ios::out); //escribe en un nuevo archivo llamado archivados 
+	archivados.open("Archivados", ios::out); //escribe en un nuevo archivo llamado archivados 
 
 	if (!archivados.is_open())
 		return;
@@ -355,32 +364,34 @@ void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el arch
 
 
 
-void Cambio_Cobertura(Paciente paciente, int opcion)
+void Cambio_Cobertura(Paciente paciente)
 {
-	switch (opcion)
+	int obra_social = 1 + rand() % 6;//simulamos un cambio de cobertura
+
+	switch (obra_social)
 	{
 	 case 1:
-		paciente.cobertura = OSDE;
+		paciente.cobertura = "OSDE";
 		paciente.id_os = 1;
 		break;
 	 case 2:
-		paciente.cobertura = MEDICUS;
+		paciente.cobertura = "MEDICUS";
 		paciente.id_os = 2;
 		break;
 	 case 3:
-		paciente.cobertura = IOSFA;
+		paciente.cobertura = "IOSFA";
 		paciente.id_os = 3;
 		break;
 	 case 4:
-		paciente.cobertura = ITALIANO;
+		paciente.cobertura = "ITALIANO";
 		paciente.id_os = 4;
 		break;
 	 case 5:
-		paciente.cobertura = ALEMAN;
+		paciente.cobertura = "ALEMAN";
 		paciente.id_os = 5;
 		break;
 	 case 6:
-		paciente.cobertura = ESPANYOL;
+		paciente.cobertura = "ESPANYOL";
 		paciente.id_os = 6;
 		break;
 
@@ -390,26 +401,24 @@ void Cambio_Cobertura(Paciente paciente, int opcion)
 	}
 
 }
-//hola
   
  
-void Secretaria(Paciente* lista_actualizada, int opcion,int tam_Lista_retornantes) //   en el main hacer paciente Lista= Actualizar_listap y esa lista se la pasamos a la funcion secretaria
-{	
-	int obra_social = 1 + rand() % 5; //simulamos un cambio de cobertura
+void Secretaria(Paciente* lista_actualizada,int tam_Lista_retornantes) //   en el main hacer paciente Lista= Actualizar_listap y esa lista se la pasamos a la funcion secretaria
+{		
 	int i;
 	for (i = 0; i < tam_Lista_retornantes; i++)
 	{
+		int opcion = rand() % 2;
 		if (opcion == 1)
-		{
-
-			Cambio_Cobertura(lista_actualizada[i], obra_social);
-			lista_actualizada[i].retorna = true;
-			//return string=retorna
+		{			
+			Cambio_Cobertura(lista_actualizada[i]);
+			lista_actualizada[i].retorna = " retorna";
+			Reprogramar_consulta(lista_actualizada[i]);
+			
 		}
 		else
 		{
-			lista_actualizada[i].retorna = false;
-			//return string=no retorna y en el mian hacemos cout<<secretaria() hacerla string 
+			lista_actualizada[i].retorna = " no retorna";
 		}
 	}
 }
@@ -417,7 +426,7 @@ void Secretaria(Paciente* lista_actualizada, int opcion,int tam_Lista_retornante
 void Reprogramar_consulta(Paciente& paciente) //fijarse de arreglar porque los años nos dan unicamnete tres digitos
 {
 	srand(time(NULL));
-
+	
 	double diferencia = 0;
 	int i = 0;
 	time_t hoy = time(0);
@@ -496,14 +505,14 @@ void Buscar_Ultima_Consulta(Paciente*& lista_p, Consulta* lista_c, int tam_p, in
 	}
 }
 
-void Buscar_contacto(Paciente* lista_actualizados, int tamact_p, Contacto* lista_contactos, int tamact_cont)
+void Buscar_contacto(Paciente* lista_actualizados, int tamact_retornantes, Contacto* lista_contactos, int tamact_cont)
 {
-	for (int i = 0; i < tamact_p; i++)
+	for (int i = 0; i < tamact_retornantes; i++)
 	{
-		lista_actualizados[i].contacto_p.cel = -1; //inicializamos todos los celulares de los contactos en -1 para saber cuando un contacto no es encontrado
+		lista_actualizados[i].contacto_p.cel = "Datos del contacto no encontrado\n"; //inicializamos todos los celulares de los contactos en -1 para saber cuando un contacto no es encontrado
 	}
 
-	for (int i = 0; i < tamact_p; i++)
+	for (int i = 0; i < tamact_retornantes; i++)
 	{
 		for (int j = 0; j < tamact_cont; j++)
 		{

@@ -75,26 +75,50 @@ int main()
 		return -1;
 	}
 	cout << endl;
-	//cout<<"----------LISTA CONTACTOS----------------" << endl;
+	//cout<<"----------LISTA CONTACTOS----------------" << endl; //ver porque no imprime perfecto
 	//
 	//Imprimir_Lista_contactos(lista_contactos, tamact_cont); //si cambiamos el dni a int solo lee 7 contactos y si lo ponemos como string nos imprime con comas
 
 	Buscar_Ultima_Consulta(Lista_paciente, Lista_consultas, tamact_p, tamact_cons);
 	
-	int tam_lista_retonrantes=0;
-	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retonrantes);
+	int tam_lista_retornantes=0;
+	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retornantes);
 
-	//Buscar_contacto(lista_actualizados,tamact_p,lista_contactos,tamact_cont); //le asigna a los pacientes sus datos de contacto
+	//PROBAMOS SI FUNCIONA LA FUNCION ARCHIVAR Y AGREGAR A RETORNANTES: funciona
+	cout << "PACIENTES QUE PUEDEN RETORNAR" << endl;
+	for (int i = 0; i < tam_lista_retornantes; i++)
+	{
+		cout <<"nombre: "<<lista_actualizados[i].nombre<<" "<< lista_actualizados[i].apellido << " estado:" << lista_actualizados[i].estado_paciente << " archivado:" << lista_actualizados[i].archivado << endl;
+	}
 
+	cout << endl;
+	Buscar_contacto(lista_actualizados,tam_lista_retornantes,lista_contactos,tamact_cont); //le asigna a los pacientes sus datos de contacto
+	cout << "Contactandose con paciente" << endl;
+	for (int i = 0; i < tam_lista_retornantes; i++)
+	{		
+		if (lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
+		{
+			cout<<lista_actualizados[i].nombre <<" "<<lista_actualizados[i].apellido << " numero: " << lista_actualizados[i].contacto_p.cel << "..." << endl;			
+		}	
+	}
+	cout << endl;
 
-	//cout << "Contactandose con el numero... " << lista_actualizados->contacto_p.cel << "..." << endl;
-	//cout << "Si desea reprogramar un nuevo turno ingrese un 1: ";
-	//int reprogramacion=rand()%1; //simulamos comunicacion con el usuario sin usar cin
-	//Secretaria(lista_actualizados, reprogramacion, tam_lista_retonrantes);
+	cout << "No es posible contactar a los siguientes pacientes debido a que no se encontraron los datos del contacto:" << endl;
+	for (int i = 0; i < tam_lista_retornantes; i++)
+	{
+		if (lista_actualizados[i].contacto_p.cel == "Datos del contacto no encontrado\n")
+			cout << lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido << endl;
+	}
+	
+	cout << endl;
+	Secretaria(lista_actualizados, tam_lista_retornantes);
+	for (int i = 0; i < tam_lista_retornantes; i++)
+	{
+		cout << "El paciente "<<lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido <<" con cobertura actual:"<< lista_actualizados[i].cobertura<<" "<< lista_actualizados[i].retorna << endl;
+	}
 
-		//push
-	//cambio
-	// system("pause");
+	
+	system("pause");
 
 	delete[]Lista_consultas;
 	delete[]Lista_paciente;

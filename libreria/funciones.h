@@ -14,13 +14,13 @@
 #define Pacientes_Archivados "../data_files/output/IRI_Pacientes_archivados.txt"
 using namespace std;
 
-enum cobertura { OSDE = 1, MEDICUS, IOSFA, ITALIANO, ALEMAN, ESPANYOL }typedef Cobertura; //el hospital trabaja unicamnete con estas obras sociales 
+//enum cobertura { OSDE = 1, MEDICUS, IOSFA, ITALIANO, ALEMAN, ESPANYOL }typedef Cobertura; //el hospital trabaja unicamnete con estas obras sociales 
 //enum estado_historial { vigente = 0, archivado } typedef Estado_historial;
 enum diagnostico { neurologia, kinesiologia, cardiologia, ginecologia, odontologia, dermatologia, pediatria, traumatologia, hemologia, fonoaudelogia, clinica }typedef Diagnostico;
 
 typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 {
-	string nombre, apellido, mail, direccion, tel, cel, provincia, pais, dni;
+	string nombre, apellido, mail, direccion, tel, cel,provincia, pais, dni;
 	int ID, edad;
 
 } Contacto;
@@ -33,15 +33,9 @@ typedef struct CONSULTA
 	string matriula_med;
 	bool reprogramacion;
 	bool presento; //true si atendio el turno, false sino 
-	Cobertura cobertura;
+	string cobertura;
 } Consulta;
 
- typedef struct HISTORIAL_CLINICO
-{
-	string especialidad;
-	int n_historialclinico; 
-
-} historial_clinico;
 
 typedef struct  PACIENTE
 {
@@ -52,15 +46,13 @@ typedef struct  PACIENTE
 	tm natalicio;
 	tm fechaingreso;
 	string id_os;
-	//historial_clinico historial_clinico;
 	string estado_paciente; //internado,fallecido,vivo
 	string cobertura;
 	Diagnostico diagnostico_p;
 	Consulta U_consulta;
-	bool archivado=false;
-	bool retorna = false;
+	bool archivado;
+	string retorna;
 	Contacto contacto_p;
-
 } Paciente;
 
 typedef struct MEDICO
@@ -103,10 +95,10 @@ Paciente* archivar(Paciente*& Lista_pacientes, int tam_p, Medico* Lista_medicos,
 Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m);
 
 //Se le pasa la lista de pacientes y si quieren repregramar se llama a reprogramar consulta, sino se archivan
-void Secretaria(Paciente* lista_actualizada, int opcion, int tam_Lista_retornantes);
+void Secretaria(Paciente* lista_actualizada,int tam_Lista_retornantes);
 
 //Cambia la cobertura del paciente si este decidio camviarla.
-void Cambio_Cobertura(Paciente paciente, int opcion);
+void Cambio_Cobertura(Paciente paciente);
 
 //Reprograma la consulta del paciente, asignandole una fecha random para su prox consulta
 void Reprogramar_consulta(Paciente& paciente);
