@@ -3,6 +3,10 @@
 #pragma warning(disable : 4996)
 using namespace std;
 
+/*NOTAR: muchos de los comentarios son funciones pequenias que resultan utiles a la hora de debugguear
+no los borramos porque creemos que serian utiles en caso de tener que cambiar algo del codigo o de revisar
+los datos del archivo de output entre otras cosas
+*/
 int main()
 {	
 	string ruta_pac =(BASE_PATH + ArchPacientes);
@@ -15,12 +19,12 @@ int main()
 	Lista_paciente= LeerPacientes(pacientes, tamact_p); //funciona
 	if (Lista_paciente == nullptr) 
 	{
-		cout << "hubo un error al leer los pacientes" << endl;
+		//cout << "hubo un error al leer los pacientes" << endl;
 		return -1;
 	}
 
-	cout << "-------------LISTA PACIENTES-----------" << endl;
-	Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
+	//cout << "-------------LISTA PACIENTES-----------" << endl;
+	//Imprimir_Lista_pacientes(Lista_paciente, tamact_p);  //funciona
 
 
 
@@ -34,10 +38,9 @@ int main()
 	Lista_consultas = LeerConsultas(Consultas, tamact_cons);
 	if (Lista_consultas == nullptr) 
 	{
-		cout << "hubo un error al leer los consultas" << endl;
+		//cout << "hubo un error al leer los consultas" << endl;
 		return -1;
 	}
-	cout << endl<<endl;
 
 	//cout << "----------LISTA CONSULTAS----------------"<<endl;
 	//Imprimir_Lista_consultas(Lista_consultas, tamact_cons);
@@ -53,7 +56,7 @@ int main()
 	lista_medicos = LeerMedicos(Medicos, tamact_med);
 	if (lista_medicos == nullptr) 
 	{
-		cout << "hubo un error al leer los medicos" << endl;
+		//cout << "hubo un error al leer los medicos" << endl;
 		return -1;
 	}
 
@@ -71,10 +74,11 @@ int main()
 
 	if (lista_contactos == nullptr)
 	{
-		cout << "hubo un error al leer los contactos" << endl;
+		//cout << "hubo un error al leer los contactos" << endl;
 		return -1;
 	}
-	cout << endl;
+
+	//cout << endl;
 	//cout<<"----------LISTA CONTACTOS----------------" << endl; //ver porque no imprime perfecto
 	//
 	//Imprimir_Lista_contactos(lista_contactos, tamact_cont); //si cambiamos el dni a int solo lee 7 contactos y si lo ponemos como string nos imprime con comas
@@ -85,43 +89,47 @@ int main()
 	Paciente* lista_actualizados = archivar(Lista_paciente, tamact_p, lista_medicos, tamact_med, tam_lista_retornantes);
 
 	//PROBAMOS SI FUNCIONA LA FUNCION ARCHIVAR Y AGREGAR A RETORNANTES: funciona
-	cout << "PACIENTES QUE PUEDEN RETORNAR" << endl<<endl;
-	for (int i = 0; i < tam_lista_retornantes-1; i++)
-	{
-		cout <<"nombre: "<<lista_actualizados[i].nombre<<" "<< lista_actualizados[i].apellido << " estado:" << lista_actualizados[i].estado_paciente << " archivado:" << lista_actualizados[i].archivado<< endl;
-	}
+	//cout << "PACIENTES QUE PUEDEN RETORNAR" << endl<<endl;
+	//
+	//for (int i = 0; i < tam_lista_retornantes-1; i++)
+	//{
+	//	cout <<"nombre: "<<lista_actualizados[i].nombre<<" "<< lista_actualizados[i].apellido << " estado:" << lista_actualizados[i].estado_paciente << " archivado:" << lista_actualizados[i].archivado<< endl;
+	//}
+	//
+	//cout << endl;
 
-	cout << endl;
 	Buscar_contacto(lista_actualizados,tam_lista_retornantes,lista_contactos,tamact_cont); //le asigna a los pacientes sus datos de contacto
-	cout << "Contactandose con paciente" << endl;
-	for (int i = 0; i < tam_lista_retornantes-1; i++)
-	{		
-		if (lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
-		{
-			cout<<lista_actualizados[i].nombre <<" "<<lista_actualizados[i].apellido << " numero: " << lista_actualizados[i].contacto_p.cel << "..." << endl;			
-		}	
-	}
-	cout << endl;
 
-	cout << "No es posible contactar a los siguientes pacientes debido a que no se encontraron los datos del contacto:" << endl;
-	for (int i = 0; i < tam_lista_retornantes-1; i++)
-	{
-		if (lista_actualizados[i].contacto_p.cel == "Datos del contacto no encontrado\n")
-		cout << lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido << endl; 
-	}
+	    //cout << "Contactandose con paciente" << endl;
+	    
+	    //for (int i = 0; i < tam_lista_retornantes-1; i++)
+	    //{		
+	    //	if (lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
+	    //	{
+	    //		cout<<lista_actualizados[i].nombre <<" "<<lista_actualizados[i].apellido << " numero: " << lista_actualizados[i].contacto_p.cel << "..." << endl;			
+//	    //	}	
+	    //}
+	    //cout << endl;
+	    //
+	    //cout << "No es posible contactar a los siguientes pacientes debido a que no se encontraron los datos del contacto:" << endl;
+
+	    //for (int i = 0; i < tam_lista_retornantes-1; i++)
+	    //{
+	    //	if (lista_actualizados[i].contacto_p.cel == "Datos del contacto no encontrado\n")
+	    //	cout << lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido << endl; 
+	    //}
 	
-	cout << endl;
 	Secretaria(lista_actualizados, tam_lista_retornantes);
 	
-	/*for (int i = 0; i < tam_lista_retornantes; i++) para probar si funcionaba: funciona ok
-	{
-		Cambio_Cobertura(lista_actualizados[i]);	
-	}*/
-	for (int i = 0; i < tam_lista_retornantes-1; i++)
-	{
-		if(lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
-		cout << "El paciente "<<lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido <<" con cobertura actual:"<< lista_actualizados[i].id_os<<", "<< lista_actualizados[i].retorna << endl;
-	}
+	    /*for (int i = 0; i < tam_lista_retornantes; i++) para probar si funcionaba: funciona ok
+	    {
+	    	Cambio_Cobertura(lista_actualizados[i]);	
+	    }
+	     for (int i = 0; i < tam_lista_retornantes-1; i++)
+	     {
+	     	if(lista_actualizados[i].contacto_p.cel != "Datos del contacto no encontrado\n")
+	     	cout << "El paciente "<<lista_actualizados[i].nombre << " " << lista_actualizados[i].apellido <<" con cobertura actual:"<< lista_actualizados[i].id_os<<", "<< lista_actualizados[i].retorna << endl;
+	     }*/
 
 	
 	system("pause");
