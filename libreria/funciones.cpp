@@ -267,19 +267,18 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 		diferencia= DevolverFecha(Lista_pacientes[i].U_consulta); //obtengo la diferencia de las fechas para ver cuantos años pasaron, se guarda en un int para que se trunque el numero en su entero
 		matricula_medico = Lista_pacientes[i].U_consulta.matriula_med;//me guardo la matriula del medico y la busco en el archivo del medico
 		Lista_pacientes[i].U_consulta.fecha_turno.tm_year;
+
+
 		if (diferencia > 10 )//si pasaron mas de 10 años lo archivamos
 		{
 			Lista_pacientes[i].archivado = true; //archivo a ESE paciente
-			medico=Buscar_Medico(Lista_medicos,matricula_medico,tam_m); //busco los datos del medico que atendio a ese paciente en su ultima consulta
-			Escribir_Archivados(medico, Lista_pacientes[i]);
+			
 		} 
 		else if (diferencia <= 10 && Lista_pacientes[i].U_consulta.presento == false)//si pasaron menos de 10 años, y no se presento ni reprogramo, archivo los fallecidos 
 		{
 			if (Lista_pacientes[i].estado_paciente == "fallecido") //escribir en el archivo archivados los fallecidos
 			{
 				Lista_pacientes[i].archivado = true;
-				medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
-				Escribir_Archivados(medico,Lista_pacientes[i]);
 			}
 			else  //los internados o n/c podrian volver
 			{
@@ -291,17 +290,16 @@ Paciente* archivar(Paciente*& Lista_pacientes,int tam_p, Medico* Lista_medicos, 
 		{
 			if (Lista_pacientes[i].estado_paciente == "fallecido")
 			{
-				Lista_pacientes[i].archivado = true;
-				medico = Buscar_Medico(Lista_medicos, matricula_medico, tam_m);
-				Escribir_Archivados(medico, Lista_pacientes[i]);				
+				Lista_pacientes[i].archivado = true;	
 			}
 			else
 			{
 				Lista_pacientes[i].archivado = false;
 				Agregar_alistaretornantes(Lista_retornantes, Lista_pacientes[i], &tam_lista_retornables);
 			}			
-		}				
+		}
 	}	
+	Escribir_Archivados(Lista_pacientes, tam_p, Lista_medicos, tam_m);
 	return Lista_retornantes; //lista unicamente de posibles retornantes, esta es la que le vamos a pasar a la secretaria para que los contacte
 }
 
@@ -339,19 +337,24 @@ Medico* Buscar_Medico(Medico* Lista_medicos, string matricula_medico, int tam_m)
 	return nullptr;
 }
 
-void Escribir_Archivados(Medico* medico, Paciente paciente) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
+void Escribir_Archivados(Paciente* paciente, int tam_p, Medico*lista_medicos, int tam_m) //escribimos el archivo de output de pacientes que fueron archivados(no funciona) 
 {
 	char coma = ',';
 	fstream archivados;
-	archivados.open("Archivados", ios::out); //escribe en un nuevo archivo llamado archivados 
+	Medico *medico;
+	archivados.open("..\\..\\..\\..\\data_files\\output\\IRI_Pacientes_Archivados.csv", ios::out); //escribe en un nuevo archivo llamado archivados 
 
 	if (!archivados.is_open())
 		return;
 
-	else
+	archivados << "Nombre , Apellido , Dni , ID_os , Nombre medico , Apellido medico , Teléfono de contacto medico , Matricula medico , especialidad" << endl;
+	for (int i = 0; i < tam_p; i++)
 	{
-		archivados << "Nombre paciente, Apellido paciente, Dni paciente, ID_os, Nombre medico, Apellido medico, Teléfono de contacto medico, Matricula medico, especialidad" << endl;
-		archivados << paciente.nombre<<coma<<paciente.apellido<<coma<<paciente.dni<<paciente.id_os<<coma<<medico->nombre << coma << medico->apellido << coma << medico->telefono << coma << medico->matricula << coma << medico->especialidad << endl;
+		if (paciente[i].archivado == true)
+		{
+			medico = Buscar_Medico(lista_medicos, paciente[i].U_consulta.matriula_med, tam_m);
+			archivados << paciente[i].nombre << " " << coma << " " << paciente[i].apellido << " " << coma << " " << paciente[i].dni << " " << coma << " " << paciente[i].id_os << " " << coma << " " << medico->nombre << " " << coma << " " << medico->apellido << " " << coma << " " << medico->telefono << " " << coma << " " << medico->matricula << " " << coma << " " << medico->especialidad << endl;
+		}
 	}
 
 }

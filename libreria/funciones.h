@@ -12,11 +12,9 @@
 #define ArchMedicos "../data_files/input/IRI_Medicos.csv"
 #define ArchContactos "../data_files/input/IRI_Contactos.csv"
 #define Pacientes_Archivados "../data_files/output/IRI_Pacientes_archivados.txt"
+
 using namespace std;
 
-//enum cobertura { OSDE = 1, MEDICUS, IOSFA, ITALIANO, ALEMAN, ESPANYOL }typedef Cobertura; //el hospital trabaja unicamnete con estas obras sociales 
-//enum estado_historial { vigente = 0, archivado } typedef Estado_historial;
-enum diagnostico { neurologia, kinesiologia, cardiologia, ginecologia, odontologia, dermatologia, pediatria, traumatologia, hemologia, fonoaudelogia, clinica }typedef Diagnostico;
 
 typedef struct  CONTACTO//tiene que haber un archivo con todos los contacto
 {
@@ -48,7 +46,6 @@ typedef struct  PACIENTE
 	string id_os;
 	string estado_paciente; //internado,fallecido,vivo
 	string cobertura;
-	Diagnostico diagnostico_p;
 	Consulta U_consulta;
 	bool archivado;
 	string retorna;
@@ -85,7 +82,7 @@ void Imprimir_Lista_contactos(Contacto* lista, int tam);
 int DevolverFecha(Consulta pacientes);//Devuelve la diferencia en anios desde la ultima consulta del paciente y la fecha actual
 
 //se crea un archivo llamado "archivados" con aquellos pacientes que cumplan con la condicion de archivados
-void Escribir_Archivados(Medico* Lista_medicos, Paciente paciente);
+void Escribir_Archivados(Paciente* paciente, int tam_p, Medico* lista_medicos, int tam_m);
 
 void Agregar_alistaretornantes(Paciente*& Lista_pacientes, Paciente Datos_p, int* tam);
 
